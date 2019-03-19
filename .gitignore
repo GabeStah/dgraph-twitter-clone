@@ -1,0 +1,14 @@
+# VSCode
+.vscode
+
+# Webstorm
+.idea
+
+# API
+api/
+
+# Client
+client/
+
+# Text.md
+text.md
