@@ -1,0 +1,1 @@
+{"version":3,"sources":["../packages/dgraph-query-manager/src/classes/Serialization.ts"],"names":[],"mappings":";;AAgBE,MAAa,aAAa;IAaxB,YAAY,SAAiC,EAAE;QAL/C,eAAU,GAAG,GAAG,CAAC;QACjB,YAAO,GAAG,KAAK,CAAC;QAEhB,QAAG,GAAG,EAAE,CAAC;QAGP,MAAM,CAAC,MAAM,CAAC,IAAI,EAAE,MAAM,CAAC,CAAC;IAC9B,CAAC;CACF;AAhBD,sCAgBC","file":"../../classes/Serialization.js","sourceRoot":"../../"}

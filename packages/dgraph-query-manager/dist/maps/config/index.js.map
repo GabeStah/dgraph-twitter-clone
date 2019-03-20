@@ -1,0 +1,1 @@
+{"version":3,"sources":["../packages/dgraph-query-manager/src/config/index.ts"],"names":[],"mappings":";;AAAA,+CAAwC;AACxC,6CAAsC;AAEtC,IAAI,MAAM,CAAC;AAEX,IAAI,OAAO,CAAC,GAAG,CAAC,QAAQ,KAAK,YAAY,EAAE;IACzC,MAAM,GAAG,qBAAW,CAAC;CACtB;KAAM;IACL,MAAM,GAAG,oBAAU,CAAC;CACrB;AAED,kBAAe,MAAM,CAAC","file":"../../config/index.js","sourceRoot":"../../"}

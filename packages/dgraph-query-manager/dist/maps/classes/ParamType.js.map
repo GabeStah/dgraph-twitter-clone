@@ -1,0 +1,1 @@
+{"version":3,"sources":["../packages/dgraph-query-manager/src/classes/ParamType.ts"],"names":[],"mappings":";;AAKA,MAAa,SAAS;IAIpB,YAAY,IAAY,EAAE,IAAO;QAC/B,IAAI,CAAC,GAAG,GAAG,IAAI,CAAC;QAChB,IAAI,CAAC,IAAI,GAAG,IAAI,CAAC;IACnB,CAAC;CACF;AARD,8BAQC","file":"../../classes/ParamType.js","sourceRoot":"../../"}

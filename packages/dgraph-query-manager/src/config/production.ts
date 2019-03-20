@@ -1,7 +1,7 @@
-const development = {
+const production = {
   dgraph: {
     adapter: {
-      address: 'http://192.168.99.100:8080'
+      address: 'localhost:9080'
     },
     api: {
       protocol: 'http',
@@ -14,4 +14,4 @@ const development = {
   }
 };
 
-export default development;
+export default production;
