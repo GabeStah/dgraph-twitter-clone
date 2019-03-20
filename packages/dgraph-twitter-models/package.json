@@ -1,0 +1,22 @@
+{
+  "name": "dgraph-twitter-models",
+  "version": "0.4.6",
+  "description": "Collection of data models for handling Twitter-like objects.",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabe Wyatt <gabe@gabewyatt.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dgraph-adapter-http": "file:../dgraph-adapter-http",
+    "dgraph-query-executor": "file:../dgraph-query-executor",
+    "faker": "^4.1.0",
+    "serialization": "file:../serialization",
+    "twitter-text": "^3.0.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^11.11.4"
+  }
+}

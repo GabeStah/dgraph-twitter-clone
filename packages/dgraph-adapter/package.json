@@ -1,0 +1,20 @@
+{
+  "name": "dgraph-adapter",
+  "version": "0.2.15",
+  "description": "Adapter to assist with connections and transaction for Dgraph.",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabe Wyatt <gabe@gabewyatt.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dgraph-js": "^1.2.1",
+    "grpc": "^1.18.0",
+    "serialization": "file:../serialization",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^11.11.4"
+  }
+}

@@ -12,3 +12,9 @@ client/
 
 # Text.md
 text.md
+
+# Backup
+package.json.bak
+
+# Modules
+node_modules

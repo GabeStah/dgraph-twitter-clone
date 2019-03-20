@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "lib": ["es2015", "es2017", "dom"],
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false
+  }
+}

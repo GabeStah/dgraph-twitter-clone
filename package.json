@@ -1,0 +1,26 @@
+{
+  "name": "dgraph-twitter-clone",
+  "version": "0.6.24",
+  "description": "Twitter Clone API using Dgraph.io",
+  "scripts": {
+    "build": "gulp default"
+  },
+  "author": "Gabe Wyatt <gabe@gabewyatt.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/register": "^7.0.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "gulp": "^4.0.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
+    "typescript": "^3.3.3333"
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "maintained node versions",
+    "not dead"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "serialization",
+  "version": "0.1.1",
+  "description": "Serialization interface and class.",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabe Wyatt <gabe@gabewyatt.com>",
+  "license": "ISC",
+  "dependencies": {
+    "dgraph-query-executor": "file:../dgraph-query-executor"
+  },
+  "devDependencies": {
+    "@types/node": "^11.11.4",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3333"
+  }
+}
