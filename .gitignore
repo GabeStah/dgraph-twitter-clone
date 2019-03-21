@@ -5,10 +5,10 @@
 .idea
 
 # API
-api/
+#api/
 
 # Client
-client/
+#client/
 
 # Text.md
 text.md

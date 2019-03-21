@@ -1,7 +1,6 @@
-[submodule "dgraph-twitter-clone-api"]
+[submodule "api"]
 	path = api
-	url = https://github.com/GabeStah/dgraph-twitter-clone-api.git
-
-[submodule "dgraph-twitter-clone-client"]
+	url = git@github.com:GabeStah/dgraph-twitter-clone-api.git
+[submodule "client"]
 	path = client
-	url = https://github.com/GabeStah/dgraph-twitter-clone-client.git
+	url = git@github.com:GabeStah/dgraph-twitter-clone-client.git
