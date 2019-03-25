@@ -8,4 +8,4 @@ class ParamType {
 }
 exports.ParamType = ParamType;
 
-//# sourceMappingURL=../maps/classes/ParamType.js.map
+//# sourceMappingURL=ParamType.js.map

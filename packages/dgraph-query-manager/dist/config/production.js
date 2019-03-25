@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const development_1 = require("./development");
 const production = {
+    connectionType: development_1.DgraphConnectionType.DIRECT,
     dgraph: {
         adapter: {
             address: 'localhost:9080'
@@ -17,4 +19,4 @@ const production = {
 };
 exports.default = production;
 
-//# sourceMappingURL=../maps/config/production.js.map
+//# sourceMappingURL=production.js.map

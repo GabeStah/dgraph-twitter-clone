@@ -75,4 +75,4 @@ class User extends models_1.BaseModel {
 }
 exports.User = User;
 
-//# sourceMappingURL=../maps/models/User.js.map
+//# sourceMappingURL=User.js.map

@@ -7,4 +7,4 @@ exports.Queries = {
     User: UserQueries_1.UserQueries,
 };
 
-//# sourceMappingURL=../../maps/classes/Queries/index.js.map
+//# sourceMappingURL=index.js.map

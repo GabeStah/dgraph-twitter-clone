@@ -1,16 +1,19 @@
 {
   "name": "dgraph-query-manager",
-  "version": "0.6.47",
+  "version": "0.6.68",
   "description": "Manages queries, adapters, serialization, and other helpers for Dgraph Twitter Clone",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gabe Wyatt <gabe@gabewyatt.com>",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "dgraph-js-http": "^1.0.0-rc1",
     "faker": "^4.1.0",
+    "prettier": "^1.16.4",
     "twitter-text": "^3.0.0",
     "winston": "^3.2.1"
   },
@@ -18,5 +21,8 @@
     "@types/node": "^11.11.4",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333"
+  },
+  "dgraph": {
+    "connectionType": "DIRECT"
   }
 }

@@ -186,4 +186,4 @@ class DgraphAdapterHttp {
 }
 exports.DgraphAdapterHttp = DgraphAdapterHttp;
 
-//# sourceMappingURL=../maps/adapters/DgraphAdapterHttp.js.map
+//# sourceMappingURL=DgraphAdapterHttp.js.map

@@ -79,15 +79,15 @@ export class Query implements QueryInterface {
    * Generates the proper URI from route and passed params.
    * @param params
    */
-  private uri(params: object): string | undefined {
+  uri(params?: object): string | undefined {
+    let newUri = this.route;
     if (params) {
-      let newUri = this.route;
       // replace $ in params with :
       Object.entries(params).forEach(([key, value]) => {
         newUri = newUri.replace(key.replace('$', ':'), value);
       });
-      return newUri;
     }
+    return newUri;
   }
 
   /**
@@ -106,22 +106,25 @@ export class Query implements QueryInterface {
       if (paramTypes) {
         paramTypes.forEach(paramType => {
           // Check that params contain this paramType key.
-          if (this.params[paramType.key]) {
-            // Checks that constructor type of parameter matches paramType.
-            if (
-              this.params[paramType.key].constructor.name !==
-              paramType.type.constructor.name
-            ) {
-              console.log(this.params);
-              console.log(paramTypes);
-              logger.error(
-                `Param for key of (${
-                  paramType.key
-                }) must match constructor paramType of (${
-                  paramType.type.constructor.name
-                }).`
-              );
-              return false;
+          if (this.params.hasOwnProperty(paramType.key)) {
+            // Skip undefined or null
+            if (this.params[paramType.key]) {
+              // Checks that constructor type of parameter matches paramType.
+              if (
+                this.params[paramType.key].constructor.name !==
+                paramType.type.constructor.name
+              ) {
+                console.log(this.params);
+                console.log(paramTypes);
+                logger.error(
+                  `Param for key of (${
+                    paramType.key
+                  }) must match constructor paramType of (${
+                    paramType.type.constructor.name
+                  }).`
+                );
+                return false;
+              }
             }
           } else {
             logger.error(

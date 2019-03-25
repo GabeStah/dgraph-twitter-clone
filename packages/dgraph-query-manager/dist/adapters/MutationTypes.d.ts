@@ -1,4 +1,4 @@
 export declare enum MutationTypes {
-    DeleteJson = 0,
-    SetJson = 1
+  DeleteJson = 0,
+  SetJson = 1
 }

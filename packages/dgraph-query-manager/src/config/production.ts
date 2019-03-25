@@ -1,4 +1,7 @@
+import { DgraphConnectionType } from './development';
+
 const production = {
+  connectionType: DgraphConnectionType.DIRECT,
   dgraph: {
     adapter: {
       address: 'localhost:9080'

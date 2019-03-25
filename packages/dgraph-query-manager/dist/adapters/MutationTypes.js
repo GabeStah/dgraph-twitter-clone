@@ -6,4 +6,4 @@ var MutationTypes;
     MutationTypes[MutationTypes["SetJson"] = 1] = "SetJson";
 })(MutationTypes = exports.MutationTypes || (exports.MutationTypes = {}));
 
-//# sourceMappingURL=../maps/adapters/MutationTypes.js.map
+//# sourceMappingURL=MutationTypes.js.map

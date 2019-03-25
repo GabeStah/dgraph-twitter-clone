@@ -5,4 +5,4 @@ function TypeOf(type) {
 }
 exports.TypeOf = TypeOf;
 
-//# sourceMappingURL=../maps/classes/TypeOf.js.map
+//# sourceMappingURL=TypeOf.js.map

@@ -6,4 +6,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./DgraphAdapterHttp"));
 __export(require("./MutationTypes"));
 
-//# sourceMappingURL=../maps/adapters/index.js.map
+//# sourceMappingURL=index.js.map

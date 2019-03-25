@@ -1,6 +1,6 @@
 // Lib
 import * as faker from 'faker';    
-import * as twitter from 'twitter-text/dist';
+import * as twitter from 'twitter-text';
 // Local
 import config from '../config';
 import { 
@@ -189,8 +189,8 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
       'tweet.favoriteCount': faker.random.number(),
       'tweet.favorited': faker.random.boolean(),
       // 'tweet.hashtag'?: [Hashtag];
-      'tweet.inReplyToStatusId': new Uid(123),
-      'tweet.inReplyToUserId': new Uid(456),
+      // 'tweet.inReplyToStatusId': new Uid(123),
+      // 'tweet.inReplyToUserId': new Uid(456),
       'tweet.isQuoteStatus': faker.random.boolean(),
       // 'tweet.quotedStatus'?: Tweet,
       'tweet.retweetCount': faker.random.number(),

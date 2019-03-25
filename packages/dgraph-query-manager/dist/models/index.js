@@ -9,4 +9,4 @@ __export(require("./Tweet"));
 __export(require("./Uid"));
 __export(require("./User"));
 
-//# sourceMappingURL=../maps/models/index.js.map
+//# sourceMappingURL=index.js.map

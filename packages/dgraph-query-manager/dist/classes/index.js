@@ -10,4 +10,4 @@ __export(require("./Query"));
 __export(require("./Serialization"));
 __export(require("./TypeOf"));
 
-//# sourceMappingURL=../maps/classes/index.js.map
+//# sourceMappingURL=index.js.map

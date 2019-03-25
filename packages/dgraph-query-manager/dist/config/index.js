@@ -11,4 +11,4 @@ else {
 }
 exports.default = config;
 
-//# sourceMappingURL=../maps/config/index.js.map
+//# sourceMappingURL=index.js.map

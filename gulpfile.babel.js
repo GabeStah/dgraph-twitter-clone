@@ -12,6 +12,20 @@ const PACKAGE = {
   dest: 'packages/dgraph-query-manager/dist'
 };
 
+const API = {
+  name: 'api',
+  root: 'api',
+  src: 'api/src/**/*.ts',
+  dest: 'api/dist'
+};
+
+const CLIENT = {
+  name: 'client',
+  root: 'client',
+  src: 'client/src/**/*.ts',
+  dest: 'client/dist'
+};
+
 function buildPackage() {
   return gulp
     .src(PACKAGE.src)
@@ -31,12 +45,7 @@ function buildPackage() {
         strictPropertyInitialization: false,
         // types: ['node']
       }))
-    .pipe(
-      sourcemaps.write('maps', {
-        sourceRoot: './',
-        includeContent: false
-      })
-    )
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(PACKAGE.dest));
 }
 
@@ -75,6 +84,22 @@ function publishToYalc() {
     });
 }
 
+function pushPackagesToApi() {
+  return execCommandAsync('yalc update', { cwd: API.root })
+    .catch(e => {
+        console.log(e);
+        return reject();
+    });
+}
+
+function pushPackagesToClient() {
+  return execCommandAsync('yalc update', { cwd: CLIENT.root })
+    .catch(e => {
+        console.log(e);
+        return reject();
+    });
+}
+
 gulp.task('packages:remove:modules', gulp.series(cleanupPackageDirectories));
 
 gulp.task('packages:install:modules', gulp.series(installPackageModules));
@@ -83,8 +108,11 @@ gulp.task('packages:cleanup', gulp.series(['packages:remove:modules', 'packages:
 
 gulp.task('packages:build', gulp.series(buildPackage, bumpVersion, publishToYalc))
 
+gulp.task('packages:push', gulp.series(pushPackagesToApi, pushPackagesToClient))
+
 gulp.task('default', gulp.series(
   'packages:remove:modules', 
   'packages:install:modules',
-  'packages:build'
+  'packages:build',
+  'packages:push'
 ));

@@ -42,4 +42,4 @@ exports.UserQueries = {
      }`, '/users'),
 };
 
-//# sourceMappingURL=../../maps/classes/Queries/UserQueries.js.map
+//# sourceMappingURL=UserQueries.js.map

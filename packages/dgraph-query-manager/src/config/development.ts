@@ -1,4 +1,10 @@
+export enum DgraphConnectionType {
+  API,
+  DIRECT
+}
+
 const development = {
+  connectionType: DgraphConnectionType.DIRECT,
   dgraph: {
     adapter: {
       address: 'http://192.168.99.100:8080'

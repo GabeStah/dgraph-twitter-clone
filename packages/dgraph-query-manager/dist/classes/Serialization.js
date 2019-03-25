@@ -10,4 +10,4 @@ class Serialization {
 }
 exports.Serialization = Serialization;
 
-//# sourceMappingURL=../maps/classes/Serialization.js.map
+//# sourceMappingURL=Serialization.js.map

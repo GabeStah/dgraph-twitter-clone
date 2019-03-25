@@ -37,4 +37,4 @@ class Hashtag extends models_1.BaseModel {
 }
 exports.Hashtag = Hashtag;
 
-//# sourceMappingURL=../maps/models/Hashtag.js.map
+//# sourceMappingURL=Hashtag.js.map

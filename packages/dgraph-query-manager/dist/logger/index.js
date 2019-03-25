@@ -22,4 +22,4 @@ if (process.env.NODE_ENV !== 'production') {
 }
 exports.default = exports.logger;
 
-//# sourceMappingURL=../maps/logger/index.js.map
+//# sourceMappingURL=index.js.map

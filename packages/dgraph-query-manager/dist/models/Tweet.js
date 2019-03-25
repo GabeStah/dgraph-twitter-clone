@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // Lib
 const faker = require("faker");
-const twitter = require("twitter-text/dist");
+const twitter = require("twitter-text");
 // Local
 const config_1 = require("../config");
 const models_1 = require("../models");
@@ -102,8 +102,8 @@ class Tweet extends models_1.BaseModel {
             'tweet.favoriteCount': faker.random.number(),
             'tweet.favorited': faker.random.boolean(),
             // 'tweet.hashtag'?: [Hashtag];
-            'tweet.inReplyToStatusId': new models_1.Uid(123),
-            'tweet.inReplyToUserId': new models_1.Uid(456),
+            // 'tweet.inReplyToStatusId': new Uid(123),
+            // 'tweet.inReplyToUserId': new Uid(456),
             'tweet.isQuoteStatus': faker.random.boolean(),
             // 'tweet.quotedStatus'?: Tweet,
             'tweet.retweetCount': faker.random.number(),
@@ -185,4 +185,4 @@ class Tweet extends models_1.BaseModel {
 }
 exports.Tweet = Tweet;
 
-//# sourceMappingURL=../maps/models/Tweet.js.map
+//# sourceMappingURL=Tweet.js.map
