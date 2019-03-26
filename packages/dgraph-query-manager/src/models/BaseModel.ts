@@ -1,21 +1,8 @@
 // tslint:disable:no-null-keyword
 import logger from '../logger';
-import { 
-    DgraphAdapterHttp as DgraphAdapter, 
-    MutationTypes 
-} from '../adapters';
-import { 
-    DgraphQueryExecutor, 
-    Queries, 
-    Serialization 
-} from '../classes';
-import { 
-    Hashtag, 
-    Tweet, 
-    Uid, 
-    UidParamsType, 
-    User 
-} from '../models';
+import { DgraphAdapterHttp as DgraphAdapter, MutationTypes } from '../adapters';
+import { DgraphQueryExecutor, Queries, Serialization } from '../classes';
+import { Hashtag, Tweet, Uid, UidParamsType, User } from '../models';
 
 /**
  * All - Deletes the node and all child nodes.

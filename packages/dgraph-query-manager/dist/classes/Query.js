@@ -87,8 +87,6 @@ class Query {
                             // Checks that constructor type of parameter matches paramType.
                             if (this.params[paramType.key].constructor.name !==
                                 paramType.type.constructor.name) {
-                                console.log(this.params);
-                                console.log(paramTypes);
                                 logger_1.default.error(`Param for key of (${paramType.key}) must match constructor paramType of (${paramType.type.constructor.name}).`);
                                 return false;
                             }

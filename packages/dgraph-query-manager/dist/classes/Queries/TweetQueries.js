@@ -28,6 +28,7 @@ exports.TweetQueries = {
           uid
           expand(_all_) {
             uid
+            expand(_all_)
           }
         }
       }

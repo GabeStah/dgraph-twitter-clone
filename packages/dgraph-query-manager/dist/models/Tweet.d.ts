@@ -2,14 +2,14 @@ import { BaseModel, BaseModelInterface, Hashtag, Uid, User } from '../models';
 export interface TweetInterface extends BaseModelInterface {
   'tweet.createdAt': Date | string;
   'tweet.favoriteCount'?: number;
-  'tweet.favorited': false;
+  'tweet.favorited': boolean;
   'tweet.hashtag'?: Hashtag[];
   'tweet.inReplyToStatusId'?: Uid;
   'tweet.inReplyToUserId'?: Uid;
-  'tweet.isQuoteStatus': false;
+  'tweet.isQuoteStatus': boolean;
   'tweet.quotedStatus'?: Tweet;
   'tweet.retweetCount'?: number;
-  'tweet.retweeted': false;
+  'tweet.retweeted': boolean;
   'tweet.text': string;
   'tweet.user': User;
 }
@@ -33,7 +33,7 @@ export declare class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * Indicates whether this Tweet has been favorited by the authenticating user.
    * @type {boolean}
    */
-  'tweet.favorited': false;
+  'tweet.favorited': boolean;
   /**
    * If the represented Tweet is a reply, this field will contain the integer representation of the original Tweet’s ID.
    * @type {?Uid}
@@ -48,7 +48,7 @@ export declare class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * Indicates whether this is a Quoted Tweet.
    * @type {boolean}
    */
-  'tweet.isQuoteStatus': false;
+  'tweet.isQuoteStatus': boolean;
   /**
    * Quoted Tweet, if applicable.
    * @type {?Tweet}
@@ -63,7 +63,7 @@ export declare class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * Indicates whether this Tweet has been liked by the authenticating user.
    * @type {boolean}
    */
-  'tweet.retweeted': false;
+  'tweet.retweeted': boolean;
   /**
    * The actual UTF-8 text of the status upsert.
    * @type {string}

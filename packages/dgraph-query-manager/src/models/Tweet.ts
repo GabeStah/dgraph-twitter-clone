@@ -1,26 +1,22 @@
 // Lib
-import * as faker from 'faker';    
+import * as faker from 'faker';
 import * as twitter from 'twitter-text';
 // Local
 import config from '../config';
-import { 
-    BaseModel, 
-    BaseModelInterface,
-    Hashtag,
-    Uid,
-    User } from '../models';
+import { BaseModel, BaseModelInterface, Hashtag, Uid, User } from '../models';
+import logger from '../logger';
 
 export interface TweetInterface extends BaseModelInterface {
   'tweet.createdAt': Date | string;
   'tweet.favoriteCount'?: number;
-  'tweet.favorited': false;
+  'tweet.favorited': boolean;
   'tweet.hashtag'?: Hashtag[];
   'tweet.inReplyToStatusId'?: Uid;
   'tweet.inReplyToUserId'?: Uid;
-  'tweet.isQuoteStatus': false;
+  'tweet.isQuoteStatus': boolean;
   'tweet.quotedStatus'?: Tweet;
   'tweet.retweetCount'?: number;
-  'tweet.retweeted': false;
+  'tweet.retweeted': boolean;
   'tweet.text': string;
   'tweet.user': User;
 }
@@ -48,7 +44,7 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * Indicates whether this Tweet has been favorited by the authenticating user.
    * @type {boolean}
    */
-  'tweet.favorited': false;
+  'tweet.favorited' = false;
 
   /**
    * If the represented Tweet is a reply, this field will contain the integer representation of the original Tweet’s ID.
@@ -66,7 +62,7 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * Indicates whether this is a Quoted Tweet.
    * @type {boolean}
    */
-  'tweet.isQuoteStatus': false;
+  'tweet.isQuoteStatus' = false;
 
   /**
    * Quoted Tweet, if applicable.
@@ -84,7 +80,7 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * Indicates whether this Tweet has been liked by the authenticating user.
    * @type {boolean}
    */
-  'tweet.retweeted': false;
+  'tweet.retweeted' = false;
 
   /**
    * The actual UTF-8 text of the status upsert.
@@ -261,14 +257,17 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
   static async loadChildren(
     params: Partial<Tweet> = {}
   ): Promise<Partial<Tweet>> {
-    // Parse hashtags
-    params = this.extractHashtags(params);
-    // Create Hashtags
-    const hashtags = params['tweet.hashtag'];
-    if (hashtags && Array.isArray(hashtags) && hashtags.length > 0) {
-      params['tweet.hashtag'] = (await Hashtag.createMany(
-        hashtags
-      )) as Hashtag[];
+    // Only create Hashtags if no Hashtags exist
+    if (!params['tweet.hashtag'] || params['tweet.hashtag'].length === 0) {
+      // Parse hashtags
+      params = this.extractHashtags(params);
+      // Create Hashtags
+      const hashtags = params['tweet.hashtag'];
+      if (hashtags && Array.isArray(hashtags) && hashtags.length > 0) {
+        params['tweet.hashtag'] = (await Hashtag.createMany(
+          hashtags
+        )) as Hashtag[];
+      }
     }
     // Create User
     const user = params['tweet.user'];

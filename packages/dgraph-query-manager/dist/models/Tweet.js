@@ -20,10 +20,25 @@ class Tweet extends models_1.BaseModel {
          */
         this['tweet.favoriteCount'] = 0;
         /**
+         * Indicates whether this Tweet has been favorited by the authenticating user.
+         * @type {boolean}
+         */
+        this['tweet.favorited'] = false;
+        /**
+         * Indicates whether this is a Quoted Tweet.
+         * @type {boolean}
+         */
+        this['tweet.isQuoteStatus'] = false;
+        /**
          * Number of times this Tweet has been retweeted.
          * @type {number}
          */
         this['tweet.retweetCount'] = 0;
+        /**
+         * Indicates whether this Tweet has been liked by the authenticating user.
+         * @type {boolean}
+         */
+        this['tweet.retweeted'] = false;
         // Override defaults
         Object.assign(this, Tweet.deserialize(params));
     }
@@ -168,12 +183,15 @@ class Tweet extends models_1.BaseModel {
      * @returns {Promise<Partial<Tweet>>}
      */
     static async loadChildren(params = {}) {
-        // Parse hashtags
-        params = this.extractHashtags(params);
-        // Create Hashtags
-        const hashtags = params['tweet.hashtag'];
-        if (hashtags && Array.isArray(hashtags) && hashtags.length > 0) {
-            params['tweet.hashtag'] = (await models_1.Hashtag.createMany(hashtags));
+        // Only create Hashtags if no Hashtags exist
+        if (!params['tweet.hashtag'] || params['tweet.hashtag'].length === 0) {
+            // Parse hashtags
+            params = this.extractHashtags(params);
+            // Create Hashtags
+            const hashtags = params['tweet.hashtag'];
+            if (hashtags && Array.isArray(hashtags) && hashtags.length > 0) {
+                params['tweet.hashtag'] = (await models_1.Hashtag.createMany(hashtags));
+            }
         }
         // Create User
         const user = params['tweet.user'];

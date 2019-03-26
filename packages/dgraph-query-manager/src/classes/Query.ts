@@ -114,8 +114,6 @@ export class Query implements QueryInterface {
                 this.params[paramType.key].constructor.name !==
                 paramType.type.constructor.name
               ) {
-                console.log(this.params);
-                console.log(paramTypes);
                 logger.error(
                   `Param for key of (${
                     paramType.key
