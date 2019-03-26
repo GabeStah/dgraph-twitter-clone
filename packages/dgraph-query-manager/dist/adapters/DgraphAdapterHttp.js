@@ -61,10 +61,7 @@ class DgraphAdapterHttp {
         const copy = obj;
         if (Array.isArray(obj)) {
             obj.forEach((value, key) => {
-                if (Array.isArray(value) && value.length === 1) {
-                    // Set keyvalue to first (and only) array value.
-                    copy[key] = DgraphAdapterHttp.flattenArrays(value[0]);
-                }
+                copy[key] = DgraphAdapterHttp.flattenArrays(value);
             });
         }
         else {
@@ -114,9 +111,7 @@ class DgraphAdapterHttp {
         }
         const transaction = this.client.newTxn();
         const uids = [];
-        logger_1.default.debug('----------');
         logger_1.default.debug('DgraphAdapterHttp.mutate, payload: %o', serialization);
-        logger_1.default.debug('----------');
         try {
             const payload = {};
             payload.commitNow = commitNow;

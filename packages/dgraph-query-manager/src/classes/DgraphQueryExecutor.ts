@@ -1,4 +1,7 @@
-import { DgraphAdapterHttp as DgraphAdapter } from '../adapters';
+import {
+  DgraphAdapterHttp,
+  DgraphAdapterHttp as DgraphAdapter
+} from '../adapters';
 import { Serialization } from '../classes';
 import { Query } from './Query';
 import logger from '../logger';
@@ -62,7 +65,8 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
         }
       }
       serialization.message = `No ${this.query.objectType} found.`;
-      serialization.response = tempResponse;
+      // Flatten arrays
+      serialization.response = DgraphAdapterHttp.flattenArrays(tempResponse);
       if (
         !Array.isArray(serialization.response) ||
         (Array.isArray(serialization.response) &&

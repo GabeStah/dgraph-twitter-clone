@@ -21,9 +21,9 @@ class User extends models_1.BaseModel {
      * @param params
      */
     static deserialize(params = {}) {
-        params = super.deserialize(params);
         if (params['user.createdAt'])
             params['user.createdAt'] = new Date(params['user.createdAt']);
+        params = super.deserialize(params);
         return params;
     }
     /**

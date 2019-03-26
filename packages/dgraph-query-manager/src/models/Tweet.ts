@@ -4,7 +4,6 @@ import * as twitter from 'twitter-text';
 // Local
 import config from '../config';
 import { BaseModel, BaseModelInterface, Hashtag, Uid, User } from '../models';
-import logger from '../logger';
 
 export interface TweetInterface extends BaseModelInterface {
   'tweet.createdAt': Date | string;
@@ -106,7 +105,6 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * @returns {Promise<Partial<Tweet>>}
    */
   static deserialize<Tweet>(params: Partial<Tweet | any> = {}): Partial<Tweet> {
-    params = super.deserialize(params);
     // Dates
     if (params['tweet.createdAt'])
       params['tweet.createdAt'] = new Date(params['tweet.createdAt']);
@@ -133,6 +131,8 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
       params['tweet.inReplyToUserId'] = new Uid(
         params['tweet.inReplyToUserId']
       );
+
+    params = super.deserialize(params);
     return params;
   }
 

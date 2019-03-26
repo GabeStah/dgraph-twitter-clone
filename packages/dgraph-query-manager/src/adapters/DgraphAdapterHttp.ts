@@ -2,7 +2,7 @@
 import { DgraphClient, DgraphClientStub } from 'dgraph-js-http';
 // Local
 import config from '../config';
-import logger from '../logger'
+import logger from '../logger';
 import { MutationTypes } from './MutationTypes';
 import { Serialization } from '../classes';
 
@@ -74,10 +74,7 @@ export class DgraphAdapterHttp {
     const copy: any = obj;
     if (Array.isArray(obj)) {
       obj.forEach((value, key) => {
-        if (Array.isArray(value) && value.length === 1) {
-          // Set keyvalue to first (and only) array value.
-          copy[key] = DgraphAdapterHttp.flattenArrays(value[0]);
-        }
+        copy[key] = DgraphAdapterHttp.flattenArrays(value);
       });
     } else {
       for (const key in obj) {
@@ -135,9 +132,7 @@ export class DgraphAdapterHttp {
     }
     const transaction = this.client.newTxn();
     const uids: string[] = [];
-    logger.debug('----------');
     logger.debug('DgraphAdapterHttp.mutate, payload: %o', serialization);
-    logger.debug('----------');
     try {
       const payload: any = {};
       payload.commitNow = commitNow;

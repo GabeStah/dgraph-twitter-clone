@@ -48,7 +48,6 @@ class Tweet extends models_1.BaseModel {
      * @returns {Promise<Partial<Tweet>>}
      */
     static deserialize(params = {}) {
-        params = super.deserialize(params);
         // Dates
         if (params['tweet.createdAt'])
             params['tweet.createdAt'] = new Date(params['tweet.createdAt']);
@@ -70,6 +69,7 @@ class Tweet extends models_1.BaseModel {
             params['tweet.inReplyToStatusId'] = new models_1.Uid(params['tweet.inReplyToStatusId']);
         if (params['tweet.inReplyToUserId'])
             params['tweet.inReplyToUserId'] = new models_1.Uid(params['tweet.inReplyToUserId']);
+        params = super.deserialize(params);
         return params;
     }
     /**

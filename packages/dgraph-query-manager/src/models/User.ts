@@ -96,9 +96,9 @@ export class User extends BaseModel<User> implements UserInterface {
    * @param params
    */
   static deserialize<User>(params: Partial<User | any> = {}): Partial<User> {
-    params = super.deserialize(params);
     if (params['user.createdAt'])
       params['user.createdAt'] = new Date(params['user.createdAt']);
+    params = super.deserialize(params);
     return params;
   }
 

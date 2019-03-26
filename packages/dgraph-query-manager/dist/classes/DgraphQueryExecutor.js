@@ -44,7 +44,8 @@ class DgraphQueryExecutor {
                 }
             }
             serialization.message = `No ${this.query.objectType} found.`;
-            serialization.response = tempResponse;
+            // Flatten arrays
+            serialization.response = adapters_1.DgraphAdapterHttp.flattenArrays(tempResponse);
             if (!Array.isArray(serialization.response) ||
                 (Array.isArray(serialization.response) &&
                     serialization.response.length > 0)) {
