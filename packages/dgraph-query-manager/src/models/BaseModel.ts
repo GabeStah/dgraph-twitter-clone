@@ -540,14 +540,6 @@ export class BaseModel<T> implements BaseModelInterface {
   }
 
   /**
-   * TODO: Convert instance to query.
-   * @returns {string}
-   */
-  toQuery(): string {
-    return '';
-  }
-
-  /**
    * Create database node of instance if matching Uid doesn't exist.
    * If Uid exists, update node instead.
    * @param {Partial<T>} params

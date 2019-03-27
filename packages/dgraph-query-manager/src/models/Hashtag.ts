@@ -27,7 +27,6 @@ export class Hashtag extends BaseModel<Hashtag> implements HashtagInterface {
    */
   'hashtag.tweet': Tweet;
 
-  // TODO: Factory inverse generate database instances for BaseModel classes without uid
   constructor(params: Partial<Hashtag> = {}) {
     super(params);
     // Override defaults

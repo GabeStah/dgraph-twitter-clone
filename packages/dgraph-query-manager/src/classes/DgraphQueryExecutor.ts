@@ -85,7 +85,7 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
    * @param request
    */
   async executeApiRequest(): Promise<Serialization> {
-    let response = new Serialization({
+    const response = new Serialization({
       message: `Failed to retrieve ${
         this.query.objectType
       } via direct request.`,
