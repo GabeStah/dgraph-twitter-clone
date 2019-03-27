@@ -77,13 +77,22 @@ export declare class User extends BaseModel<User> implements UserInterface {
   /**
    * Generates a User instance for testing.
    * @param seed
+   * @param params
    */
-  static generate(seed?: number): User;
+  static generate(seed?: number, params?: Partial<User>): User;
   /**
    * Generates a mockup User object for testing.
    * @param seed
+   * @param params
    */
-  static generateFakeParams(seed?: number): Partial<User>;
+  static generateFakeParams(
+    seed?: number,
+    params?: Partial<User>
+  ): Partial<User>;
+  /**
+   * Generates a valid random username.
+   */
+  private static generateValidUsername;
   /**
    * Performs all steps of async User creation.
    * @param {Partial<User>} params

@@ -105,30 +105,51 @@ export class User extends BaseModel<User> implements UserInterface {
   /**
    * Generates a User instance for testing.
    * @param seed
+   * @param params
    */
-  static generate(seed: number = config.faker.seed): User {
-    return new User(this.generateFakeParams(seed));
+  static generate(
+    seed: number = config.faker.seed,
+    params?: Partial<User>
+  ): User {
+    return new User(this.generateFakeParams(seed, params));
   }
 
   /**
    * Generates a mockup User object for testing.
    * @param seed
+   * @param params
    */
-  static generateFakeParams(seed: number = config.faker.seed): Partial<User> {
+  static generateFakeParams(
+    seed: number = config.faker.seed,
+    params?: Partial<User>
+  ): Partial<User> {
     // Set seed base.
     faker.seed(seed);
+    const max = 1000;
     return {
       'user.description': faker.lorem.paragraph(),
       'user.email': faker.internet.exampleEmail(),
-      'user.favouritesCount': faker.random.number(),
-      'user.followersCount': faker.random.number(),
-      'user.friendsCount': faker.random.number(),
-      'user.listedCount': faker.random.number(),
+      'user.favouritesCount': faker.random.number(max),
+      'user.followersCount': faker.random.number(max),
+      'user.friendsCount': faker.random.number(max),
+      'user.listedCount': faker.random.number(max),
       'user.location': faker.fake('{{address.city}}, {{address.country}}'),
       'user.name': faker.name.findName(),
-      'user.screenName': faker.internet.userName(),
-      'user.url': faker.internet.url()
+      'user.screenName': User.generateValidUsername(),
+      'user.url': faker.internet.url(),
+      ...params
     };
+  }
+
+  /**
+   * Generates a valid random username.
+   */
+  private static generateValidUsername() {
+    let name: string = faker.internet.userName();
+    if (name.includes('.')) {
+      name = User.generateValidUsername();
+    }
+    return name;
   }
 
   /**

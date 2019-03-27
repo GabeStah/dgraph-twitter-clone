@@ -1,9 +1,4 @@
-import { 
-    BaseModel, 
-    BaseModelInterface, 
-    Tweet, 
-    Uid 
-} from '../models';
+import { BaseModel, BaseModelInterface, Tweet, Uid } from '../models';
 
 export interface HashtagInterface extends BaseModelInterface {
   'hashtag.hashtag': string;

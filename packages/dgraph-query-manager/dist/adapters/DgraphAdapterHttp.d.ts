@@ -36,10 +36,9 @@ export declare class DgraphAdapterHttp {
   static flattenArraysInObject(obj: any): any;
   /**
    * Execute a database mutation using passed payload object or BaseModel<T> instance.
-   * @param {any | BaseModel<T>} serialization
+   * @param {Serialization} serialization
    * @param {MutationTypes} mutationType
    * @param {boolean} commitNow
-   * @param {boolean} ignoreIndexConflict
    * @returns {Promise<Partial<T>>}
    */
   mutate<T>(

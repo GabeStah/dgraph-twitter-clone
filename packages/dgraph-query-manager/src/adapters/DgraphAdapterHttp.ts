@@ -112,10 +112,9 @@ export class DgraphAdapterHttp {
 
   /**
    * Execute a database mutation using passed payload object or BaseModel<T> instance.
-   * @param {any | BaseModel<T>} serialization
+   * @param {Serialization} serialization
    * @param {MutationTypes} mutationType
    * @param {boolean} commitNow
-   * @param {boolean} ignoreIndexConflict
    * @returns {Promise<Partial<T>>}
    */
   async mutate<T>(

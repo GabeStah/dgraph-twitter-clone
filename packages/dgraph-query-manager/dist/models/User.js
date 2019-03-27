@@ -29,29 +29,31 @@ class User extends models_1.BaseModel {
     /**
      * Generates a User instance for testing.
      * @param seed
+     * @param params
      */
-    static generate(seed = config_1.default.faker.seed) {
-        return new User(this.generateFakeParams(seed));
+    static generate(seed = config_1.default.faker.seed, params) {
+        return new User(this.generateFakeParams(seed, params));
     }
     /**
      * Generates a mockup User object for testing.
      * @param seed
+     * @param params
      */
-    static generateFakeParams(seed = config_1.default.faker.seed) {
+    static generateFakeParams(seed = config_1.default.faker.seed, params) {
         // Set seed base.
         faker.seed(seed);
-        return {
-            'user.description': faker.lorem.paragraph(),
-            'user.email': faker.internet.exampleEmail(),
-            'user.favouritesCount': faker.random.number(),
-            'user.followersCount': faker.random.number(),
-            'user.friendsCount': faker.random.number(),
-            'user.listedCount': faker.random.number(),
-            'user.location': faker.fake('{{address.city}}, {{address.country}}'),
-            'user.name': faker.name.findName(),
-            'user.screenName': faker.internet.userName(),
-            'user.url': faker.internet.url()
-        };
+        const max = 1000;
+        return Object.assign({ 'user.description': faker.lorem.paragraph(), 'user.email': faker.internet.exampleEmail(), 'user.favouritesCount': faker.random.number(max), 'user.followersCount': faker.random.number(max), 'user.friendsCount': faker.random.number(max), 'user.listedCount': faker.random.number(max), 'user.location': faker.fake('{{address.city}}, {{address.country}}'), 'user.name': faker.name.findName(), 'user.screenName': User.generateValidUsername(), 'user.url': faker.internet.url() }, params);
+    }
+    /**
+     * Generates a valid random username.
+     */
+    static generateValidUsername() {
+        let name = faker.internet.userName();
+        if (name.includes('.')) {
+            name = User.generateValidUsername();
+        }
+        return name;
     }
     /**
      * Performs all steps of async User creation.

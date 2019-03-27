@@ -57,10 +57,10 @@ export class BaseModel<T> implements BaseModelInterface {
     return new Promise((resolve, reject) => {
       this.load(params)
         .then(processed => {
-          logger.info(
-            `${className}.create.load.then fulfilled, processed: %o`,
-            processed
-          );
+          // logger.info(
+          //   `${className}.create.load.then fulfilled, processed: %o`,
+          //   processed
+          // );
           serialization.response = new this(processed);
           serialization.success = true;
           resolve(serialization);

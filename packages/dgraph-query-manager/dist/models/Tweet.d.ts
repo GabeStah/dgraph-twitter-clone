@@ -13,6 +13,13 @@ export interface TweetInterface extends BaseModelInterface {
   'tweet.text': string;
   'tweet.user': User;
 }
+export declare enum FakerTweetTypes {
+  COMPANY_BS = 0,
+  COMPANY_CATCH_PHRASE = 1,
+  HACKER = 2,
+  WORDS = 3,
+  LOREM = 4
+}
 export declare class Tweet extends BaseModel<Tweet> implements TweetInterface {
   /**
    * UTC time when this Tweet was created.
@@ -90,20 +97,52 @@ export declare class Tweet extends BaseModel<Tweet> implements TweetInterface {
   /**
    * Generates a Tweet instance for testing.
    * @param {number} seed
+   * @param params
+   * @param mention
    * @returns {Tweet}
    */
-  static generate(seed?: number): Tweet;
+  static generate(
+    seed?: number,
+    params?: Partial<User>,
+    mention?: User | User[]
+  ): Tweet;
   /**
    * Generates a mockup Tweet object for testing.
    * @param {number} seed
+   * @param params
+   * @param mention
    * @returns {Partial<Tweet>}
    */
-  static generateFakeParams(seed?: number): Partial<Tweet>;
+  static generateFakeParams(
+    seed?: number,
+    params?: Partial<User>,
+    mention?: User | User[]
+  ): Partial<Tweet>;
+  /**
+   * Generates random tweet text.
+   * @param seed
+   * @param mention
+   */
+  static generateRandomTweetText(
+    seed?: number,
+    mention?: User | User[]
+  ): string;
   /**
    * Generates hashtags from passed text field or 'tweet.text' property, using twitter-text lib.
    * @param text
    */
   getHashtags(text: string): any;
+  /**
+   * Generates a random string suitable for a Tweet text field.
+   * @param word
+   * @param hashtag
+   * @param mention
+   */
+  static getValidTweetString(
+    word: string | string[],
+    hashtag?: number | string | string[],
+    mention?: User | User[]
+  ): string;
   /**
    * Performs all steps of async Tweet creation.
    * @param {Partial<Tweet>} params

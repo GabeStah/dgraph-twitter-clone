@@ -6,6 +6,15 @@ const twitter = require("twitter-text");
 // Local
 const config_1 = require("../config");
 const models_1 = require("../models");
+const utility_1 = require("../helpers/utility");
+var FakerTweetTypes;
+(function (FakerTweetTypes) {
+    FakerTweetTypes[FakerTweetTypes["COMPANY_BS"] = 0] = "COMPANY_BS";
+    FakerTweetTypes[FakerTweetTypes["COMPANY_CATCH_PHRASE"] = 1] = "COMPANY_CATCH_PHRASE";
+    FakerTweetTypes[FakerTweetTypes["HACKER"] = 2] = "HACKER";
+    FakerTweetTypes[FakerTweetTypes["WORDS"] = 3] = "WORDS";
+    FakerTweetTypes[FakerTweetTypes["LOREM"] = 4] = "LOREM";
+})(FakerTweetTypes = exports.FakerTweetTypes || (exports.FakerTweetTypes = {}));
 class Tweet extends models_1.BaseModel {
     constructor(params = {}) {
         super(params);
@@ -100,35 +109,77 @@ class Tweet extends models_1.BaseModel {
     /**
      * Generates a Tweet instance for testing.
      * @param {number} seed
+     * @param params
+     * @param mention
      * @returns {Tweet}
      */
-    static generate(seed = config_1.default.faker.seed) {
-        return new Tweet(this.generateFakeParams(seed));
+    static generate(seed = config_1.default.faker.seed, params, mention) {
+        return new Tweet(this.generateFakeParams(seed, params, mention));
     }
     /**
      * Generates a mockup Tweet object for testing.
      * @param {number} seed
+     * @param params
+     * @param mention
      * @returns {Partial<Tweet>}
      */
-    static generateFakeParams(seed = config_1.default.faker.seed) {
+    static generateFakeParams(seed = config_1.default.faker.seed, params, mention) {
         // Set seed base.
         faker.seed(seed);
-        return {
-            'tweet.favoriteCount': faker.random.number(),
-            'tweet.favorited': faker.random.boolean(),
+        const max = 500;
+        return Object.assign({ 'tweet.favoriteCount': faker.random.number(max), 'tweet.favorited': faker.random.boolean(), 
             // 'tweet.hashtag'?: [Hashtag];
             // 'tweet.inReplyToStatusId': new Uid(123),
             // 'tweet.inReplyToUserId': new Uid(456),
-            'tweet.isQuoteStatus': faker.random.boolean(),
+            'tweet.isQuoteStatus': faker.random.boolean(), 
             // 'tweet.quotedStatus'?: Tweet,
-            'tweet.retweetCount': faker.random.number(),
-            'tweet.retweeted': faker.random.boolean(),
-            'tweet.text': faker.lorem.sentence(),
+            'tweet.retweetCount': faker.random.number(max), 'tweet.retweeted': faker.random.boolean(), 'tweet.text': this.generateRandomTweetText(seed, mention), 
             // 'tweet.user':               new User({
             //     uid: new Uid(678)
             // }),
-            'tweet.user': models_1.User.generate()
-        };
+            'tweet.user': models_1.User.generate() }, params);
+    }
+    /**
+     * Generates random tweet text.
+     * @param seed
+     * @param mention
+     */
+    static generateRandomTweetText(seed = config_1.default.faker.seed, mention) {
+        const type = utility_1.getRandomEnumElement(FakerTweetTypes);
+        let result;
+        switch (type) {
+            case FakerTweetTypes.COMPANY_BS:
+                result = Tweet.getValidTweetString([
+                    faker.company.bsAdjective(),
+                    faker.company.bsBuzz(),
+                    faker.company.bsNoun()
+                ], [
+                    faker.company.catchPhraseAdjective(),
+                    faker.company.catchPhraseAdjective()
+                ], mention);
+                return result;
+            case FakerTweetTypes.COMPANY_CATCH_PHRASE:
+                result = Tweet.getValidTweetString([
+                    faker.company.catchPhraseAdjective(),
+                    faker.company.catchPhraseDescriptor(),
+                    faker.company.catchPhraseNoun()
+                ], [faker.company.bsAdjective(), faker.company.bsAdjective()], mention);
+                return result;
+            case FakerTweetTypes.HACKER:
+                result = Tweet.getValidTweetString(faker.hacker.phrase(), [faker.hacker.ingverb(), faker.hacker.adjective()], mention);
+                return result;
+            case FakerTweetTypes.LOREM:
+                result = Tweet.getValidTweetString(faker.lorem.sentence(), [faker.company.bsAdjective(), faker.lorem.word()], mention);
+                return result;
+            case FakerTweetTypes.WORDS:
+                result = Tweet.getValidTweetString([
+                    faker.random.word(),
+                    faker.random.word(),
+                    faker.random.word(),
+                    faker.random.word()
+                ], [faker.random.word(), faker.random.word()], mention);
+                return result;
+        }
     }
     /**
      * Generates hashtags from passed text field or 'tweet.text' property, using twitter-text lib.
@@ -136,6 +187,47 @@ class Tweet extends models_1.BaseModel {
      */
     getHashtags(text) {
         return twitter.extractHashtagsWithIndices(text ? text : this['tweet.text']);
+    }
+    /**
+     * Generates a random string suitable for a Tweet text field.
+     * @param word
+     * @param hashtag
+     * @param mention
+     */
+    static getValidTweetString(word, hashtag, mention) {
+        const result = [];
+        if (mention) {
+            if (mention instanceof Array && mention.length > 0) {
+                result.push(mention.map(user => `@${user['user.screenName']}`).join(' '));
+            }
+            else if (mention instanceof models_1.User) {
+                result.push(`@${mention['user.screenName']}`);
+            }
+        }
+        if (Array.isArray(word) && word.length > 0) {
+            result.push(word.join(' '));
+        }
+        else if (typeof word === 'string') {
+            result.push(word);
+        }
+        if (hashtag) {
+            if (typeof hashtag === 'number') {
+                const tempTags = [];
+                // Generate number of hashtags
+                for (let count = 0; count <= hashtag; count++) {
+                    tempTags.push(`#${faker.company.bsAdjective}`);
+                }
+                // Join with space delimiter.
+                result.push(tempTags.join(' '));
+            }
+            else if (Array.isArray(hashtag) && hashtag.length > 0) {
+                result.push(hashtag.map(tag => `#${tag}`).join(' '));
+            }
+            else if (typeof hashtag === 'string') {
+                result.push(`#${hashtag}`);
+            }
+        }
+        return result.join(' ');
     }
     /**
      * Performs all steps of async Tweet creation.
