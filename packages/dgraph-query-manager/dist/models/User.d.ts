@@ -1,5 +1,6 @@
 import { BaseModel, BaseModelInterface } from '../models';
 export interface UserInterface extends BaseModelInterface {
+  'user.avatar': string;
   'user.createdAt': Date | string;
   'user.description'?: string;
   'user.email': string;
@@ -13,6 +14,11 @@ export interface UserInterface extends BaseModelInterface {
   'user.url'?: string;
 }
 export declare class User extends BaseModel<User> implements UserInterface {
+  /**
+   * User avatar url.
+   * @type{string}
+   */
+  'user.avatar': string;
   /**
    * UTC time when this User was created.
    * @type {Date}

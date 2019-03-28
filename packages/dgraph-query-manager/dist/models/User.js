@@ -45,6 +45,7 @@ class User extends models_1.BaseModel {
     const max = 1000;
     return Object.assign(
       {
+        'user.avatar': faker.image.avatar(),
         'user.description': faker.lorem.paragraph(),
         'user.email': faker.internet.exampleEmail(),
         'user.favouritesCount': faker.random.number(max),

@@ -5,6 +5,7 @@ import config from '../config';
 import { BaseModel, BaseModelInterface, Uid } from '../models';
 
 export interface UserInterface extends BaseModelInterface {
+  'user.avatar': string;
   'user.createdAt': Date | string;
   'user.description'?: string;
   'user.email': string;
@@ -19,6 +20,12 @@ export interface UserInterface extends BaseModelInterface {
 }
 
 export class User extends BaseModel<User> implements UserInterface {
+  /**
+   * User avatar url.
+   * @type{string}
+   */
+  'user.avatar': string;
+
   /**
    * UTC time when this User was created.
    * @type {Date}
@@ -127,6 +134,7 @@ export class User extends BaseModel<User> implements UserInterface {
     faker.seed(seed);
     const max = 1000;
     return {
+      'user.avatar': faker.image.avatar(),
       'user.description': faker.lorem.paragraph(),
       'user.email': faker.internet.exampleEmail(),
       'user.favouritesCount': faker.random.number(max),
