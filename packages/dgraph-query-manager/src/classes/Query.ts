@@ -7,7 +7,7 @@ export interface QueryInterface {
   paramTypes?: ParamType<any>[];
   query: string;
   route: string;
-  tree?: string[];
+  tree: string[][];
 }
 
 /**
@@ -37,7 +37,7 @@ export class Query implements QueryInterface {
   paramTypes?: ParamType<any>[];
   query: string;
   route: string;
-  tree?: string[];
+  tree: string[][] = [];
 
   /**
    * @param query - Query string.
@@ -49,7 +49,7 @@ export class Query implements QueryInterface {
     query: string,
     route: string,
     paramTypes?: ParamType<any>[],
-    tree?: string
+    tree?: string | string[]
   ) {
     this.paramTypes = paramTypes;
     this.parseTree(tree);
@@ -70,9 +70,15 @@ export class Query implements QueryInterface {
    * Splits the passed period-delimited tree string into array.
    * @param tree
    */
-  private parseTree(tree?: string) {
+  private parseTree(tree?: string | string[]) {
     if (!tree) return;
-    this.tree = tree.split('.');
+    if (tree instanceof Array) {
+      for (const element of tree) {
+        this.tree.push(element.split('.'));
+      }
+    } else if (typeof tree === 'string') {
+      this.tree.push(tree.split('.'));
+    }
   }
 
   /**
@@ -91,10 +97,33 @@ export class Query implements QueryInterface {
   }
 
   /**
+   * Injects custom params into query strings.  Useful for 'building' queries at runtime.
+   * @param params
+   */
+  injectCustomParams(params?: object) {
+    this.params = params ? params : this.params;
+
+    // Get all paramTypes that require substitution.
+    const subParamTypes: ParamType<any>[] = this.paramTypes
+      ? this.paramTypes.filter(paramType => paramType.isSubstitution === true)
+      : [];
+
+    subParamTypes.forEach(paramType => {
+      // Replace key value in param with param value.
+      this.query = this.query.replace(
+        paramType.key,
+        this.params[paramType.key]
+      );
+      // Remove from params prior to Dgraph mutation submission.
+      delete this.params[paramType.key];
+    });
+  }
+
+  /**
    * Validates passed params with specified paramTypes, if applicable.
    * @param params
    */
-  validateParams(params: object | undefined) {
+  validateParams(params?: object) {
     this.params = params ? params : this.params;
     const paramTypes = this.paramTypes;
     if (!this.params) {

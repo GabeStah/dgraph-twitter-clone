@@ -13,6 +13,7 @@ class Query {
    */
   constructor(query, route, paramTypes, tree) {
     this._params = {};
+    this.tree = [];
     this.paramTypes = paramTypes;
     this.parseTree(tree);
     this.query = query;
@@ -46,7 +47,13 @@ class Query {
    */
   parseTree(tree) {
     if (!tree) return;
-    this.tree = tree.split('.');
+    if (tree instanceof Array) {
+      for (const element of tree) {
+        this.tree.push(element.split('.'));
+      }
+    } else if (typeof tree === 'string') {
+      this.tree.push(tree.split('.'));
+    }
   }
   /**
    * Generates the proper URI from route and passed params.
@@ -61,6 +68,26 @@ class Query {
       });
     }
     return newUri;
+  }
+  /**
+   * Injects custom params into query strings.  Useful for 'building' queries at runtime.
+   * @param params
+   */
+  injectCustomParams(params) {
+    this.params = params ? params : this.params;
+    // Get all paramTypes that require substitution.
+    const subParamTypes = this.paramTypes
+      ? this.paramTypes.filter(paramType => paramType.isSubstitution === true)
+      : [];
+    subParamTypes.forEach(paramType => {
+      // Replace key value in param with param value.
+      this.query = this.query.replace(
+        paramType.key,
+        this.params[paramType.key]
+      );
+      // Remove from params prior to Dgraph mutation submission.
+      delete this.params[paramType.key];
+    });
   }
   /**
    * Validates passed params with specified paramTypes, if applicable.

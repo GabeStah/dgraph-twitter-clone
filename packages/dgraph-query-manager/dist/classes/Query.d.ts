@@ -5,7 +5,7 @@ export interface QueryInterface {
   paramTypes?: ParamType<any>[];
   query: string;
   route: string;
-  tree?: string[];
+  tree: string[][];
 }
 /**
  * Helper class for creating queries to be executed by Dgraph via dgraph-adapter.
@@ -18,7 +18,7 @@ export declare class Query implements QueryInterface {
   paramTypes?: ParamType<any>[];
   query: string;
   route: string;
-  tree?: string[];
+  tree: string[][];
   /**
    * @param query - Query string.
    * @param route - API route.
@@ -29,7 +29,7 @@ export declare class Query implements QueryInterface {
     query: string,
     route: string,
     paramTypes?: ParamType<any>[],
-    tree?: string
+    tree?: string | string[]
   );
   /**
    * Parses the route string and obtains assumed retrieved object type.
@@ -47,8 +47,13 @@ export declare class Query implements QueryInterface {
    */
   uri(params?: object): string | undefined;
   /**
+   * Injects custom params into query strings.  Useful for 'building' queries at runtime.
+   * @param params
+   */
+  injectCustomParams(params?: object): void;
+  /**
    * Validates passed params with specified paramTypes, if applicable.
    * @param params
    */
-  validateParams(params: object | undefined): boolean;
+  validateParams(params?: object): boolean;
 }

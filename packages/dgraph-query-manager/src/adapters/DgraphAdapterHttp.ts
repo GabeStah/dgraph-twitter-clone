@@ -71,8 +71,10 @@ export class DgraphAdapterHttp {
    * @returns {any}
    */
   static flattenArrays(obj: any) {
-    const copy: any = obj;
-    if (Array.isArray(obj)) {
+    let copy: any = obj;
+    if (Array.isArray(obj) && obj.length === 1) {
+      copy = DgraphAdapterHttp.flattenArrays(copy[0]);
+    } else if (Array.isArray(obj)) {
       obj.forEach((value, key) => {
         copy[key] = DgraphAdapterHttp.flattenArrays(value);
       });

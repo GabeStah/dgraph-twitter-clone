@@ -25,7 +25,9 @@ class DgraphQueryExecutor {
     this.params = params;
     this.query = query;
     this.request = request;
-    query.validateParams(params);
+    if (query.validateParams(params)) {
+      query.injectCustomParams(params);
+    }
   }
   /**
    * Execute Dgraph query based on instance properties and configuration.
@@ -41,18 +43,26 @@ class DgraphQueryExecutor {
       serialization = await this.executeDirectRequest(this.request);
     }
     // Assume singular array of 'data' if not included.
-    const tree = this.query.tree ? this.query.tree : ['data'];
+    const tree =
+      this.query.tree && this.query.tree.length > 0
+        ? this.query.tree
+        : new Array(['data']);
     if (serialization.response) {
-      let tempResponse = serialization.response;
+      let combinedResponse = [];
       for (const branch of tree) {
-        if (tempResponse[branch]) {
-          tempResponse = tempResponse[branch];
+        let branchResponse = serialization.response;
+        for (const stick of branch) {
+          if (branchResponse[stick]) {
+            branchResponse = branchResponse[stick];
+          }
         }
+        // Combines all previous arrays with new response array to generate full result set.
+        combinedResponse = combinedResponse.concat(branchResponse);
       }
       serialization.message = `No ${this.query.objectType} found.`;
       // Flatten arrays
       serialization.response = adapters_1.DgraphAdapterHttp.flattenArrays(
-        tempResponse
+        combinedResponse ? combinedResponse : serialization.response
       );
       if (
         !Array.isArray(serialization.response) ||
@@ -71,9 +81,7 @@ class DgraphQueryExecutor {
    */
   async executeApiRequest() {
     const response = new classes_1.Serialization({
-      message: `Failed to retrieve ${
-        this.query.objectType
-      } via direct request.`,
+      message: `Failed to retrieve ${this.query.objectType} via API request.`,
       request: this.query.query
     });
     // Get URL
@@ -105,7 +113,9 @@ class DgraphQueryExecutor {
   async executeDirectRequest(request) {
     const adapter = new adapters_1.DgraphAdapterHttp();
     let response = new classes_1.Serialization({
-      message: `Failed to retrieve ${this.query.objectType} via API request.`,
+      message: `Failed to retrieve ${
+        this.query.objectType
+      } via direct request.`,
       request: this.query.query
     });
     // Allow request to be optionally passed.
