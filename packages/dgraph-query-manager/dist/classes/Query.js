@@ -1,6 +1,13 @@
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 const logger_1 = require('../logger');
+var HttpMethods;
+(function(HttpMethods) {
+  HttpMethods[(HttpMethods['DELETE'] = 0)] = 'DELETE';
+  HttpMethods[(HttpMethods['GET'] = 1)] = 'GET';
+  HttpMethods[(HttpMethods['POST'] = 2)] = 'POST';
+  HttpMethods[(HttpMethods['PUT'] = 3)] = 'PUT';
+})((HttpMethods = exports.HttpMethods || (exports.HttpMethods = {})));
 /**
  * Helper class for creating queries to be executed by Dgraph via dgraph-adapter.
  */
@@ -10,14 +17,17 @@ class Query {
    * @param route - API route.
    * @param paramTypes? - Collection of valid parameter types.
    * @param tree? - Results tree definition.
+   * @param httpMethod
    */
-  constructor(query, route, paramTypes, tree) {
+  constructor(query, route, paramTypes, tree, httpMethod = HttpMethods.GET) {
     this._params = {};
+    this.httpMethod = HttpMethods.GET;
     this.tree = [];
     this.paramTypes = paramTypes;
     this.parseTree(tree);
     this.query = query;
     this.route = route;
+    this.httpMethod = httpMethod;
   }
   get objectType() {
     // Set initial value if not specified.

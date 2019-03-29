@@ -1,7 +1,16 @@
 import logger from '../logger';
 import { ParamType } from './ParamType';
+import { http } from 'winston';
+
+export enum HttpMethods {
+  DELETE,
+  GET,
+  POST,
+  PUT
+}
 
 export interface QueryInterface {
+  httpMethod: HttpMethods;
   objectType: string;
   params: object;
   paramTypes?: ParamType<any>[];
@@ -34,6 +43,7 @@ export class Query implements QueryInterface {
     this._params = value;
   }
 
+  httpMethod: HttpMethods = HttpMethods.GET;
   paramTypes?: ParamType<any>[];
   query: string;
   route: string;
@@ -44,17 +54,20 @@ export class Query implements QueryInterface {
    * @param route - API route.
    * @param paramTypes? - Collection of valid parameter types.
    * @param tree? - Results tree definition.
+   * @param httpMethod
    */
   constructor(
     query: string,
     route: string,
     paramTypes?: ParamType<any>[],
-    tree?: string | string[]
+    tree?: string | string[],
+    httpMethod: HttpMethods = HttpMethods.GET
   ) {
     this.paramTypes = paramTypes;
     this.parseTree(tree);
     this.query = query;
     this.route = route;
+    this.httpMethod = httpMethod;
   }
 
   /**

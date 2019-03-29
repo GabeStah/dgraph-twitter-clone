@@ -1,5 +1,12 @@
 import { ParamType } from './ParamType';
+export declare enum HttpMethods {
+  DELETE = 0,
+  GET = 1,
+  POST = 2,
+  PUT = 3
+}
 export interface QueryInterface {
+  httpMethod: HttpMethods;
   objectType: string;
   params: object;
   paramTypes?: ParamType<any>[];
@@ -15,6 +22,7 @@ export declare class Query implements QueryInterface {
   objectType: string;
   private _params;
   params: object;
+  httpMethod: HttpMethods;
   paramTypes?: ParamType<any>[];
   query: string;
   route: string;
@@ -24,12 +32,14 @@ export declare class Query implements QueryInterface {
    * @param route - API route.
    * @param paramTypes? - Collection of valid parameter types.
    * @param tree? - Results tree definition.
+   * @param httpMethod
    */
   constructor(
     query: string,
     route: string,
     paramTypes?: ParamType<any>[],
-    tree?: string | string[]
+    tree?: string | string[],
+    httpMethod?: HttpMethods
   );
   /**
    * Parses the route string and obtains assumed retrieved object type.
