@@ -100,8 +100,8 @@ export class Query implements QueryInterface {
    * Injects custom params into query strings.  Useful for 'building' queries at runtime.
    * @param params
    */
-  injectCustomParams(params?: object) {
-    this.params = params ? params : this.params;
+  injectCustomParams() {
+    // this.params = params ? params : this.params;
 
     // Get all paramTypes that require substitution.
     const subParamTypes: ParamType<any>[] = this.paramTypes
@@ -123,8 +123,7 @@ export class Query implements QueryInterface {
    * Validates passed params with specified paramTypes, if applicable.
    * @param params
    */
-  validateParams(params?: object) {
-    this.params = params ? params : this.params;
+  validateParams() {
     const paramTypes = this.paramTypes;
     if (!this.params) {
       if (paramTypes) {

@@ -1,15 +1,8 @@
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
-var DgraphConnectionType;
-(function(DgraphConnectionType) {
-  DgraphConnectionType[(DgraphConnectionType['API'] = 0)] = 'API';
-  DgraphConnectionType[(DgraphConnectionType['DIRECT'] = 1)] = 'DIRECT';
-})(
-  (DgraphConnectionType =
-    exports.DgraphConnectionType || (exports.DgraphConnectionType = {}))
-);
+const classes_1 = require('../classes');
 const development = {
-  connectionType: DgraphConnectionType.DIRECT,
+  connectionType: classes_1.DgraphConnectionType.DIRECT,
   dgraph: {
     adapter: {
       address: 'http://192.168.99.100:8080'

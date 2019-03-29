@@ -1,4 +1,4 @@
-import { DgraphConnectionType } from './development';
+import { DgraphConnectionType } from '../classes';
 
 const production = {
   connectionType: DgraphConnectionType.DIRECT,

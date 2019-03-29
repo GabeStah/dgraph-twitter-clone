@@ -7,11 +7,14 @@ import { Query } from './Query';
 import logger from '../logger';
 import axios from 'axios';
 import config from '../config';
-import { DgraphConnectionType } from '../config/development';
+
+export enum DgraphConnectionType {
+  API,
+  DIRECT
+}
 
 export interface DgraphQueryExecutorInterface {
   isMutation: boolean;
-  params?: object;
   query: Query;
   request?: Serialization;
 }
@@ -25,7 +28,6 @@ export enum DgraphQueryExecutorModes {
 
 export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
   isMutation = false;
-  params?: object;
   query: Query;
   request?: Serialization;
 
@@ -36,20 +38,22 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
     request?: Serialization
   ) {
     this.isMutation = isMutation;
-    this.params = params;
     this.query = query;
     this.request = request;
-    if (query.validateParams(params)) {
-      query.injectCustomParams(params);
+    if (params) this.query.params = params;
+    if (query.validateParams()) {
+      query.injectCustomParams();
     }
   }
 
   /**
    * Execute Dgraph query based on instance properties and configuration.
    */
-  async execute(): Promise<Serialization> {
+  async execute(
+    connectionType: DgraphConnectionType = config.connectionType
+  ): Promise<Serialization> {
     let serialization;
-    if (config.connectionType === DgraphConnectionType.API) {
+    if (connectionType === DgraphConnectionType.API) {
       serialization = await this.executeApiRequest();
     } else {
       // Default to direct.
@@ -98,25 +102,28 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
    * @param request
    */
   async executeApiRequest(): Promise<Serialization> {
+    const uri = this.query.uri(this.query.params);
     const response = new Serialization({
       message: `Failed to retrieve ${this.query.objectType} via API request.`,
-      request: this.query.query
+      request: this.query.query,
+      uri
     });
 
     // Get URL
     const url = `${config.dgraph.api.protocol}://${config.dgraph.api.host}:${
       config.dgraph.api.port
-    }/api/${this.query.uri(this.params)}`;
+    }/api/${uri}`;
 
     // TODO: Change HTTP verb dynamically based on Query.
-    axios
+    await axios
       .get(url)
       .then(axiosResponse => {
         logger.info(
-          `DgraphQueryExecutor.executeDirect response %o`,
-          axiosResponse.data.response
+          `DgraphQueryExecutor.executeApiRequest response %o`,
+          axiosResponse.data
         );
         response.response = axiosResponse.data.response;
+        response.success = true;
         return response;
       })
       .catch(exception => {

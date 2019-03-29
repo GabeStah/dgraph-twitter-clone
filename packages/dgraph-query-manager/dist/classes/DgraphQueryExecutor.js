@@ -5,7 +5,14 @@ const classes_1 = require('../classes');
 const logger_1 = require('../logger');
 const axios_1 = require('axios');
 const config_1 = require('../config');
-const development_1 = require('../config/development');
+var DgraphConnectionType;
+(function(DgraphConnectionType) {
+  DgraphConnectionType[(DgraphConnectionType['API'] = 0)] = 'API';
+  DgraphConnectionType[(DgraphConnectionType['DIRECT'] = 1)] = 'DIRECT';
+})(
+  (DgraphConnectionType =
+    exports.DgraphConnectionType || (exports.DgraphConnectionType = {}))
+);
 var DgraphQueryExecutorModes;
 (function(DgraphQueryExecutorModes) {
   DgraphQueryExecutorModes[(DgraphQueryExecutorModes['Query'] = 0)] = 'Query';
@@ -22,21 +29,19 @@ class DgraphQueryExecutor {
   constructor(query, params, isMutation = false, request) {
     this.isMutation = false;
     this.isMutation = isMutation;
-    this.params = params;
     this.query = query;
     this.request = request;
-    if (query.validateParams(params)) {
-      query.injectCustomParams(params);
+    if (params) this.query.params = params;
+    if (query.validateParams()) {
+      query.injectCustomParams();
     }
   }
   /**
    * Execute Dgraph query based on instance properties and configuration.
    */
-  async execute() {
+  async execute(connectionType = config_1.default.connectionType) {
     let serialization;
-    if (
-      config_1.default.connectionType === development_1.DgraphConnectionType.API
-    ) {
+    if (connectionType === DgraphConnectionType.API) {
       serialization = await this.executeApiRequest();
     } else {
       // Default to direct.
@@ -80,23 +85,26 @@ class DgraphQueryExecutor {
    * @param request
    */
   async executeApiRequest() {
+    const uri = this.query.uri(this.query.params);
     const response = new classes_1.Serialization({
       message: `Failed to retrieve ${this.query.objectType} via API request.`,
-      request: this.query.query
+      request: this.query.query,
+      uri
     });
     // Get URL
     const url = `${config_1.default.dgraph.api.protocol}://${
       config_1.default.dgraph.api.host
-    }:${config_1.default.dgraph.api.port}/api/${this.query.uri(this.params)}`;
+    }:${config_1.default.dgraph.api.port}/api/${uri}`;
     // TODO: Change HTTP verb dynamically based on Query.
-    axios_1.default
+    await axios_1.default
       .get(url)
       .then(axiosResponse => {
         logger_1.default.info(
-          `DgraphQueryExecutor.executeDirect response %o`,
-          axiosResponse.data.response
+          `DgraphQueryExecutor.executeApiRequest response %o`,
+          axiosResponse.data
         );
         response.response = axiosResponse.data.response;
+        response.success = true;
         return response;
       })
       .catch(exception => {

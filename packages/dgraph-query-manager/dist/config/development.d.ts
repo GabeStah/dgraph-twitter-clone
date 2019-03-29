@@ -1,7 +1,4 @@
-export declare enum DgraphConnectionType {
-  API = 0,
-  DIRECT = 1
-}
+import { DgraphConnectionType } from '../classes';
 declare const development: {
   connectionType: DgraphConnectionType;
   dgraph: {

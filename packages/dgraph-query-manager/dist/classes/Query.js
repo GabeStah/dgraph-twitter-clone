@@ -73,8 +73,8 @@ class Query {
    * Injects custom params into query strings.  Useful for 'building' queries at runtime.
    * @param params
    */
-  injectCustomParams(params) {
-    this.params = params ? params : this.params;
+  injectCustomParams() {
+    // this.params = params ? params : this.params;
     // Get all paramTypes that require substitution.
     const subParamTypes = this.paramTypes
       ? this.paramTypes.filter(paramType => paramType.isSubstitution === true)
@@ -93,8 +93,7 @@ class Query {
    * Validates passed params with specified paramTypes, if applicable.
    * @param params
    */
-  validateParams(params) {
-    this.params = params ? params : this.params;
+  validateParams() {
     const paramTypes = this.paramTypes;
     if (!this.params) {
       if (paramTypes) {

@@ -2,6 +2,16 @@
 
 A Twitter clone using [Dgraph.io](https://dgraph.io/) for backend data management.
 
+## TODO
+
+The client app is functional and illustrates of how a Twitter clone using Dgraph (directly or via a REST API) can work.  That said, there's still a number of additions and improvements to be made to the client app in particular.
+
+- [x] Flesh out the UI with additional pages (e.g. view multiple user timelines).
+- [x] Improve the overall look (though I'm far from a graphical designer, so it'll still be functional first and foremost).
+- [x] Add additional Dgraph queries, particularly those that illustrate the power and complexity that is possible.  Maybe search functionality?  Hashtags are already parsed and supported in the backend, so adding support for those in the client is also important.
+- [x] Use React context(s) where appropriate, rather than relying on passing props through the component tree.
+- [ ] Finish actual write-up about this project for publication on Dgraph blog.
+
 ## Packages
 
 The `dgraph-query-manager` package is not publicly published to NPM, so it is built and published locally for use in the `/client` and `/api` apps.

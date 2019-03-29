@@ -1,8 +1,11 @@
 import { Serialization } from '../classes';
 import { Query } from './Query';
+export declare enum DgraphConnectionType {
+  API = 0,
+  DIRECT = 1
+}
 export interface DgraphQueryExecutorInterface {
   isMutation: boolean;
-  params?: object;
   query: Query;
   request?: Serialization;
 }
@@ -15,7 +18,6 @@ export declare enum DgraphQueryExecutorModes {
 export declare class DgraphQueryExecutor
   implements DgraphQueryExecutorInterface {
   isMutation: boolean;
-  params?: object;
   query: Query;
   request?: Serialization;
   constructor(
@@ -27,7 +29,7 @@ export declare class DgraphQueryExecutor
   /**
    * Execute Dgraph query based on instance properties and configuration.
    */
-  execute(): Promise<Serialization>;
+  execute(connectionType?: DgraphConnectionType): Promise<Serialization>;
   /**
    * Makes an API query request.
    * @param request

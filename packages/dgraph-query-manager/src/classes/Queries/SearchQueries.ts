@@ -38,7 +38,7 @@ export const SearchQueries = {
             }
         }
      }`,
-    '/search/:query',
+    '/search/hashtag/:query',
     [new ParamType('$query', TypeOf(String))]
   ),
 
@@ -54,7 +54,7 @@ export const SearchQueries = {
         }
     }
  }`,
-    '/search/:query',
+    '/search/tweet/:query',
     [new ParamType('$query', TypeOf(String))]
   ),
 

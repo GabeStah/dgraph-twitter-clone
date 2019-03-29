@@ -1,8 +1,8 @@
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
-const development_1 = require('./development');
+const classes_1 = require('../classes');
 const production = {
-  connectionType: development_1.DgraphConnectionType.DIRECT,
+  connectionType: classes_1.DgraphConnectionType.DIRECT,
   dgraph: {
     adapter: {
       address: 'localhost:9080'
