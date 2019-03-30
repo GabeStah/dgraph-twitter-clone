@@ -34,14 +34,16 @@ export class Query implements QueryInterface {
     this._objectType = value;
   }
 
-  private _params: object = {};
-  get params(): object {
-    return this._params;
-  }
+  params: object;
 
-  set params(value: object) {
-    this._params = value;
-  }
+  // private _params: object = {};
+  // get params(): object {
+  //   return this._params;
+  // }
+  //
+  // set params(value: object) {
+  //   this._params = value;
+  // }
 
   httpMethod: HttpMethods = HttpMethods.GET;
   paramTypes?: ParamType<any>[];
@@ -51,23 +53,41 @@ export class Query implements QueryInterface {
 
   /**
    * @param query - Query string.
-   * @param route - API route.
+   * @param route - REST_API route.
    * @param paramTypes? - Collection of valid parameter types.
    * @param tree? - Results tree definition.
    * @param httpMethod
+   * @param params
    */
   constructor(
     query: string,
     route: string,
     paramTypes?: ParamType<any>[],
     tree?: string | string[],
-    httpMethod: HttpMethods = HttpMethods.GET
+    httpMethod: HttpMethods = HttpMethods.GET,
+    params?: object
   ) {
     this.paramTypes = paramTypes;
     this.parseTree(tree);
     this.query = query;
     this.route = route;
     this.httpMethod = httpMethod;
+    if (params) this.params = params;
+  }
+
+  /**
+   * Builds a Query instance from partial params.
+   * @param params
+   */
+  static factory(params: Partial<Query> | any) {
+    return new Query(
+      params.query,
+      params.route,
+      params.paramTypes,
+      undefined,
+      params.httpMethod,
+      params.params
+    );
   }
 
   /**

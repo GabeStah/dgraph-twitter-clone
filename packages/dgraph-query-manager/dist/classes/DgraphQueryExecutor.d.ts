@@ -2,7 +2,8 @@ import { Serialization } from '../classes';
 import { Query } from './Query';
 export declare enum DgraphConnectionType {
   API = 0,
-  DIRECT = 1
+  REST_API = 1,
+  DIRECT = 2
 }
 export interface DgraphQueryExecutorInterface {
   isMutation: boolean;
@@ -27,16 +28,27 @@ export declare class DgraphQueryExecutor
     request?: Serialization
   );
   /**
+   * Builds a DgraphQueryExecutor instance from partial params.
+   * @param params
+   */
+  static factory(
+    params: Partial<DgraphQueryExecutor> | any
+  ): DgraphQueryExecutor;
+  /**
    * Execute Dgraph query based on instance properties and configuration.
    */
   execute(connectionType?: DgraphConnectionType): Promise<Serialization>;
   /**
-   * Makes an API query request.
+   * Makes a REST API query request via explicit `/api/route/endpoints`.
+   */
+  executeRestApiRequest(): Promise<Serialization>;
+  /**
+   * Makes an API query request via JSON payload.
    * @param request
    */
-  executeApiRequest(): Promise<Serialization>;
+  executeJsonApiRequest(): Promise<Serialization>;
   /**
-   * Makes a direct request.
+   * Makes a direct request via GraphQL+.
    * @param request
    */
   executeDirectRequest(request?: Serialization): Promise<Serialization>;

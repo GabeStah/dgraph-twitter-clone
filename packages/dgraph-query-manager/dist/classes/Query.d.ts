@@ -20,7 +20,6 @@ export interface QueryInterface {
 export declare class Query implements QueryInterface {
   private _objectType;
   objectType: string;
-  private _params;
   params: object;
   httpMethod: HttpMethods;
   paramTypes?: ParamType<any>[];
@@ -29,18 +28,25 @@ export declare class Query implements QueryInterface {
   tree: string[][];
   /**
    * @param query - Query string.
-   * @param route - API route.
+   * @param route - REST_API route.
    * @param paramTypes? - Collection of valid parameter types.
    * @param tree? - Results tree definition.
    * @param httpMethod
+   * @param params
    */
   constructor(
     query: string,
     route: string,
     paramTypes?: ParamType<any>[],
     tree?: string | string[],
-    httpMethod?: HttpMethods
+    httpMethod?: HttpMethods,
+    params?: object
   );
+  /**
+   * Builds a Query instance from partial params.
+   * @param params
+   */
+  static factory(params: Partial<Query> | any): Query;
   /**
    * Parses the route string and obtains assumed retrieved object type.
    * e.g. '/tweets/:uid' returns 'tweets'

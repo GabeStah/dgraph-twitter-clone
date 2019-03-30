@@ -8,7 +8,8 @@ const config_1 = require('../config');
 var DgraphConnectionType;
 (function(DgraphConnectionType) {
   DgraphConnectionType[(DgraphConnectionType['API'] = 0)] = 'API';
-  DgraphConnectionType[(DgraphConnectionType['DIRECT'] = 1)] = 'DIRECT';
+  DgraphConnectionType[(DgraphConnectionType['REST_API'] = 1)] = 'REST_API';
+  DgraphConnectionType[(DgraphConnectionType['DIRECT'] = 2)] = 'DIRECT';
 })(
   (DgraphConnectionType =
     exports.DgraphConnectionType || (exports.DgraphConnectionType = {}))
@@ -37,12 +38,26 @@ class DgraphQueryExecutor {
     }
   }
   /**
+   * Builds a DgraphQueryExecutor instance from partial params.
+   * @param params
+   */
+  static factory(params) {
+    return new DgraphQueryExecutor(
+      params.query,
+      params.query.params,
+      params.isMutation,
+      params.request
+    );
+  }
+  /**
    * Execute Dgraph query based on instance properties and configuration.
    */
   async execute(connectionType = config_1.default.connectionType) {
     let serialization;
-    if (connectionType === DgraphConnectionType.API) {
-      serialization = await this.executeApiRequest();
+    if (connectionType === DgraphConnectionType.REST_API) {
+      serialization = await this.executeRestApiRequest();
+    } else if (connectionType === DgraphConnectionType.API) {
+      serialization = await this.executeJsonApiRequest();
     } else {
       // Default to direct.
       serialization = await this.executeDirectRequest(this.request);
@@ -81,13 +96,14 @@ class DgraphQueryExecutor {
     return serialization;
   }
   /**
-   * Makes an API query request.
-   * @param request
+   * Makes a REST API query request via explicit `/api/route/endpoints`.
    */
-  async executeApiRequest() {
+  async executeRestApiRequest() {
     const uri = this.query.uri(this.query.params);
     const response = new classes_1.Serialization({
-      message: `Failed to retrieve ${this.query.objectType} via API request.`,
+      message: `Failed to retrieve ${
+        this.query.objectType
+      } via REST API request.`,
       request: this.query.query,
       uri
     });
@@ -95,12 +111,11 @@ class DgraphQueryExecutor {
     const url = `${config_1.default.dgraph.api.protocol}://${
       config_1.default.dgraph.api.host
     }:${config_1.default.dgraph.api.port}/api/${uri}`;
-    // TODO: Change HTTP verb dynamically based on Query.
     await axios_1.default
       .get(url)
       .then(axiosResponse => {
         logger_1.default.info(
-          `DgraphQueryExecutor.executeApiRequest response %o`,
+          `DgraphQueryExecutor.executeRestApiRequest response %o`,
           axiosResponse.data
         );
         response.response = axiosResponse.data.response;
@@ -115,7 +130,40 @@ class DgraphQueryExecutor {
     return response;
   }
   /**
-   * Makes a direct request.
+   * Makes an API query request via JSON payload.
+   * @param request
+   */
+  async executeJsonApiRequest() {
+    const response = new classes_1.Serialization({
+      message: `Failed to retrieve ${
+        this.query.objectType
+      } via JSON API request.`,
+      request: this.query.query
+    });
+    // Get URL
+    const url = `${config_1.default.dgraph.api.protocol}://${
+      config_1.default.dgraph.api.host
+    }:${config_1.default.dgraph.api.port}/api/json`;
+    await axios_1.default
+      .post(url, this)
+      .then(axiosResponse => {
+        logger_1.default.info(
+          `DgraphQueryExecutor.executeJsonApiRequest response %o`,
+          axiosResponse.data
+        );
+        response.response = axiosResponse.data.response;
+        response.success = true;
+        return response;
+      })
+      .catch(exception => {
+        logger_1.default.error(exception);
+        response.error = exception;
+        return response;
+      });
+    return response;
+  }
+  /**
+   * Makes a direct request via GraphQL+.
    * @param request
    */
   async executeDirectRequest(request) {
@@ -123,7 +171,7 @@ class DgraphQueryExecutor {
     let response = new classes_1.Serialization({
       message: `Failed to retrieve ${
         this.query.objectType
-      } via direct request.`,
+      } via direct GraphQL+ request.`,
       request: this.query.query
     });
     // Allow request to be optionally passed.

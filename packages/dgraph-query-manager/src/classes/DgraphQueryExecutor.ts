@@ -10,6 +10,7 @@ import config from '../config';
 
 export enum DgraphConnectionType {
   API,
+  REST_API,
   DIRECT
 }
 
@@ -47,14 +48,29 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
   }
 
   /**
+   * Builds a DgraphQueryExecutor instance from partial params.
+   * @param params
+   */
+  static factory(params: Partial<DgraphQueryExecutor> | any) {
+    return new DgraphQueryExecutor(
+      params.query,
+      params.query.params,
+      params.isMutation,
+      params.request
+    );
+  }
+
+  /**
    * Execute Dgraph query based on instance properties and configuration.
    */
   async execute(
     connectionType: DgraphConnectionType = config.connectionType
   ): Promise<Serialization> {
     let serialization;
-    if (connectionType === DgraphConnectionType.API) {
-      serialization = await this.executeApiRequest();
+    if (connectionType === DgraphConnectionType.REST_API) {
+      serialization = await this.executeRestApiRequest();
+    } else if (connectionType === DgraphConnectionType.API) {
+      serialization = await this.executeJsonApiRequest();
     } else {
       // Default to direct.
       serialization = await this.executeDirectRequest(this.request);
@@ -98,13 +114,14 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
   }
 
   /**
-   * Makes an API query request.
-   * @param request
+   * Makes a REST API query request via explicit `/api/route/endpoints`.
    */
-  async executeApiRequest(): Promise<Serialization> {
+  async executeRestApiRequest(): Promise<Serialization> {
     const uri = this.query.uri(this.query.params);
     const response = new Serialization({
-      message: `Failed to retrieve ${this.query.objectType} via API request.`,
+      message: `Failed to retrieve ${
+        this.query.objectType
+      } via REST API request.`,
       request: this.query.query,
       uri
     });
@@ -114,12 +131,11 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
       config.dgraph.api.port
     }/api/${uri}`;
 
-    // TODO: Change HTTP verb dynamically based on Query.
     await axios
       .get(url)
       .then(axiosResponse => {
         logger.info(
-          `DgraphQueryExecutor.executeApiRequest response %o`,
+          `DgraphQueryExecutor.executeRestApiRequest response %o`,
           axiosResponse.data
         );
         response.response = axiosResponse.data.response;
@@ -136,7 +152,44 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
   }
 
   /**
-   * Makes a direct request.
+   * Makes an API query request via JSON payload.
+   * @param request
+   */
+  async executeJsonApiRequest(): Promise<Serialization> {
+    const response = new Serialization({
+      message: `Failed to retrieve ${
+        this.query.objectType
+      } via JSON API request.`,
+      request: this.query.query
+    });
+
+    // Get URL
+    const url = `${config.dgraph.api.protocol}://${config.dgraph.api.host}:${
+      config.dgraph.api.port
+    }/api/json`;
+
+    await axios
+      .post(url, this)
+      .then(axiosResponse => {
+        logger.info(
+          `DgraphQueryExecutor.executeJsonApiRequest response %o`,
+          axiosResponse.data
+        );
+        response.response = axiosResponse.data.response;
+        response.success = true;
+        return response;
+      })
+      .catch(exception => {
+        logger.error(exception);
+        response.error = exception;
+        return response;
+      });
+
+    return response;
+  }
+
+  /**
+   * Makes a direct request via GraphQL+.
    * @param request
    */
   async executeDirectRequest(request?: Serialization): Promise<Serialization> {
@@ -144,7 +197,7 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
     let response = new Serialization({
       message: `Failed to retrieve ${
         this.query.objectType
-      } via direct request.`,
+      } via direct GraphQL+ request.`,
       request: this.query.query
     });
 

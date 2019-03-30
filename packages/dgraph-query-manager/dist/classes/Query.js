@@ -14,13 +14,28 @@ var HttpMethods;
 class Query {
   /**
    * @param query - Query string.
-   * @param route - API route.
+   * @param route - REST_API route.
    * @param paramTypes? - Collection of valid parameter types.
    * @param tree? - Results tree definition.
    * @param httpMethod
+   * @param params
    */
-  constructor(query, route, paramTypes, tree, httpMethod = HttpMethods.GET) {
-    this._params = {};
+  constructor(
+    query,
+    route,
+    paramTypes,
+    tree,
+    httpMethod = HttpMethods.GET,
+    params
+  ) {
+    // private _params: object = {};
+    // get params(): object {
+    //   return this._params;
+    // }
+    //
+    // set params(value: object) {
+    //   this._params = value;
+    // }
     this.httpMethod = HttpMethods.GET;
     this.tree = [];
     this.paramTypes = paramTypes;
@@ -28,6 +43,7 @@ class Query {
     this.query = query;
     this.route = route;
     this.httpMethod = httpMethod;
+    if (params) this.params = params;
   }
   get objectType() {
     // Set initial value if not specified.
@@ -37,11 +53,19 @@ class Query {
   set objectType(value) {
     this._objectType = value;
   }
-  get params() {
-    return this._params;
-  }
-  set params(value) {
-    this._params = value;
+  /**
+   * Builds a Query instance from partial params.
+   * @param params
+   */
+  static factory(params) {
+    return new Query(
+      params.query,
+      params.route,
+      params.paramTypes,
+      undefined,
+      params.httpMethod,
+      params.params
+    );
   }
   /**
    * Parses the route string and obtains assumed retrieved object type.
