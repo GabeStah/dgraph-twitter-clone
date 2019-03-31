@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "dgraph-query-manager": {
+      "signature": "283c763531d02bf974f0dacccfce35f4",
+      "file": true
+    }
+  }
+}

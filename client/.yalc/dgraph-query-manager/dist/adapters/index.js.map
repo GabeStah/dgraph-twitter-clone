@@ -1,0 +1,1 @@
+{"version":3,"sources":["../packages/dgraph-query-manager/src/adapters/index.ts"],"names":[],"mappings":";;;;;AAAA,yCAAoC;AACpC,qCAAgC","file":"index.js","sourcesContent":["export * from './DgraphAdapterHttp';\r\nexport * from './MutationTypes';"]}

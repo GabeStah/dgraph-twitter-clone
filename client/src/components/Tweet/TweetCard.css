@@ -1,0 +1,24 @@
+.TweetCard button.btn {
+    color: #657786;
+    text-decoration: none;
+}
+
+.TweetCard button.reply.active,
+.TweetCard button.reply:hover {
+    color: #1da1f2;
+}
+
+.TweetCard button.retweet.active,
+.TweetCard button.retweet:hover {
+    color: #17bf63;
+}
+
+.TweetCard button.favorite.active,
+.TweetCard button.favorite:hover {
+    color: #e0245e;
+}
+
+.TweetCard button.dm.active,
+.TweetCard button.dm:hover {
+    color: #009999;
+}
