@@ -12,6 +12,18 @@ The client app is functional and illustrates of how a Twitter clone using Dgraph
 - [x] Use React context(s) where appropriate, rather than relying on passing props through the component tree.
 - [ ] Finish actual write-up about this project for publication on Dgraph blog.
 
+## Connection Types
+
+Three types of integrations with Dgraph are supported, allowing the `dgraph-twitter-clone` app to perform data manipulation in whatever method is suitable to your needs.
+
+- `DIRECT` - Passes serialized request objects (i.e. JSON) to the `dgraph-adapter-http` instance, which in turn generates Dgraph transactions via the `dgraph-js-http` package.  This connection type completely bypasses the `/api` application and forms a **direct** connection to Dgraph (hence the `DIRECT` name).  **This is the default connection type**.
+- `API` - Posts the serialized request object to the API's [`/json` endpoint](https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L18-L30).  The request body is converted to an executable query, which is then passed along to via a Dgrpah transaction.
+- `REST_API` - Uses an endpoint-based REST API from [auto-generated](https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L36-L85) Express routes, which are based on the set of [`Queries`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager/src/classes/Queries) found in `dgraph-query-manager`.
+
+### Changing the Connection Type
+
+The current connection [`DgraphConnectionTypes`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts#L11-L15) enum value is specified in the DgraphQueryManager's [`config`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/config/development.ts) file.  Simply change this value then run `gulp default` from the `dgraph-twitter-clone` root directory to redistribute the latest package, then start the API then Client apps. 
+
 ## Packages
 
 The `dgraph-query-manager` package is not publicly published to NPM, so it is built and published locally for use in the `/client` and `/api` apps.

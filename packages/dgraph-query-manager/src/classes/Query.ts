@@ -35,16 +35,6 @@ export class Query implements QueryInterface {
   }
 
   params: object;
-
-  // private _params: object = {};
-  // get params(): object {
-  //   return this._params;
-  // }
-  //
-  // set params(value: object) {
-  //   this._params = value;
-  // }
-
   httpMethod: HttpMethods = HttpMethods.GET;
   paramTypes?: ParamType<any>[];
   query: string;
@@ -134,8 +124,6 @@ export class Query implements QueryInterface {
    * @param params
    */
   injectCustomParams() {
-    // this.params = params ? params : this.params;
-
     // Get all paramTypes that require substitution.
     const subParamTypes: ParamType<any>[] = this.paramTypes
       ? this.paramTypes.filter(paramType => paramType.isSubstitution === true)
