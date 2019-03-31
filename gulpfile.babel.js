@@ -5,13 +5,6 @@ const sourcemaps = require("gulp-sourcemaps");
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
 
-const PACKAGE = {
-  name: "dgraph-query-manager",
-  root: "packages/dgraph-query-manager",
-  src: "packages/dgraph-query-manager/src/**/*.ts",
-  dest: "packages/dgraph-query-manager/dist"
-};
-
 const API = {
   name: "api",
   root: "api",
@@ -19,11 +12,25 @@ const API = {
   dest: "api/dist"
 };
 
+const BASE = {
+  name: "base",
+  root: "./",
+  src: "src/**/*.ts",
+  dest: "dist"
+};
+
 const CLIENT = {
   name: "client",
   root: "client",
   src: "client/src/**/*.ts",
   dest: "client/dist"
+};
+
+const PACKAGE = {
+  name: "dgraph-query-manager",
+  root: "packages/dgraph-query-manager",
+  src: "packages/dgraph-query-manager/src/**/*.ts",
+  dest: "packages/dgraph-query-manager/dist"
 };
 
 function buildPackage() {
@@ -66,6 +73,54 @@ function cleanupPackageDirectories() {
     { cwd: PACKAGE.root }
   );
 }
+
+gulp.task("api:yarn:install", async () =>
+  execCommandAsync("yarn install", { cwd: API.root }).catch(e => reject(e))
+);
+
+gulp.task("client:yarn:install", async () =>
+  execCommandAsync("yarn install", { cwd: CLIENT.root }).catch(e => reject(e))
+);
+
+gulp.task(
+  "packages:publish",
+  gulp.series(
+    "packages:remove:modules",
+    "packages:install:modules",
+    "packages:build",
+    "packages:push"
+  )
+);
+
+gulp.task("api:transpile", async () =>
+  execCommandAsync("gulp default", { cwd: API.root }).catch(e => reject(e))
+);
+
+gulp.task("db:regenerate", async () =>
+  execCommandAsync("gulp db:regenerate", { cwd: API.root }).catch(e =>
+    reject(e)
+  )
+);
+
+gulp.task("api:start", async () =>
+  execCommandAsync("yarn run start", { cwd: API.root }).catch(e => reject(e))
+);
+
+gulp.task("client:start", async () =>
+  execCommandAsync("yarn run start", { cwd: CLIENT.root }).catch(e => reject(e))
+);
+
+gulp.task(
+  "install",
+  gulp.series(
+    "api:yarn:install",
+    "client:yarn:install",
+    "packages:publish",
+    "api:transpile",
+    "db:regenerate"
+  )
+);
+gulp.task("run", gulp.parallel("api:start", "client:start"));
 
 function execCommandAsync(command, options) {
   return exec(command, options).catch(e => {
@@ -119,6 +174,8 @@ gulp.task(
   "packages:push",
   gulp.series(pushPackagesToApi, pushPackagesToClient)
 );
+
+gulp.task("install", gulp.series(fullInstall));
 
 gulp.task(
   "default",
