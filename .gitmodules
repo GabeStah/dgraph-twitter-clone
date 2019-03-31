@@ -1,6 +1,6 @@
-[submodule "api"]
-	path = api
-	url = git@github.com:GabeStah/dgraph-twitter-clone-api.git
-[submodule "client"]
-	path = client
-	url = git@github.com:GabeStah/dgraph-twitter-clone-client.git
+[submodule "tutorial/themes/ananke"]
+	path = tutorial/themes/ananke
+	url = https://github.com/budparr/gohugo-theme-ananke.git
+[submodule "tutorial/themes/hugo-docs"]
+	path = tutorial/themes/hugo-docs
+	url = https://github.com/dgraph-io/hugo-docs.git
