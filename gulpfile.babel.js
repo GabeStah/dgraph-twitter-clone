@@ -33,6 +33,40 @@ const PACKAGE = {
   dest: "packages/dgraph-query-manager/dist"
 };
 
+function execCommandAsync(command, options) {
+  return exec(command, options).catch(e => {
+    console.log(e);
+  });
+}
+
+function installPackageModules() {
+  return execCommandAsync("yarn install", { cwd: PACKAGE.root }).catch(e => {
+    console.log(e);
+    return reject();
+  });
+}
+
+function publishToYalc() {
+  return execCommandAsync("yalc publish", { cwd: PACKAGE.root }).catch(e => {
+    console.log(e);
+    return reject();
+  });
+}
+
+function pushPackagesToApi() {
+  return execCommandAsync("yalc update", { cwd: API.root }).catch(e => {
+    console.log(e);
+    return reject();
+  });
+}
+
+function pushPackagesToClient() {
+  return execCommandAsync("yalc update", { cwd: CLIENT.root }).catch(e => {
+    console.log(e);
+    return reject();
+  });
+}
+
 function buildPackage() {
   return gulp
     .src(PACKAGE.src)
@@ -73,6 +107,35 @@ function cleanupPackageDirectories() {
     { cwd: PACKAGE.root }
   );
 }
+
+gulp.task("packages:remove:modules", gulp.series(cleanupPackageDirectories));
+
+gulp.task("packages:install:modules", gulp.series(installPackageModules));
+
+gulp.task(
+  "packages:cleanup",
+  gulp.series(["packages:remove:modules", "packages:install:modules"])
+);
+
+gulp.task(
+  "packages:build",
+  gulp.series(buildPackage, bumpVersion, publishToYalc)
+);
+
+gulp.task(
+  "packages:push",
+  gulp.series(pushPackagesToApi, pushPackagesToClient)
+);
+
+gulp.task(
+  "default",
+  gulp.series(
+    "packages:remove:modules",
+    "packages:install:modules",
+    "packages:build",
+    "packages:push"
+  )
+);
 
 gulp.task("api:yarn:install", async () =>
   execCommandAsync("yarn install", { cwd: API.root }).catch(e => reject(e))
@@ -120,69 +183,5 @@ gulp.task(
     "db:regenerate"
   )
 );
-gulp.task("run", gulp.parallel("api:start", "client:start"));
 
-function execCommandAsync(command, options) {
-  return exec(command, options).catch(e => {
-    console.log(e);
-  });
-}
-
-function installPackageModules() {
-  return execCommandAsync("yarn install", { cwd: PACKAGE.root }).catch(e => {
-    console.log(e);
-    return reject();
-  });
-}
-
-function publishToYalc() {
-  return execCommandAsync("yalc publish", { cwd: PACKAGE.root }).catch(e => {
-    console.log(e);
-    return reject();
-  });
-}
-
-function pushPackagesToApi() {
-  return execCommandAsync("yalc update", { cwd: API.root }).catch(e => {
-    console.log(e);
-    return reject();
-  });
-}
-
-function pushPackagesToClient() {
-  return execCommandAsync("yalc update", { cwd: CLIENT.root }).catch(e => {
-    console.log(e);
-    return reject();
-  });
-}
-
-gulp.task("packages:remove:modules", gulp.series(cleanupPackageDirectories));
-
-gulp.task("packages:install:modules", gulp.series(installPackageModules));
-
-gulp.task(
-  "packages:cleanup",
-  gulp.series(["packages:remove:modules", "packages:install:modules"])
-);
-
-gulp.task(
-  "packages:build",
-  gulp.series(buildPackage, bumpVersion, publishToYalc)
-);
-
-gulp.task(
-  "packages:push",
-  gulp.series(pushPackagesToApi, pushPackagesToClient)
-);
-
-gulp.task("install", gulp.series(fullInstall));
-
-gulp.task(
-  "default",
-  gulp.series(
-    "packages:remove:modules",
-    "packages:install:modules",
-    "packages:build",
-    "packages:push"
-  )
-);
+gulp.task("start", gulp.parallel("api:start", "client:start"));

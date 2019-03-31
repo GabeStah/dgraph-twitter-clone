@@ -42,13 +42,15 @@ const createQueryRoutes = () => {
           const route = query.route;
           const wrapper = asyncWrapper(async (req, res) => {
             let params;
-            // Map passed req.params to new params object using paramTypes array.
-            params = Object.assign(
-              {},
-              ...query.paramTypes.map(paramType => ({
-                [paramType.key]: req.params[paramType.key.replace('$', '')]
-              }))
-            );
+            if (query.paramType) {
+              // Map passed req.params to new params object using paramTypes array.
+              params = Object.assign(
+                {},
+                ...query.paramTypes.map(paramType => ({
+                  [paramType.key]: req.params[paramType.key.replace('$', '')]
+                }))
+              );
+            }
             const executor = new DgraphQueryExecutor(query, params);
             // Use direct connection type to avoid loop.
             const serialization = await executor.execute(
