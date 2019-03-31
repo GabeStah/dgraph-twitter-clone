@@ -1,0 +1,15 @@
+baseURL = "http://192.168.99.100"
+languageCode = "en-us"
+title = "Dgraph Twitter Clone Tutorial"
+theme = "hugo-docs"
+
+[[menu.main]]
+  name = "Part 1"
+  url = "/"
+  identifier = "home"
+  weight = -1
+[[menu.main]]
+  name = "Part 2"
+  url = "/part-2/"
+  identifier = "part-2"
+  weight = 1
