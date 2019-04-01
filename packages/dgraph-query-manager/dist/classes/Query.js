@@ -28,14 +28,6 @@ class Query {
     httpMethod = HttpMethods.GET,
     params
   ) {
-    // private _params: object = {};
-    // get params(): object {
-    //   return this._params;
-    // }
-    //
-    // set params(value: object) {
-    //   this._params = value;
-    // }
     this.httpMethod = HttpMethods.GET;
     this.tree = [];
     this.paramTypes = paramTypes;
@@ -108,7 +100,6 @@ class Query {
    * @param params
    */
   injectCustomParams() {
-    // this.params = params ? params : this.params;
     // Get all paramTypes that require substitution.
     const subParamTypes = this.paramTypes
       ? this.paramTypes.filter(paramType => paramType.isSubstitution === true)

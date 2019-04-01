@@ -3,12 +3,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const ParamType_1 = require('../ParamType');
 const Query_1 = require('../Query');
 const TypeOf_1 = require('../TypeOf');
-// TODO: Build search to seek in following locations:
-// See better faker options at: http://faker.hook.io/?property=
-// tweet.text
-// user.screenName
-// user.description
-// hashtag.hashtag
 exports.SearchQueries = {
   search: new Query_1.Query(
     `query find($query: string) {

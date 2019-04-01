@@ -29,6 +29,19 @@ exports.TweetQueries = {
      }`,
     '/tweets'
   ),
+  getAllPaginated: new Query_1.Query(
+    `query find($count: int) {
+      data(func: has (tweet.text), first: $count) {
+        uid
+        expand(_all_) {
+          uid
+          expand(_all_)
+        }
+      }
+     }`,
+    '/tweets/:count',
+    [new ParamType_1.ParamType('$count', TypeOf_1.TypeOf(String))]
+  ),
   getAllForUser: new Query_1.Query(
     `query find($id: string) {
       data(func: uid($id)) {

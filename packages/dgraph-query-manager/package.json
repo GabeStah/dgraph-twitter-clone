@@ -1,6 +1,6 @@
 {
   "name": "dgraph-query-manager",
-  "version": "0.6.175",
+  "version": "0.6.177",
   "description": "Manages queries, adapters, serialization, and other helpers for Dgraph Twitter Clone",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

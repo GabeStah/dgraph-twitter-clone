@@ -30,6 +30,20 @@ export const TweetQueries = {
     '/tweets'
   ),
 
+  getAllPaginated: new Query(
+    `query find($count: int) {
+      data(func: has (tweet.text), first: $count) {
+        uid
+        expand(_all_) {
+          uid
+          expand(_all_)
+        }
+      }
+     }`,
+    '/tweets/:count',
+    [new ParamType('$count', TypeOf(String))]
+  ),
+
   getAllForUser: new Query(
     `query find($id: string) {
       data(func: uid($id)) {

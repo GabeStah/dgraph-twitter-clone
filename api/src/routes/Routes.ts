@@ -42,7 +42,7 @@ const createQueryRoutes = () => {
           const route = query.route;
           const wrapper = asyncWrapper(async (req, res) => {
             let params;
-            if (query.paramType) {
+            if (query.paramTypes) {
               // Map passed req.params to new params object using paramTypes array.
               params = Object.assign(
                 {},
