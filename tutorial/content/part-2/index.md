@@ -1,18 +1,18 @@
 ---
-title: "Dgraph Twitter Clone Tutorial - Part 2"
+title: 'Dgraph Twitter Clone Tutorial - Part 2'
 date: 2019-03-24T10:42:34-07:00
-draft: true
+draft: false
 ---
 
 A Twitter clone using [Dgraph.io](https://dgraph.io/) for backend data management.
 
 ## TODO
 
-The client app is functional and illustrates of how a Twitter clone using Dgraph (directly or via a REST API) can work.  That said, there's still a number of additions and improvements to be made to the client app in particular.
+The client app is functional and illustrates of how a Twitter clone using Dgraph (directly or via a REST API) can work. That said, there's still a number of additions and improvements to be made to the client app in particular.
 
 - [x] Flesh out the UI with additional pages (e.g. view multiple user timelines).
 - [x] Improve the overall look (though I'm far from a graphical designer, so it'll still be functional first and foremost).
-- [x] Add additional Dgraph queries, particularly those that illustrate the power and complexity that is possible.  Maybe search functionality?  Hashtags are already parsed and supported in the backend, so adding support for those in the client is also important.
+- [x] Add additional Dgraph queries, particularly those that illustrate the power and complexity that is possible. Maybe search functionality? Hashtags are already parsed and supported in the backend, so adding support for those in the client is also important.
 - [x] Use React context(s) where appropriate, rather than relying on passing props through the component tree.
 - [ ] Finish actual write-up about this project for publication on Dgraph blog.
 
@@ -20,41 +20,38 @@ The client app is functional and illustrates of how a Twitter clone using Dgraph
 
 {{< runnable >}}
 {
-  bladerunner(func: eq(name@en, "Blade Runner")) {
-    uid
-    name@en
-    initial_release_date
-    netflix_id
-  }
+bladerunner(func: eq(name@en, "Blade Runner")) {
+uid
+name@en
+initial_release_date
+netflix_id
+}
 }
 {{< /runnable >}}
 
 {{< runnable >}}
 {
-  data(func: has (tweet.text), first: 10) {
-    uid
-    expand(_all_) {
-      uid
-      expand(_all_)
-    }
-  }
+data(func: has (tweet.text), first: 10) {
+uid
+expand(_all_) {
+uid
+expand(_all_)
+}
+}
 }
 {{< /runnable >}}
-
-
-
 
 ## Connection Types
 
 Three types of integrations with Dgraph are supported, allowing the `dgraph-twitter-clone` app to perform data manipulation in whatever method is suitable to your needs.
 
-- `DIRECT` - Passes serialized request objects (i.e. JSON) to the `dgraph-adapter-http` instance, which in turn generates Dgraph transactions via the `dgraph-js-http` package.  This connection type completely bypasses the `/api` application and forms a **direct** connection to Dgraph (hence the `DIRECT` name).  **This is the default connection type**.
-- `API` - Posts the serialized request object to the API's [`/json` endpoint](https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L18-L30).  The request body is converted to an executable query, which is then passed along to via a Dgrpah transaction.
+- `DIRECT` - Passes serialized request objects (i.e. JSON) to the `dgraph-adapter-http` instance, which in turn generates Dgraph transactions via the `dgraph-js-http` package. This connection type completely bypasses the `/api` application and forms a **direct** connection to Dgraph (hence the `DIRECT` name). **This is the default connection type**.
+- `API` - Posts the serialized request object to the API's [`/json` endpoint](https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L18-L30). The request body is converted to an executable query, which is then passed along to via a Dgrpah transaction.
 - `REST_API` - Uses an endpoint-based REST API from [auto-generated](https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L36-L85) Express routes, which are based on the set of [`Queries`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager/src/classes/Queries) found in `dgraph-query-manager`.
 
 ### Changing the Connection Type
 
-The current connection [`DgraphConnectionTypes`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts#L11-L15) enum value is specified in the DgraphQueryManager's [`config`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/config/development.ts) file.  Simply change this value then run `gulp default` from the `dgraph-twitter-clone` root directory to redistribute the latest package, then start the API then Client apps. 
+The current connection [`DgraphConnectionTypes`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts#L11-L15) enum value is specified in the DgraphQueryManager's [`config`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/config/development.ts) file. Simply change this value then run `gulp default` from the `dgraph-twitter-clone` root directory to redistribute the latest package, then start the API then Client apps.
 
 ## Packages
 
