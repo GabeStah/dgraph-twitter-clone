@@ -48,17 +48,6 @@
   <!-- END: Required by runnable -->
 
   <script>
-    {
-      {
-        $currentBranch: = getenv "CURRENT_BRANCH"
-      }
-    }
-
-    {
-      {
-        /* Set dgraph endpoint depending on version to ensure that runnables work fine */ }
-    }
-    // window.DGRAPH_ENDPOINT = {{ if eq $currentBranch "master" }}"https://play-master.dgraph.io/query?latency=true"{{ else }}"https://play.dgraph.io/query?latency=true"{{ end }}
     window.DGRAPH_ENDPOINT = "http://192.168.99.100:8080/query?latency=true";
   </script>
 
