@@ -36,7 +36,7 @@ function dbDrop() {
   return adapter.dropAll();
 }
 
-function dbResetSchema() {
+function dbAlterSchema() {
   return adapter.alterSchema(config.dgraph.schema);
 }
 
@@ -45,12 +45,12 @@ function dbGenerateData() {
 }
 
 gulp.task('db:drop', dbDrop);
-gulp.task('db:reset:schema', dbResetSchema);
+gulp.task('db:schema:alter', dbAlterSchema);
 // Drop database and reset schema.
-gulp.task('db:reset', gulp.series(dbDrop, dbResetSchema));
+gulp.task('db:reset', gulp.series(dbDrop, dbAlterSchema));
 gulp.task('db:generate:data', dbGenerateData);
 // Drop database, reset schema, and reload initial data.
-gulp.task('db:regenerate', gulp.series(dbDrop, dbResetSchema, dbGenerateData));
+gulp.task('db:regenerate', gulp.series(dbDrop, dbAlterSchema, dbGenerateData));
 
 gulp.task('build:typescript', buildTypescript);
 

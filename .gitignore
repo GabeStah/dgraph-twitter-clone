@@ -13,5 +13,8 @@ package.json.bak
 # Modules
 node_modules
 
-# Tutorial
-tutorial
+# Tutorial/public
+tutorial/public
+
+# dist
+dist

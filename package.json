@@ -4,7 +4,9 @@
   "description": "Twitter Clone API using Dgraph.io",
   "scripts": {
     "build": "yarn global add gulp-cli yalc && yarn install && gulp install",
-    "start": "gulp start"
+    "build:safe": "yarn global add gulp-cli yalc && yarn install && gulp install:safe",
+    "start": "gulp start",
+    "build:hugo": "cd tutorial && hugo"
   },
   "author": "Gabe Wyatt <gabe@gabewyatt.com>",
   "license": "ISC",

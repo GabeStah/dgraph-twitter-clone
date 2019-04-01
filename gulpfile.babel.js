@@ -165,6 +165,18 @@ gulp.task("db:regenerate", async () =>
   )
 );
 
+gulp.task("db:schema:alter", async () =>
+  execCommandAsync("gulp db:schema:alter", { cwd: API.root }).catch(e =>
+    reject(e)
+  )
+);
+
+gulp.task("db:generate:data", async () =>
+  execCommandAsync("gulp db:generate:data", { cwd: API.root }).catch(e =>
+    reject(e)
+  )
+);
+
 gulp.task("api:start", async () =>
   execCommandAsync("yarn run start", { cwd: API.root }).catch(e => reject(e))
 );
@@ -181,6 +193,21 @@ gulp.task(
     "packages:publish",
     "api:transpile",
     "db:regenerate"
+  )
+);
+
+/**
+ * Installs without dropping Dgraph database (only additive schema alterations and data generation).
+ */
+gulp.task(
+  "install:safe",
+  gulp.series(
+    "api:yarn:install",
+    "client:yarn:install",
+    "packages:publish",
+    "api:transpile",
+    "db:schema:alter",
+    "db:generate:data"
   )
 );
 
