@@ -1,4 +1,4 @@
-baseURL = "http://192.168.99.100"
+baseURL = "https://dgraph-twitter-clone.netlify.com/"
 languageCode = "en-us"
 title = "Dgraph Twitter Clone Tutorial"
 theme = "hugo-docs"
