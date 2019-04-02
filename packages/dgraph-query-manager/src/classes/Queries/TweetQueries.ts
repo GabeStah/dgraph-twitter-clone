@@ -3,6 +3,9 @@ import { Query } from '../Query';
 import { TypeOf } from '../TypeOf';
 
 export const TweetQueries = {
+  /**
+   * Find a Tweet by Uid.
+   */
   find: new Query(
     `query find($id: string) {
       data(func: uid($id)) {
@@ -17,6 +20,9 @@ export const TweetQueries = {
     [new ParamType('$id', TypeOf(String))]
   ),
 
+  /**
+   * Get all Tweets.
+   */
   getAll: new Query(
     `query {
       data(func: has (tweet.text)) {
@@ -30,6 +36,9 @@ export const TweetQueries = {
     '/tweets'
   ),
 
+  /**
+   * Get first N Tweets.
+   */
   getAllPaginated: new Query(
     `query find($count: int) {
       data(func: has (tweet.text), first: $count) {
@@ -44,6 +53,9 @@ export const TweetQueries = {
     [new ParamType('$count', TypeOf(String))]
   ),
 
+  /**
+   * Get all Tweets created by User.
+   */
   getAllForUser: new Query(
     `query find($id: string) {
       data(func: uid($id)) {

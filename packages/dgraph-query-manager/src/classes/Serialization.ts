@@ -1,5 +1,3 @@
-import { DgraphQueryExecutor } from './DgraphQueryExecutor';
-
 export interface SerializationInterface {
   command?: string;
   data?: any;

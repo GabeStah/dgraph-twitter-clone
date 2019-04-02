@@ -46,7 +46,6 @@ export class Uid implements UidInterface {
       typeof value === 'number' ||
       typeof value === 'object'
     ) {
-      // (typeof value === 'object' && Array.isArray(value))) {
       this.uid = this.getUidAsHex(value);
     } else {
       this.uid = Uid.generateString(value);
@@ -106,29 +105,4 @@ export class Uid implements UidInterface {
     }
     return Uid.generateString(this.type);
   }
-
-  /**
-   * See: https://discuss.dgraph.io/t/high-number-of-transaction-abortions-seeking-write-strategy/3287
-   * @param {number} id
-   * @param {string} type
-   * @param {Object} txn
-   * @returns {Promise<any>}
-   */
-  // async getUidByType(id: number, type: string, txn?: Object) {
-  //     // NOTE: No need for discard(), query only doesn't need discard(), and if we pass in txn, parent function handles discard
-  //     const transaction = txn || dgraphClient.leaseClient().newTxn();
-  //     const query = `{exists(func: eq(id, ${id})) @filter(has(_${type})) { uid }}`;
-  //     let res;
-  //     try {
-  //         res = await transaction.query(query);
-  //         const result = res.getJson();
-  //         if (result && result.exists && result.exists.length > 0) {
-  //             return Promise.resolve(result.exists[0].uid);
-  //         }
-  //         return Promise.resolve(undefined);
-  //     } catch (err) {
-  //         // Logger.error(`getUidByType(${id}, "${type}") FAILED, ${err.message}`);
-  //         return Promise.reject(err);
-  //     }
-  // }
 }

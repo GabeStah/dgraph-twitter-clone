@@ -19,7 +19,7 @@ export enum BaseModelDeletionMode {
   AllChildNodes
 }
 
-export type BaseModelNodeableTypes = Hashtag | Tweet | User;
+export type BaseModelNodeableType = Hashtag | Tweet | User;
 
 export interface BaseModelInterface {
   uid?: Uid;
@@ -57,10 +57,6 @@ export class BaseModel<T> implements BaseModelInterface {
     return new Promise((resolve, reject) => {
       this.load(params)
         .then(processed => {
-          // logger.info(
-          //   `${className}.create.load.then fulfilled, processed: %o`,
-          //   processed
-          // );
           serialization.response = new this(processed);
           serialization.success = true;
           resolve(serialization);
@@ -162,7 +158,6 @@ export class BaseModel<T> implements BaseModelInterface {
     this: T,
     params: BaseModel<T> | Uid | string | number
   ): Promise<Serialization> {
-    // const adapter = new DgraphAdapter();
     const className = this.name;
     let uid = '';
 
@@ -396,12 +391,10 @@ export class BaseModel<T> implements BaseModelInterface {
       adapter
         .mutate(serialization)
         .then(serialization => {
-          // serialization.response = payload;
           serialization.success = true;
           resolve(serialization);
         })
         .catch(error => {
-          // serialization.data = paramTypes;
           serialization.statusCode = 500;
           serialization.success = false;
           serialization.error = error;
@@ -522,16 +515,6 @@ export class BaseModel<T> implements BaseModelInterface {
   }
 
   /**
-   * Converts class instance to JSON string.
-   * REMOVED: Removed due to incompatibility with GRPC (GRPC unintentionally calls this method).
-   * @returns {string}
-   */
-  // toJSON<T>(this: T): string {
-  //     const temp = JSON.stringify(Object.assign({}, this));
-  //     return temp;
-  // }
-
-  /**
    * Converts class instance to JavaScript object.
    * @returns {T}
    */
@@ -566,7 +549,6 @@ export class BaseModel<T> implements BaseModelInterface {
           resolve(serialization);
         })
         .catch(error => {
-          // serialization.data = this;
           serialization.error = error;
           serialization.statusCode = 500;
           serialization.success = false;

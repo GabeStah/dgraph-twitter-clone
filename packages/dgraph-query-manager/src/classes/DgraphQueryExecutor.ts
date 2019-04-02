@@ -1,7 +1,4 @@
-import {
-  DgraphAdapterHttp,
-  DgraphAdapterHttp as DgraphAdapter
-} from '../adapters';
+import { DgraphAdapterHttp as DgraphAdapter } from '../adapters';
 import { Serialization } from '../classes';
 import { Query } from './Query';
 import logger from '../logger';
@@ -97,7 +94,7 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
       serialization.message = `No ${this.query.objectType} found.`;
 
       // Flatten arrays
-      serialization.response = DgraphAdapterHttp.flattenArrays(
+      serialization.response = DgraphAdapter.flattenArrays(
         combinedResponse ? combinedResponse : serialization.response
       );
       if (
@@ -153,7 +150,6 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
 
   /**
    * Makes an API query request via JSON payload.
-   * @param request
    */
   async executeJsonApiRequest(): Promise<Serialization> {
     const response = new Serialization({

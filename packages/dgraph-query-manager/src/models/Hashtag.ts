@@ -55,7 +55,6 @@ export class Hashtag extends BaseModel<Hashtag> implements HashtagInterface {
     if (!params.uid) {
       params.uid = new Uid(serialization);
     }
-    // paramTypes = ().response;
     // Deserialize (e.g. convert payload back to object)
     params = this.deserialize(params);
     return params;

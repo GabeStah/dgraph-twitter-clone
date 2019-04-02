@@ -1,6 +1,5 @@
 import logger from '../logger';
 import { ParamType } from './ParamType';
-import { http } from 'winston';
 
 export enum HttpMethods {
   DELETE,
@@ -121,7 +120,6 @@ export class Query implements QueryInterface {
 
   /**
    * Injects custom params into query strings.  Useful for 'building' queries at runtime.
-   * @param params
    */
   injectCustomParams() {
     // Get all paramTypes that require substitution.
@@ -142,7 +140,6 @@ export class Query implements QueryInterface {
 
   /**
    * Validates passed params with specified paramTypes, if applicable.
-   * @param params
    */
   validateParams() {
     const paramTypes = this.paramTypes;

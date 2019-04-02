@@ -153,9 +153,6 @@ export class DgraphAdapter {
     try {
       const mutation = new Mutation();
       mutation.setCommitNow(commitNow);
-      // Deprecated
-      // See: https://docs.dgraph.io/query-language/#upsert-directive
-      // mutation.setIgnoreIndexConflict(ignoreIndexConflict);
       switch (mutationType) {
         case MutationTypes.SetJson:
           mutation.setSetJson(serialization.request);
@@ -191,7 +188,6 @@ export class DgraphAdapter {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.query(serialization.request);
-      // serialization.response = res.getJson();
       serialization.response = DgraphAdapter.flattenArrays(res.getJson());
     } catch (e) {
       logger.error('DgraphAdapter.query, error: %o', e);
@@ -214,7 +210,6 @@ export class DgraphAdapter {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.queryWithVars(serialization.request, vars);
-      // serialization.response = res.getJson();
       serialization.response = DgraphAdapter.flattenArrays(res.getJson());
       logger.info(
         `DgraphAdapter.queryWithVars, query: %o, vars: %o`,

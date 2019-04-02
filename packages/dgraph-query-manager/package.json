@@ -21,8 +21,5 @@
     "@types/node": "^11.11.4",
     "ts-loader": "^5.3.3",
     "typescript": "^3.3.3333"
-  },
-  "dgraph": {
-    "connectionType": "DIRECT"
   }
 }
