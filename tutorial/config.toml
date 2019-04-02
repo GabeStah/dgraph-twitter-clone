@@ -1,4 +1,4 @@
-baseURL = "https://dgraph-twitter-clone.netlify.com/"
+baseURL = "https://dgraph-twitter-clone-tutorial.netlify.com/"
 languageCode = "en-us"
 title = "Dgraph Twitter Clone Tutorial"
 theme = "hugo-docs"

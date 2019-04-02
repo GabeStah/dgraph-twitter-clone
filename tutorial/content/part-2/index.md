@@ -4,6 +4,8 @@ date: 2019-03-24T10:42:34-07:00
 draft: false
 ---
 
+<script type="text/javascript">window.DGRAPH_ENDPOINT = "http://127.0.0.1:8080/query?latency=true";</script>
+
 A Twitter clone using [Dgraph.io](https://dgraph.io/) for backend data management.
 
 ## TODO

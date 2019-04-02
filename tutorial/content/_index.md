@@ -4,6 +4,8 @@ date: 2019-03-24T10:42:34-07:00
 draft: false
 ---
 
+<script type="text/javascript">window.DGRAPH_ENDPOINT = "http://127.0.0.1:8080/query?latency=true";</script>
+
 ## Prerequisites
 
 This tutorial aims to provide a step-by-step process for creating a Twitter clone application using the power of Dgraph for data management and manipulation. We'll also use React to create the front-end client application. However, before you begin, there are a handful of prerequisites to install, or simply to be aware of.
