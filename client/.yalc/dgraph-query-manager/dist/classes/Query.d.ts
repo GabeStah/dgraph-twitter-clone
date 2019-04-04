@@ -64,12 +64,10 @@ export declare class Query implements QueryInterface {
   uri(params?: object): string | undefined;
   /**
    * Injects custom params into query strings.  Useful for 'building' queries at runtime.
-   * @param params
    */
   injectCustomParams(): void;
   /**
    * Validates passed params with specified paramTypes, if applicable.
-   * @param params
    */
   validateParams(): boolean;
 }

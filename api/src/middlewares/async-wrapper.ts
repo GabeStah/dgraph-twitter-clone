@@ -5,8 +5,8 @@ import { Promise } from 'es6-promise';
  * @param fn
  * @returns {(req, res, next) => void}
  */
-export function asyncWrapper(fn) {
+export const asyncWrapper = fn => {
   return (req, res, next) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
-}
+};

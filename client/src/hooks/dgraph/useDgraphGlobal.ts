@@ -32,12 +32,6 @@ export const useDgraphGlobal = (
   // STATE
   const [, dispatch]: [any, Function] = useStateContext();
 
-  // DEPRECATED
-  // Unless passed empty array, assign mutable values to dependencies.
-  // if (!Array.isArray(dependencies) || dependencies.length > 0) {
-  //   dependencies = [dispatch, field, invalid, executor, type, ...dependencies];
-  // }
-
   // Call useEffect unconditionally.
   useEffect(() => {
     // Confirm validity

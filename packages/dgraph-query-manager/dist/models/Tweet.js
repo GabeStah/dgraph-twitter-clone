@@ -149,17 +149,10 @@ class Tweet extends models_1.BaseModel {
       {
         'tweet.favoriteCount': faker.random.number(max),
         'tweet.favorited': faker.random.boolean(),
-        // 'tweet.hashtag'?: [Hashtag];
-        // 'tweet.inReplyToStatusId': new Uid(123),
-        // 'tweet.inReplyToUserId': new Uid(456),
         'tweet.isQuoteStatus': faker.random.boolean(),
-        // 'tweet.quotedStatus'?: Tweet,
         'tweet.retweetCount': faker.random.number(max),
         'tweet.retweeted': faker.random.boolean(),
         'tweet.text': this.generateRandomTweetText(seed, mention),
-        // 'tweet.user':               new User({
-        //     uid: new Uid(678)
-        // }),
         'tweet.user': models_1.User.generate()
       },
       params

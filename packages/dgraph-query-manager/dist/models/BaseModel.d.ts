@@ -14,7 +14,7 @@ export declare enum BaseModelDeletionMode {
   AllChildEdges = 3,
   AllChildNodes = 4
 }
-export declare type BaseModelNodeableTypes = Hashtag | Tweet | User;
+export declare type BaseModelNodeableType = Hashtag | Tweet | User;
 export interface BaseModelInterface {
   uid?: Uid;
 }
@@ -166,11 +166,6 @@ export declare class BaseModel<T> implements BaseModelInterface {
    * @returns {Promise<Partial<T>>}
    */
   static serialize<T>(params?: Partial<T | any>): Promise<Partial<T>>;
-  /**
-   * Converts class instance to JSON string.
-   * REMOVED: Removed due to incompatibility with GRPC (GRPC unintentionally calls this method).
-   * @returns {string}
-   */
   /**
    * Converts class instance to JavaScript object.
    * @returns {T}

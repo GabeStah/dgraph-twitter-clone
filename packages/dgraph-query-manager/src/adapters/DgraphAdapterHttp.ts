@@ -34,16 +34,14 @@ export class DgraphAdapterHttp {
    * @returns {Promise<boolean>}
    */
   async alterSchema(schema: string): Promise<boolean> {
-    return this.client
-      .alter({ schema })
-      .then(() => {
-        logger.info(`Dgraph schema altered: %s`, schema);
-        return true;
-      })
-      .catch(error => {
-        logger.error(`Dgraph schema alteration failed, error: %s`, error);
-        return false;
-      });
+    try {
+      await this.client.alter({ schema });
+      logger.info(`Dgraph schema altered: %s`, schema);
+      return true;
+    } catch (error) {
+      logger.error(`Dgraph schema alteration failed, error: %s`, error);
+      return false;
+    }
   }
 
   /**
@@ -51,17 +49,14 @@ export class DgraphAdapterHttp {
    * @returns {Promise<boolean>}
    */
   async dropAll(): Promise<boolean> {
-    const result = await this.client
-      .alter({ dropAll: true })
-      .then(() => {
-        logger.info(`All Dgraph data dropped.`);
-        return true;
-      })
-      .catch(error => {
-        logger.error(`Dgraph data drop failed, error: %s`, error);
-        return false;
-      });
-    return true;
+    try {
+      await await this.client.alter({ dropAll: true });
+      logger.info(`All Dgraph data dropped.`);
+      return true;
+    } catch (error) {
+      logger.error(`Dgraph data drop failed, error: %s`, error);
+      return false;
+    }
   }
 
   /**
@@ -98,7 +93,7 @@ export class DgraphAdapterHttp {
       if (obj.hasOwnProperty(key)) {
         if (Array.isArray(value)) {
           if (value.length === 1) {
-            // Set keyvalue to first (and only) array value.
+            // Set key value to first (and only) array value.
             copy[key] = DgraphAdapterHttp.flattenArraysInObject(value[0]);
           } else {
             // Retain original array

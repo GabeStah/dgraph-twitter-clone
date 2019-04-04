@@ -22,36 +22,31 @@ class DgraphAdapterHttp {
    * @returns {Promise<boolean>}
    */
   async alterSchema(schema) {
-    return this.client
-      .alter({ schema })
-      .then(() => {
-        logger_1.default.info(`Dgraph schema altered: %s`, schema);
-        return true;
-      })
-      .catch(error => {
-        logger_1.default.error(
-          `Dgraph schema alteration failed, error: %s`,
-          error
-        );
-        return false;
-      });
+    try {
+      await this.client.alter({ schema });
+      logger_1.default.info(`Dgraph schema altered: %s`, schema);
+      return true;
+    } catch (error) {
+      logger_1.default.error(
+        `Dgraph schema alteration failed, error: %s`,
+        error
+      );
+      return false;
+    }
   }
   /**
    * Drop all database data.
    * @returns {Promise<boolean>}
    */
   async dropAll() {
-    const result = await this.client
-      .alter({ dropAll: true })
-      .then(() => {
-        logger_1.default.info(`All Dgraph data dropped.`);
-        return true;
-      })
-      .catch(error => {
-        logger_1.default.error(`Dgraph data drop failed, error: %s`, error);
-        return false;
-      });
-    return true;
+    try {
+      await await this.client.alter({ dropAll: true });
+      logger_1.default.info(`All Dgraph data dropped.`);
+      return true;
+    } catch (error) {
+      logger_1.default.error(`Dgraph data drop failed, error: %s`, error);
+      return false;
+    }
   }
   /**
    * Recursively flattens arrays within passed object.
@@ -85,7 +80,7 @@ class DgraphAdapterHttp {
       if (obj.hasOwnProperty(key)) {
         if (Array.isArray(value)) {
           if (value.length === 1) {
-            // Set keyvalue to first (and only) array value.
+            // Set key value to first (and only) array value.
             copy[key] = DgraphAdapterHttp.flattenArraysInObject(value[0]);
           } else {
             // Retain original array

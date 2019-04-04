@@ -4,6 +4,9 @@ const ParamType_1 = require('../ParamType');
 const Query_1 = require('../Query');
 const TypeOf_1 = require('../TypeOf');
 exports.TweetQueries = {
+  /**
+   * Find a Tweet by Uid.
+   */
   find: new Query_1.Query(
     `query find($id: string) {
       data(func: uid($id)) {
@@ -17,6 +20,9 @@ exports.TweetQueries = {
     '/tweet/:id',
     [new ParamType_1.ParamType('$id', TypeOf_1.TypeOf(String))]
   ),
+  /**
+   * Get all Tweets.
+   */
   getAll: new Query_1.Query(
     `query {
       data(func: has (tweet.text)) {
@@ -29,8 +35,11 @@ exports.TweetQueries = {
      }`,
     '/tweets'
   ),
+  /**
+   * Get first N Tweets.
+   */
   getAllPaginated: new Query_1.Query(
-    `query find($count: int) {
+    `query find($count: int = 10) {
       data(func: has (tweet.text), first: $count) {
         uid
         expand(_all_) {
@@ -42,6 +51,9 @@ exports.TweetQueries = {
     '/tweets/:count',
     [new ParamType_1.ParamType('$count', TypeOf_1.TypeOf(String))]
   ),
+  /**
+   * Get all Tweets created by User.
+   */
   getAllForUser: new Query_1.Query(
     `query find($id: string) {
       data(func: uid($id)) {

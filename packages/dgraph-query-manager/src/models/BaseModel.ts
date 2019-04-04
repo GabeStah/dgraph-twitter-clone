@@ -54,23 +54,18 @@ export class BaseModel<T> implements BaseModelInterface {
       data: params,
       request: params
     });
-    return new Promise((resolve, reject) => {
-      this.load(params)
-        .then(processed => {
-          serialization.response = new this(processed);
-          serialization.success = true;
-          resolve(serialization);
-        })
-        .catch(error => {
-          logger.info(
-            `${className}.create.load.then failed, error: %o', error`
-          );
-          serialization.error = error;
-          serialization.message = `${className} creation failed.`;
-          serialization.success = false;
-          resolve(serialization);
-        });
-    });
+
+    try {
+      const processed = await this.load(params);
+      serialization.response = new this(processed);
+      serialization.success = true;
+    } catch (error) {
+      logger.info(`${className}.create.load.then failed, error: %o', error`);
+      serialization.error = error;
+      serialization.message = `${className} creation failed.`;
+      serialization.success = false;
+    }
+    return serialization;
   }
 
   /**
@@ -107,28 +102,27 @@ export class BaseModel<T> implements BaseModelInterface {
       message: `${className} successfully deleted.`,
       data: item
     });
-    if (
-      item instanceof BaseModel ||
-      (typeof item === 'object' && !(item instanceof Uid))
-    ) {
-      serialization.request = this.getDeletionRequest(item, mode, edge);
+
+    try {
+      if (
+        item instanceof BaseModel ||
+        (typeof item === 'object' && !(item instanceof Uid))
+      ) {
+        serialization.request = this.getDeletionRequest(item, mode, edge);
+      }
+
+      serialization = await adapter.mutate(
+        serialization,
+        MutationTypes.DeleteJson
+      );
+      serialization.success = true;
+    } catch (error) {
+      serialization.error = error;
+      serialization.statusCode = 500;
+      serialization.success = false;
+      serialization.message = `${className} deletion failed.`;
     }
-    return new Promise((resolve, reject) => {
-      adapter
-        .mutate(serialization, MutationTypes.DeleteJson)
-        .then(result => {
-          serialization = result;
-          serialization.success = true;
-          resolve(serialization);
-        })
-        .catch(error => {
-          serialization.error = error;
-          serialization.statusCode = 500;
-          serialization.success = false;
-          serialization.message = `${className} deletion failed.`;
-          reject(serialization);
-        });
-    });
+    return serialization;
   }
 
   /**
@@ -161,23 +155,36 @@ export class BaseModel<T> implements BaseModelInterface {
     const className = this.name;
     let uid = '';
 
-    // Get uid string from Uid instance.
-    if (params instanceof this && params.uid) {
-      uid = params.uid.toString();
-    } else if (params instanceof Uid) {
-      uid = params.toString();
+    let serialization = new Serialization({
+      message: `${className} found.`
+    });
+
+    try {
+      // Get uid string from Uid instance.
+      if (params instanceof this && params.uid) {
+        uid = params.uid.toString();
+      } else if (params instanceof Uid) {
+        uid = params.toString();
+      }
+
+      const executor = new DgraphQueryExecutor(Queries[className].find, {
+        $id: uid
+      });
+
+      serialization = await executor.execute();
+      if (serialization && serialization.success && serialization.response) {
+        // Create instance of T from deserialized result.
+        serialization.response = new this(
+          serialization.response
+        ) as InstanceType<T>;
+      }
+    } catch (error) {
+      serialization.error = error;
+      serialization.statusCode = 500;
+      serialization.success = false;
+      serialization.message = `${className} find failed.`;
     }
 
-    const executor = new DgraphQueryExecutor(Queries[className].find, {
-      $id: uid
-    });
-    const serialization = await executor.execute();
-    if (serialization && serialization.success && serialization.response) {
-      // Create instance of T from deserialized result.
-      serialization.response = new this(serialization.response) as InstanceType<
-        T
-      >;
-    }
     return serialization;
   }
 
@@ -192,23 +199,19 @@ export class BaseModel<T> implements BaseModelInterface {
       message: `${className} found.`
     });
 
-    return new Promise((resolve, reject) => {
-      adapter
-        .query(serialization)
-        .then(payload => {
-          serialization.data = payload;
-          serialization.response = payload;
-          serialization.success = true;
-          resolve(serialization);
-        })
-        .catch(error => {
-          serialization.data = this;
-          serialization.statusCode = 500;
-          serialization.success = false;
-          serialization.message = `${className} find failed.`;
-          reject(serialization);
-        });
-    });
+    try {
+      const payload = await adapter.query(serialization);
+      serialization.data = payload;
+      serialization.response = payload;
+      serialization.success = true;
+    } catch (error) {
+      serialization.data = this;
+      serialization.statusCode = 500;
+      serialization.success = false;
+      serialization.message = `${className} find failed.`;
+    }
+
+    return serialization;
   }
 
   /**
@@ -381,27 +384,23 @@ export class BaseModel<T> implements BaseModelInterface {
     Object.assign(params, params2);
     const adapter = new DgraphAdapter();
     const className = this.name;
-    const serialization = new Serialization({
+    let serialization = new Serialization({
       message: `${className} created.`,
       request: params,
       data: params
     });
 
-    return new Promise((resolve, reject) => {
-      adapter
-        .mutate(serialization)
-        .then(serialization => {
-          serialization.success = true;
-          resolve(serialization);
-        })
-        .catch(error => {
-          serialization.statusCode = 500;
-          serialization.success = false;
-          serialization.error = error;
-          serialization.message = `${className} creation failed.`;
-          reject(serialization);
-        });
-    });
+    try {
+      serialization = await adapter.mutate(serialization);
+      serialization.success = true;
+    } catch (error) {
+      serialization.statusCode = 500;
+      serialization.success = false;
+      serialization.error = error;
+      serialization.message = `${className} creation failed.`;
+    }
+
+    return serialization;
   }
 
   /**
@@ -541,20 +540,17 @@ export class BaseModel<T> implements BaseModelInterface {
       request: params
     });
 
-    return new Promise((resolve, reject) => {
-      this.load(params)
-        .then(payload => {
-          serialization.response = new this(payload);
-          serialization.success = true;
-          resolve(serialization);
-        })
-        .catch(error => {
-          serialization.error = error;
-          serialization.statusCode = 500;
-          serialization.success = false;
-          serialization.message = `${className} upsert failed.`;
-          reject(serialization);
-        });
-    });
+    try {
+      const payload = await this.load(params);
+      serialization.response = new this(payload);
+      serialization.success = true;
+    } catch (error) {
+      serialization.error = error;
+      serialization.statusCode = 500;
+      serialization.success = false;
+      serialization.message = `${className} upsert failed.`;
+    }
+
+    return serialization;
   }
 }

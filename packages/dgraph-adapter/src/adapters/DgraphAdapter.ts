@@ -44,16 +44,14 @@ export class DgraphAdapter {
   async alterSchema(schema: string): Promise<boolean> {
     const operation = new Operation();
     operation.setSchema(schema);
-    return this.client
-      .alter(operation)
-      .then(() => {
-        logger.info(`Dgraph schema altered: %s`, schema);
-        return true;
-      })
-      .catch(error => {
-        logger.error(`Dgraph schema alteration failed, error: %s`, error);
-        return false;
-      });
+    try {
+      await this.client.alter(operation);
+      logger.info(`Dgraph schema altered: %s`, schema);
+      return true;
+    } catch (error) {
+      logger.error(`Dgraph schema alteration failed, error: %s`, error);
+      return false;
+    }
   }
 
   /**
@@ -63,17 +61,14 @@ export class DgraphAdapter {
   async dropAll(): Promise<boolean> {
     const operation = new Operation();
     operation.setDropAll(true);
-    const result = await this.client
-      .alter(operation)
-      .then(() => {
-        logger.info(`All Dgraph data dropped.`);
-        return true;
-      })
-      .catch(error => {
-        logger.error(`Dgraph data drop failed, error: %s`, error);
-        return false;
-      });
-    return true;
+    try {
+      await this.client.alter(operation);
+      logger.info(`All Dgraph data dropped.`);
+      return true;
+    } catch (error) {
+      logger.error(`Dgraph data drop failed, error: %s`, error);
+      return false;
+    }
   }
 
   /**

@@ -44,11 +44,10 @@ export declare class DgraphQueryExecutor
   executeRestApiRequest(): Promise<Serialization>;
   /**
    * Makes an API query request via JSON payload.
-   * @param request
    */
   executeJsonApiRequest(): Promise<Serialization>;
   /**
-   * Makes a direct request via GraphQL+.
+   * Makes a direct request via GraphQL+-.
    * @param request
    */
   executeDirectRequest(request?: Serialization): Promise<Serialization>;

@@ -111,27 +111,22 @@ class DgraphQueryExecutor {
     const url = `${config_1.default.dgraph.api.protocol}://${
       config_1.default.dgraph.api.host
     }:${config_1.default.dgraph.api.port}/api/${uri}`;
-    await axios_1.default
-      .get(url)
-      .then(axiosResponse => {
-        logger_1.default.info(
-          `DgraphQueryExecutor.executeRestApiRequest response %o`,
-          axiosResponse.data
-        );
-        response.response = axiosResponse.data.response;
-        response.success = true;
-        return response;
-      })
-      .catch(exception => {
-        logger_1.default.error(exception);
-        response.error = exception;
-        return response;
-      });
+    try {
+      const axiosResponse = await axios_1.default.get(url);
+      logger_1.default.info(
+        `DgraphQueryExecutor.executeRestApiRequest response %o`,
+        axiosResponse.data
+      );
+      response.response = axiosResponse.data.response;
+      response.success = true;
+    } catch (error) {
+      logger_1.default.error(error);
+      response.error = error;
+    }
     return response;
   }
   /**
    * Makes an API query request via JSON payload.
-   * @param request
    */
   async executeJsonApiRequest() {
     const response = new classes_1.Serialization({
@@ -144,26 +139,22 @@ class DgraphQueryExecutor {
     const url = `${config_1.default.dgraph.api.protocol}://${
       config_1.default.dgraph.api.host
     }:${config_1.default.dgraph.api.port}/api/json`;
-    await axios_1.default
-      .post(url, this)
-      .then(axiosResponse => {
-        logger_1.default.info(
-          `DgraphQueryExecutor.executeJsonApiRequest response %o`,
-          axiosResponse.data
-        );
-        response.response = axiosResponse.data.response;
-        response.success = true;
-        return response;
-      })
-      .catch(exception => {
-        logger_1.default.error(exception);
-        response.error = exception;
-        return response;
-      });
+    try {
+      const axiosResponse = await axios_1.default.post(url, this);
+      logger_1.default.info(
+        `DgraphQueryExecutor.executeJsonApiRequest response %o`,
+        axiosResponse.data
+      );
+      response.response = axiosResponse.data.response;
+      response.success = true;
+    } catch (error) {
+      logger_1.default.error(error);
+      response.error = error;
+    }
     return response;
   }
   /**
-   * Makes a direct request via GraphQL+.
+   * Makes a direct request via GraphQL+-.
    * @param request
    */
   async executeDirectRequest(request) {
@@ -171,7 +162,7 @@ class DgraphQueryExecutor {
     let response = new classes_1.Serialization({
       message: `Failed to retrieve ${
         this.query.objectType
-      } via direct GraphQL+ request.`,
+      } via direct GraphQL+- request.`,
       request: this.query.query
     });
     // Allow request to be optionally passed.

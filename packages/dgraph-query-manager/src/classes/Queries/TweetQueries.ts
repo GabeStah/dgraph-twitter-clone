@@ -40,7 +40,7 @@ export const TweetQueries = {
    * Get first N Tweets.
    */
   getAllPaginated: new Query(
-    `query find($count: int) {
+    `query find($count: int = 10) {
       data(func: has (tweet.text), first: $count) {
         uid
         expand(_all_) {

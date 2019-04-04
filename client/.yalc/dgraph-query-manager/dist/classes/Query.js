@@ -97,7 +97,6 @@ class Query {
   }
   /**
    * Injects custom params into query strings.  Useful for 'building' queries at runtime.
-   * @param params
    */
   injectCustomParams() {
     // Get all paramTypes that require substitution.
@@ -116,7 +115,6 @@ class Query {
   }
   /**
    * Validates passed params with specified paramTypes, if applicable.
-   * @param params
    */
   validateParams() {
     const paramTypes = this.paramTypes;

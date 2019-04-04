@@ -63,11 +63,11 @@ export const SearchQueries = {
   ),
 
   /**
-   * Dynamic search based on passed predicate e
+   * Dynamic search based on passed function, predicate, and query.
    */
   searchBy: new Query(
     `query find($query: string) {
-        data(func: $filterFunction($predicate, $query))
+        data(func: $function($predicate, $query))
         {
             uid
             expand(_all_) 
@@ -77,9 +77,9 @@ export const SearchQueries = {
             }
         }
      }`,
-    '/search/by/:predicate/:query',
+    '/search/by/:function/:predicate/:query',
     [
-      new ParamType('$filterFunction', TypeOf(String), true),
+      new ParamType('$function', TypeOf(String), true),
       new ParamType('$predicate', TypeOf(String), true),
       new ParamType('$query', TypeOf(String))
     ]

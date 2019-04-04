@@ -30,7 +30,6 @@ class Uid {
       typeof value === 'number' ||
       typeof value === 'object'
     ) {
-      // (typeof value === 'object' && Array.isArray(value))) {
       this.uid = this.getUidAsHex(value);
     } else {
       this.uid = Uid.generateString(value);

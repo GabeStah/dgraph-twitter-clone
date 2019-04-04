@@ -3,13 +3,24 @@ languageCode = "en-us"
 title = "Dgraph Twitter Clone Tutorial"
 theme = "hugo-docs"
 
+[blackfriday]
+  taskLists = false
+  fencedCode = true
+
 [[menu.main]]
-  name = "Part 1"
+  name = "Part 1: The Architecture"
   url = "/"
   identifier = "home"
   weight = -1
+
 [[menu.main]]
-  name = "Part 2"
-  url = "/part-2/"
+  name = "Part 2: The API"
+  url = "/part-2-the-api/"
   identifier = "part-2"
   weight = 1
+
+[[menu.main]]
+  name = "Part 3: The Client"
+  url = "/part-3-the-client/"
+  identifier = "part-3"
+  weight = 2

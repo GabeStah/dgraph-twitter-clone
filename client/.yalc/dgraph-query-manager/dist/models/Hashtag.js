@@ -28,7 +28,6 @@ class Hashtag extends models_1.BaseModel {
     if (!params.uid) {
       params.uid = new models_1.Uid(serialization);
     }
-    // paramTypes = ().response;
     // Deserialize (e.g. convert payload back to object)
     params = this.deserialize(params);
     return params;

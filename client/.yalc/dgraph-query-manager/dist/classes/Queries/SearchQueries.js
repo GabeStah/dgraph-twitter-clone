@@ -4,10 +4,15 @@ const ParamType_1 = require('../ParamType');
 const Query_1 = require('../Query');
 const TypeOf_1 = require('../TypeOf');
 exports.SearchQueries = {
+  /**
+   * Primary search for text within 'tweet.text' and 'hashtag.hashtag' predicates.
+   */
   search: new Query_1.Query(
     `query find($query: string) {
         a as var(func: anyoftext(tweet.text, $query)) 
-        b as var(func: anyoftext(hashtag.hashtag, $query))
+        var(func: anyoftext(hashtag.hashtag, $query)) {
+          b as hashtags: ~tweet.hashtag
+        }
         
         data(func: has(tweet.text)) @filter(uid(a) OR uid(b)) {
           uid
@@ -20,9 +25,12 @@ exports.SearchQueries = {
     '/search/:query',
     [new ParamType_1.ParamType('$query', TypeOf_1.TypeOf(String))]
   ),
+  /**
+   * Get all Hashtags containing text.
+   */
   searchHashtags: new Query_1.Query(
     `query find($query: string) {
-        data(func: uid($query))
+        data(func: anyoftext(hashtag.hashtag, $query))
         {
             uid
             expand(_all_) {
@@ -34,42 +42,43 @@ exports.SearchQueries = {
     '/search/hashtag/:query',
     [new ParamType_1.ParamType('$query', TypeOf_1.TypeOf(String))]
   ),
+  /**
+   * Get all Tweets containing text.
+   */
   searchTweetText: new Query_1.Query(
     `query find($query: string) {
-    data(func: has(tweet.text)) @filter(anyoftext(tweet.text, $query))
-    {
-        uid
-        expand(_all_) 
+        data(func: anyoftext(tweet.text, $query))
         {
-          uid
-          expand(_all_)
+            uid
+            expand(_all_) 
+            {
+              uid
+              expand(_all_)
+            }
         }
-    }
- }`,
+     }`,
     '/search/tweet/:query',
     [new ParamType_1.ParamType('$query', TypeOf_1.TypeOf(String))]
   ),
+  /**
+   * Dynamic search based on passed function, predicate, and query.
+   */
   searchBy: new Query_1.Query(
     `query find($query: string) {
-    data(func: has($has)) @filter($filterFunction($edge, $query))
-    {
-        uid
-        expand(_all_) 
+        data(func: $function($predicate, $query))
         {
-          uid
-          expand(_all_)
+            uid
+            expand(_all_) 
+            {
+              uid
+              expand(_all_)
+            }
         }
-    }
- }`,
-    '/search/by/:edge/:has/:query',
+     }`,
+    '/search/by/:function/:predicate/:query',
     [
-      new ParamType_1.ParamType('$has', TypeOf_1.TypeOf(String), true),
-      new ParamType_1.ParamType(
-        '$filterFunction',
-        TypeOf_1.TypeOf(String),
-        true
-      ),
-      new ParamType_1.ParamType('$edge', TypeOf_1.TypeOf(String), true),
+      new ParamType_1.ParamType('$function', TypeOf_1.TypeOf(String), true),
+      new ParamType_1.ParamType('$predicate', TypeOf_1.TypeOf(String), true),
       new ParamType_1.ParamType('$query', TypeOf_1.TypeOf(String))
     ]
   )

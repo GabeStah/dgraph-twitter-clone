@@ -128,22 +128,18 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
       config.dgraph.api.port
     }/api/${uri}`;
 
-    await axios
-      .get(url)
-      .then(axiosResponse => {
-        logger.info(
-          `DgraphQueryExecutor.executeRestApiRequest response %o`,
-          axiosResponse.data
-        );
-        response.response = axiosResponse.data.response;
-        response.success = true;
-        return response;
-      })
-      .catch(exception => {
-        logger.error(exception);
-        response.error = exception;
-        return response;
-      });
+    try {
+      const axiosResponse = await axios.get(url);
+      logger.info(
+        `DgraphQueryExecutor.executeRestApiRequest response %o`,
+        axiosResponse.data
+      );
+      response.response = axiosResponse.data.response;
+      response.success = true;
+    } catch (error) {
+      logger.error(error);
+      response.error = error;
+    }
 
     return response;
   }
@@ -164,28 +160,24 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
       config.dgraph.api.port
     }/api/json`;
 
-    await axios
-      .post(url, this)
-      .then(axiosResponse => {
-        logger.info(
-          `DgraphQueryExecutor.executeJsonApiRequest response %o`,
-          axiosResponse.data
-        );
-        response.response = axiosResponse.data.response;
-        response.success = true;
-        return response;
-      })
-      .catch(exception => {
-        logger.error(exception);
-        response.error = exception;
-        return response;
-      });
+    try {
+      const axiosResponse = await axios.post(url, this);
+      logger.info(
+        `DgraphQueryExecutor.executeJsonApiRequest response %o`,
+        axiosResponse.data
+      );
+      response.response = axiosResponse.data.response;
+      response.success = true;
+    } catch (error) {
+      logger.error(error);
+      response.error = error;
+    }
 
     return response;
   }
 
   /**
-   * Makes a direct request via GraphQL+.
+   * Makes a direct request via GraphQL+-.
    * @param request
    */
   async executeDirectRequest(request?: Serialization): Promise<Serialization> {
@@ -193,7 +185,7 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
     let response = new Serialization({
       message: `Failed to retrieve ${
         this.query.objectType
-      } via direct GraphQL+ request.`,
+      } via direct GraphQL+- request.`,
       request: this.query.query
     });
 
