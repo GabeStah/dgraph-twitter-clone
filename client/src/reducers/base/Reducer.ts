@@ -1,30 +1,32 @@
-import { Action, ActionTypes } from './Action';
+import { Action, ActionType } from './Action';
 import { State } from '../../state/';
+import TweetCard from '../../components/Tweet/TweetList';
+import React from 'react';
 
 export const Reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case ActionTypes.SET_AUTHENTICATED_USER: {
+    case ActionType.SET_AUTHENTICATED_USER: {
       return {
         ...state,
         authUser: action.payload
       };
     }
 
-    case ActionTypes.SET_SEARCH_RESULTS: {
+    case ActionType.SET_SEARCH_RESULTS: {
       return {
         ...state,
         searchResults: action.payload
       };
     }
 
-    case ActionTypes.SET_USER: {
+    case ActionType.SET_USER: {
       return {
         ...state,
         user: action.payload
       };
     }
 
-    case ActionTypes.UPDATE_TWEET: {
+    case ActionType.UPDATE_TWEET: {
       if (!state.tweets) return state;
       const index = state.tweets.findIndex(
         tweet => tweet.uid === action.payload.uid
@@ -38,10 +40,14 @@ export const Reducer = (state: State, action: Action): State => {
       };
     }
 
-    case ActionTypes.SET_TWEETS: {
+    case ActionType.SET_TWEETS: {
       return {
         ...state,
-        tweets: action.payload
+        // Sort in descending order.
+        tweets: action.payload.sort(
+          (a, b) =>
+            +new Date(b['tweet.createdAt']) - +new Date(a['tweet.createdAt'])
+        )
       };
     }
 

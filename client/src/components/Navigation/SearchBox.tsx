@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Form, FormControl } from 'react-bootstrap';
-import { withRouter, Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 const SearchBox = ({ history }) => {
-  const [currentText, setCurrentText] = useState({
-    text: ''
-  });
+  const [currentText, setCurrentText] = useState('');
 
   const handleInputChange = event => {
-    // Destructure textbox `id` and `value` fields.
-    const { id, value } = event.target;
+    // Destructure textbox `value` field.
+    const { value } = event.target;
     // Update params
-    setCurrentText({ ...currentText, [id]: value });
+    setCurrentText(value);
   };
 
   return (
@@ -20,12 +18,12 @@ const SearchBox = ({ history }) => {
         inline
         onSubmit={async event => {
           event.preventDefault();
-          if (!currentText || currentText.text.length === 0) {
+          if (!currentText || currentText.length === 0) {
             return;
           }
 
           // Redirect to search path.
-          history.push(`/search?q=${currentText.text}`);
+          history.push(`/search?q=${currentText}`);
         }}
       >
         <FormControl
@@ -33,7 +31,7 @@ const SearchBox = ({ history }) => {
           className={'mr-sm-2'}
           placeholder={'Search Twitter'}
           type={'text'}
-          value={currentText.text}
+          value={currentText}
           onChange={handleInputChange}
         />
         <Button variant={'outline-success'} type={'submit'}>

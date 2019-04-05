@@ -4,9 +4,8 @@ import { Button, Form } from 'react-bootstrap';
 import { useStateContext } from '../../state';
 // Libs
 import React, { useState } from 'react';
-import { DgraphQueryExecutor, Queries, Tweet } from 'dgraph-query-manager';
-import { Action, ActionTypes } from '../../reducers/';
-import { useDgraphGlobal } from '../../hooks/dgraph';
+import { Tweet } from 'dgraph-query-manager';
+import { Action, ActionType } from '../../reducers/';
 
 const TweetBox = () => {
   const [{ authUser, user, tweets }, dispatch] = useStateContext();
@@ -24,42 +23,39 @@ const TweetBox = () => {
     setCurrentTweet({ ...currentTweet, [id]: value });
   };
 
+  const handleSubmit = async event => {
+    event.preventDefault();
+    // Checks for valid authUser and valid currentTweet text.
+    if (
+      !authUser ||
+      !authUser.uid ||
+      !currentTweet ||
+      currentTweet['tweet.text'].length === 0
+    ) {
+      return;
+    }
+
+    const params = {
+      'tweet.text': currentTweet['tweet.text'],
+      'tweet.user': authUser
+    };
+
+    const serialization = await Tweet.upsert(params as Partial<Tweet>);
+
+    // Tweet created
+    if (serialization.success) {
+      setCurrentTweet(initialFormState);
+      // Only update tweet list if authUser equals viewed user.
+      if (user && user.uid.toString() === authUser.uid.toString()) {
+        dispatch(
+          new Action(ActionType.SET_TWEETS, [...tweets, serialization.response])
+        );
+      }
+    }
+  };
+
   return (
-    <Form
-      className={'TweetBox'}
-      onSubmit={async event => {
-        event.preventDefault();
-        if (
-          !authUser ||
-          !authUser.uid ||
-          !currentTweet ||
-          currentTweet['tweet.text'].length === 0
-        ) {
-          return;
-        }
-
-        const params = {
-          'tweet.text': currentTweet['tweet.text'],
-          'tweet.user': authUser
-        };
-
-        const serialization = await Tweet.upsert(params as Partial<Tweet>);
-
-        // Tweet created
-        if (serialization.success) {
-          setCurrentTweet(initialFormState);
-          // Only update tweet list if authUser equals viewed user.
-          if (user && user.uid.toString() === authUser.uid.toString()) {
-            dispatch(
-              new Action(ActionTypes.SET_TWEETS, [
-                ...tweets,
-                serialization.response
-              ])
-            );
-          }
-        }
-      }}
-    >
+    <Form className={'TweetBox'} onSubmit={handleSubmit}>
       <Form.Group>
         <Form.Control
           id={'tweet.text'}
@@ -67,6 +63,10 @@ const TweetBox = () => {
           type={'textarea'}
           value={currentTweet['tweet.text']}
           placeholder={"What's happening?"}
+          onKeyDown={async event => {
+            // On enter
+            if (event.keyCode === 13) await handleSubmit(event);
+          }}
           onChange={handleInputChange}
         />
         <Button variant={'primary'} type={'submit'}>

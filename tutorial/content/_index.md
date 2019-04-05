@@ -203,7 +203,7 @@ The `dgraph-twitter-clone` application can be installed and configured in just a
     [16:57:04] Starting 'client:start'...
     ```
 
-    The React client should open in a new browser tab automatically. If not, manually browse to the client app at `http://localhost:3000`.
+    The React client should open in a new browser tab automatically. If not, manually browse to the client app at [`http://localhost:3000`](http://localhost:3000).
 
     {{< figure src="/images/client-index.png" link="/images/client-index.png" alt="Client Home Page" >}}
 

@@ -7,7 +7,7 @@ import React from 'react';
 import { useStateContext } from '../../state';
 
 const ProfileCardStats = () => {
-  const [{ user, tweets }, dispatch] = useStateContext();
+  const [{ user, tweets }] = useStateContext();
 
   let content = <h3>Loading Stats</h3>;
   let tweetCount = 0;

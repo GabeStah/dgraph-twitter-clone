@@ -11,14 +11,7 @@ const TweetList = () => {
   let content;
 
   if (tweets && Array.isArray(tweets) && tweets.length > 0) {
-    // Sort Tweets by createdAt date, descending.
-    // tslint:disable-next-line:prefer-object-spread
-    content = tweets
-      .sort(
-        (a, b) =>
-          +new Date(b['tweet.createdAt']) - +new Date(a['tweet.createdAt'])
-      )
-      .map((tweet: any) => <TweetCard key={tweet.uid} tweet={tweet} />);
+    content = tweets.map(tweet => <TweetCard key={tweet.uid} tweet={tweet} />);
   } else if (tweets && !Array.isArray(tweets)) {
     content = <TweetCard key={tweets.uid} tweet={tweets} />;
   } else {

@@ -1,4 +1,4 @@
-export enum ActionTypes {
+export enum ActionType {
   SET_AUTHENTICATED_USER,
   SET_SEARCH_RESULTS,
   SET_USER,
@@ -8,14 +8,14 @@ export enum ActionTypes {
 
 export interface ActionInterface {
   payload: any | undefined;
-  type: ActionTypes;
+  type: ActionType;
 }
 
 export class Action implements ActionInterface {
   payload: any | undefined;
-  type: ActionTypes;
+  type: ActionType;
 
-  constructor(type: ActionTypes, payload?: any) {
+  constructor(type: ActionType, payload?: any) {
     this.type = type;
     this.payload = payload;
   }

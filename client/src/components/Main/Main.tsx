@@ -1,5 +1,5 @@
 // Components
-import DashboardProfileCard from '../Dashboard/DashboardProfileCard';
+import ProfileCard from '../Profile/ProfileCard';
 import Search from '../Search/Search';
 import TweetBox from '../Tweet/TweetBox';
 import TweetList from '../Tweet/TweetList';
@@ -11,23 +11,19 @@ import React from 'react';
 import { DgraphQueryExecutor, Queries } from 'dgraph-query-manager';
 // Local
 import { useDgraphGlobal } from '../../hooks/';
-import { useStateContext } from '../../state';
 import { Route, Switch } from 'react-router-dom';
-import { Action, ActionTypes } from '../../reducers/';
+import { Action, ActionType } from '../../reducers/';
 import config from '../../config';
 import TweetModal from '../Tweet/TweetModal';
 
 const Main = () => {
-  // STATE
-  const [state, dispatch] = useStateContext();
-
   // Default auth user
   const executor = new DgraphQueryExecutor(Queries.User.findFromEmail, {
     $email: config.user.defaultAuthEmail
   });
   const [isLoading, response] = useDgraphGlobal(
     executor,
-    new Action(ActionTypes.SET_AUTHENTICATED_USER),
+    new Action(ActionType.SET_AUTHENTICATED_USER),
     // Only render once.
     [config.user.defaultAuthEmail]
   );
@@ -40,9 +36,9 @@ const Main = () => {
         <Row>
           <Col sm={3}>
             <Switch>
-              <Route path={'/'} exact component={DashboardProfileCard} />
+              <Route path={'/'} exact component={ProfileCard} />
               <Route path={'/search'} exact component={Search} />
-              <Route path={'/:screenName'} component={DashboardProfileCard} />
+              <Route path={'/:screenName'} component={ProfileCard} />
             </Switch>
           </Col>
           <Col>

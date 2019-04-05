@@ -1,5 +1,5 @@
 // Components
-import { Button, Form, FormControl, Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 // Libs
 import React from 'react';
 import SearchBox from './SearchBox';

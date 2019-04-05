@@ -10,11 +10,10 @@ import React from 'react';
 // Local
 import { useStateContext } from '../../state';
 import { useDgraphGlobal } from '../../hooks/';
-import { Action, ActionTypes } from '../../reducers/';
+import { Action, ActionType } from '../../reducers/';
 import config from '../../config';
 
-const DashboardProfileCard = ({ match }) => {
-  const [{ user }, dispatch] = useStateContext();
+const ProfileCard = ({ match }) => {
   const screenName =
     match && match.params && match.params.screenName
       ? match.params.screenName
@@ -28,33 +27,35 @@ const DashboardProfileCard = ({ match }) => {
   );
   const [isScreenNameLoading, responseScreenName] = useDgraphGlobal(
     executorScreenName,
-    new Action(ActionTypes.SET_USER),
+    new Action(ActionType.SET_USER),
     // Re-render if match changes.
     [screenName],
     // Invalid if screenName doesn't exist.
     !screenName
   );
 
-  const executor = new DgraphQueryExecutor(Queries.Tweet.getAllForUser, {
+  const [{ user }] = useStateContext();
+
+  const executorTweets = new DgraphQueryExecutor(Queries.Tweet.getAllForUser, {
     $id: user && user.uid ? user.uid.toString() : undefined
   });
   const [isLoading, response] = useDgraphGlobal(
-    executor,
-    new Action(ActionTypes.SET_TWEETS),
+    executorTweets,
+    new Action(ActionType.SET_TWEETS),
     // Re-render if user changes.
     [user],
     // Invalid if user doesn't exist.
     !user
   );
 
-  let content = <h3>Loading Dashboard</h3>;
+  let content = <h3>Loading Profile</h3>;
 
   if (user) {
     const name = user['user.name'];
     const screenName = user['user.screenName'];
     content = (
-      <Card className='DashboardProfileCard'>
-        <a className='DashboardProfileCard-bg' href={`/${screenName}`} />
+      <Card className='ProfileCard'>
+        <a className='ProfileCard-bg' href={`/${screenName}`} />
         <Card.Body>
           <a href={`/${screenName}`} title={name}>
             <Image
@@ -86,7 +87,7 @@ const DashboardProfileCard = ({ match }) => {
   } else {
     content = (
       <>
-        <h3>No User Dashboard found.</h3>
+        <h3>No User Profile found.</h3>
       </>
     );
   }
@@ -94,4 +95,4 @@ const DashboardProfileCard = ({ match }) => {
   return content;
 };
 
-export default DashboardProfileCard;
+export default ProfileCard;

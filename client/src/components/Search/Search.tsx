@@ -1,7 +1,7 @@
 import React from 'react';
 import { DgraphQueryExecutor, Queries } from 'dgraph-query-manager';
 import { useDgraphGlobal } from '../../hooks/dgraph';
-import { Action, ActionTypes } from '../../reducers/base';
+import { Action, ActionType } from '../../reducers/base';
 import { Card, Image } from 'react-bootstrap';
 import { useStateContext } from '../../state';
 
@@ -26,7 +26,7 @@ const Search = ({ location }) => {
 
   useDgraphGlobal(
     executor,
-    new Action(ActionTypes.SET_TWEETS),
+    new Action(ActionType.SET_TWEETS),
     // Re-render if query changes.
     [queryString],
     undefined,

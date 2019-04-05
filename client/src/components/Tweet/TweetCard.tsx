@@ -17,7 +17,7 @@ import { faRetweet } from '@fortawesome/free-solid-svg-icons';
 import config from '../../config';
 import { useStateContext } from '../../state';
 import { Link } from 'react-router-dom';
-import { Action, ActionTypes } from '../../reducers/';
+import { Action, ActionType } from '../../reducers/';
 
 const TweetCard = props => {
   const tweet = props.tweet;
@@ -101,12 +101,9 @@ const TweetCard = props => {
     // Tweet created
     if (serialization.success) {
       // Dispatch state update to other components.
-      dispatch(new Action(ActionTypes.UPDATE_TWEET, serialization.response));
+      dispatch(new Action(ActionType.UPDATE_TWEET, serialization.response));
     }
   };
-
-  // TODO: Add reply popup modal
-  // see:https://react-bootstrap.github.io/components/modal/
 
   return (
     <Card className='TweetCard'>
