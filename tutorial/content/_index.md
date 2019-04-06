@@ -2,8 +2,7 @@
 title: 'Building a Twitter Clone with Dgraph and React - Part 1: The Architecture'
 date: 2019-03-24T10:42:34-07:00
 draft: false
-weight: 1
-url: 'building-twitter-clone-with-dgraph-react-part-1-architecture'
+# url: 'building-twitter-clone-with-dgraph-react-part-1-architecture'
 ---
 
 <script type="text/javascript">window.DGRAPH_ENDPOINT = "http://127.0.0.1:8080/query?latency=true";</script>
@@ -47,7 +46,7 @@ We need to manipulate data on our Dgraph server. Dgraph's official [dgraph-js-ht
 
 ### GraphQL+-
 
-Dgraph's [GraphQL+- query language](https://docs.dgraph.io/query-language/) was developed to bring much of the power of Facebook's popular [GraphQL](https://facebook.github.io/graphql/) to graph databases, while simultaneously adding features that better suit the specific needs of graph databases. A fundamental component of GraphQL+- is the **query**. [Queries for Dgraph](https://docs.dgraph.io/design-concepts/#queries) are used to retrieve and manipulate data, just like queries in relational databases.
+Dgraph's [GraphQL+- query language](https://docs.dgraph.io/query-language/) was developed to bring much of the power of Facebook's popular [GraphQL](https://graphql.github.io/) to graph databases, while simultaneously adding features that better suit the specific needs of graph databases. A fundamental component of GraphQL+- is the **query**. [Queries for Dgraph](https://docs.dgraph.io/design-concepts/#queries) are used to retrieve and manipulate data, just like queries in relational databases.
 
 For example, the following query uses the `eq` function to find all nodes with a `user.screenName` equal to `GabeStah`.
 
@@ -1632,6 +1631,6 @@ Lastly, the `DgraphQueryExecutor.executeJsonApiRequest()` method is similar to `
 
 ## Next Steps
 
-We've gone over the architecture of our `dgraph-twitter-clone` app and examined how we'll use the `dgraph-query-manager` package to enable both our API and client apps to communicate with one another -- or directly with Dgraph -- with a stable groundwork for expanding on these apps or taking these concepts int your own projects. Take a look at [Part 2 - The API]({{% relref "../part-2" %}}) where we'll dig into the API side of our application, which is built using the popular [ExpressJS](https://expressjs.com/) library. You'll see how a few smart design decisions give us tremendous flexibility to connect with and utilize Dgraph in whatever manner best suits our team or application needs.
+We've gone over the architecture of our `dgraph-twitter-clone` app and examined how we'll use the `dgraph-query-manager` package to enable both our API and client apps to communicate with one another -- or directly with Dgraph -- with a stable groundwork for expanding on these apps or taking these concepts int your own projects. Take a look at [Part 2 - The API]({{% ref "/part-2-api" %}}) where we'll dig into the API side of our application, which is built using the popular [ExpressJS](https://expressjs.com/) library. You'll see how a few smart design decisions give us tremendous flexibility to connect with and utilize Dgraph in whatever manner best suits our team or application needs.
 
-From there, head over to [Part 3 - The Client]({{% relref "../part-3" %}}), which explores our [React](https://reactjs.org/) client application. You'll see how its use of [React Hooks](https://reactjs.org/docs/hooks-intro.html), effective state management, and actions + reducers allow us to create a simple, but effective Twitter-like application backed by Dgraph and its powerful GraphQL+- syntax.
+From there, head over to [Part 3 - The Client]({{% ref "/part-3-client" %}}), which explores our [React](https://reactjs.org/) client application. You'll see how its use of [React Hooks](https://reactjs.org/docs/hooks-intro.html), effective state management, and actions + reducers allow us to create a simple, but effective Twitter-like application backed by Dgraph and its powerful GraphQL+- syntax.

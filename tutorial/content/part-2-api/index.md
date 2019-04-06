@@ -2,14 +2,13 @@
 title: 'Building a Twitter Clone with Dgraph and React - Part 2: The API'
 date: 2019-03-24T10:42:34-07:00
 draft: false
-weight: 2
-url: 'building-twitter-clone-with-dgraph-react-part-2-api'
+# url: 'building-twitter-clone-with-dgraph-react-part-2-api'
 ---
 
 <script type="text/javascript">window.DGRAPH_ENDPOINT = "http://127.0.0.1:8080/query?latency=true";</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/typescript.min.js"></script>
 
-In [part 1]({{% relref "../part-1" %}}) of this series we explored the overall architecture of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) application and the how the [`dgraph-query-manager`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager) package provides the majority of the business logic that both the API and client apps use to create a basic Twitter clone powered by a Dgraph data layer.
+In [Part 1]({{% ref "/" %}}) of this series we explored the overall architecture of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) application and the how the [`dgraph-query-manager`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager) package provides the majority of the business logic that both the API and client apps use to create a basic Twitter clone powered by a Dgraph data layer.
 
 In this second installment we'll dig into the simple `dgraph-twitter-clone` API, which allows for either REST API endpoint requests or JSON-like payload requests, depending on the needs of the requester. The API relies heavily on routing and other functionality provided by the [ExpressJS](https://expressjs.com/) framework, so check out their [official documentation](https://expressjs.com/en/4x/api.html) for more info on Express. With that, let's get into it!
 
@@ -72,7 +71,7 @@ Routes.post(
 );
 ```
 
-As you may recall from the [Simplifying Query Execution]({{< ref "/#simplifying-query-execution" >}}) section in **Part 1** the `DgraphQueryExecutor.executeJsonApiRequest()` method passes the current `DgraphQueryExecutor` instance in JSON format to the `/api/json` API endpoint before handling the response.
+As you may recall from the [Simplifying Query Execution]({{% ref "/#simplifying-query-execution" %}}) section in **Part 1** the `DgraphQueryExecutor.executeJsonApiRequest()` method passes the current `DgraphQueryExecutor` instance in JSON format to the `/api/json` API endpoint before handling the response.
 
 ```ts
 // File: packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts
@@ -211,7 +210,7 @@ export const SearchQueries = {
 };
 ```
 
-As mentioned in the [Organizing Queries]({{< ref "/#organizing-queries" >}}) section in **Part 1** one advantage to creating the `Query` class is to provide some additional helper functionality. In the case of the `searchBy` `Query`, the first two `ParamTypes` passed to it have a third argument of `true`, which tells the constructor that these parameters are _substitute_ values. That is, before sending the query string to Dgraph the `$function` and `$predicate` placeholder values within the query string are replaced with the parameter values passed to the `DgraphQueryExecutor` that is invoking this `Query`. This allows us to create some powerful, dynamic queries at runtime with very little overhead.
+As mentioned in the [Organizing Queries]({{% ref "/#organizing-queries" %}}) section in **Part 1** one advantage to creating the `Query` class is to provide some additional helper functionality. In the case of the `searchBy` `Query`, the first two `ParamTypes` passed to it have a third argument of `true`, which tells the constructor that these parameters are _substitute_ values. That is, before sending the query string to Dgraph the `$function` and `$predicate` placeholder values within the query string are replaced with the parameter values passed to the `DgraphQueryExecutor` that is invoking this `Query`. This allows us to create some powerful, dynamic queries at runtime with very little overhead.
 
 For example, let's create a new `DgraphQueryExecutor` instance and give it the `Queries.Search.searchBy` `Query` and the following parameters.
 
@@ -268,4 +267,4 @@ Within this async wrapper it generates the params object based on the passed par
 
 Believe it or not that's all there is to our entire API app! While much of the logic is handled elsewhere, such as the `dgraph-query-manager` package, it's still relatively simple to create an Express-based API that can serve multiple types of data and calls, including JSON payloads and RESTful endpoints.
 
-Check out [Part 3]({{% relref "../part-3" %}}) where we'll explore the client application created with the popular React library. We'll make heavy use of the new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature added in February of this year, which will help us manage both local and global state across our Twitter clone app, so we can query Dgraph directly or via our API.
+Check out [Part 3]({{% ref "/part-3-client" %}}) where we'll explore the client application created with the popular React library. We'll make heavy use of the new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature added in February of this year, which will help us manage both local and global state across our Twitter clone app, so we can query Dgraph directly or via our API.

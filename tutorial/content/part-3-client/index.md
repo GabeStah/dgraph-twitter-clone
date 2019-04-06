@@ -2,20 +2,19 @@
 title: 'Building a Twitter Clone with Dgraph and React - Part 3: The Client'
 date: 2019-03-24T10:42:34-07:00
 draft: false
-weight: 3
-url: 'building-twitter-clone-with-dgraph-react-part-3-client'
+# url: 'building-twitter-clone-with-dgraph-react-part-3-client'
 ---
 
 <script type="text/javascript">window.DGRAPH_ENDPOINT="http://127.0.0.1:8080/query?latency=true";</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/typescript.min.js"></script>
 
-In **Part 1** of this series, [The Architecture]({{% relref "../part-1" %}}), we examined the design and structure of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) app. In **Part 2**, [The API]({{% relref "../part-2" %}}), we looked at the API layer and how it allows our Twitter clone to either utilize -- or completely bypass -- the use of an API in favor of direct transactions with its Dgraph data layer.
+In **Part 1** of this series, [The Architecture]({{% ref "/" %}}), we examined the design and structure of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) app. In **Part 2**, [The API]({{% ref "/part-2-api" %}}), we looked at the API layer and how it allows our Twitter clone to either utilize -- or completely bypass -- the use of an API in favor of direct transactions with its Dgraph data layer.
 
 In this final part we'll explore the React-based client of our `dgraph-twitter-clone` app. We'll see how a basic [React](https://reactjs.org/) app can be used in conjunction with new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature added to React in early 2019 to create a stateful and elegant single-page application powered by a Dgraph database for fast and efficient data management. Let's dive in!
 
 ## Installing the Client
 
-It is highly recommended you install the `dgraph-twitter-clone/client` application in a local dev environment so you can test it out and see the code in action as we walk through it throughout this guide. If you haven't done so, feel free to check out the [installation]({{< ref "/#installation" >}}) instructions from **Part 1**. Alternatively, if you already installed the `dgraph-twitter-clone` repo and have Dgraph up and running, you can start the client app by executing the `npm start` or `yarn start` command from the `dgraph-twitter-clone/client` directory.
+It is highly recommended you install the `dgraph-twitter-clone/client` application in a local dev environment so you can test it out and see the code in action as we walk through it throughout this guide. If you haven't done so, feel free to check out the [installation]({{% ref "/#installation" %}}) instructions from **Part 1**. Alternatively, if you already installed the `dgraph-twitter-clone` repo and have Dgraph up and running, you can start the client app by executing the `npm start` or `yarn start` command from the `dgraph-twitter-clone/client` directory.
 
 ## React Overview
 
@@ -445,7 +444,7 @@ const Main = () => {
 export default Main;
 ```
 
-Anything that is to be rendered by a component must be included in its `return` value, so all business logic prior to rendering occurs above the return within a given function component. In this case we start by instantiating a new `DgraphQueryExecutor`, which you can learn more about in the [Simplifying Query Execution]({{% relref "../part-1#simplifying-query-execution" %}}) section from **Part 1**. The `User.findFromEmail` `Query` lets us find a user by email, and we're passing a static value defined in `config.user.defaultAuthEmail`. Obviously, in a production application this would be obtained from the user during logic authentication, or perhaps from a session cookie. In this case, we don't bother adding user authentication logic to the app since it's unnecessary, so we're just hard-coding authentication for a single, specific user.
+Anything that is to be rendered by a component must be included in its `return` value, so all business logic prior to rendering occurs above the return within a given function component. In this case we start by instantiating a new `DgraphQueryExecutor`, which you can learn more about in the [Simplifying Query Execution]({{% ref "/#simplifying-query-execution" %}}) section from **Part 1**. The `User.findFromEmail` `Query` lets us find a user by email, and we're passing a static value defined in `config.user.defaultAuthEmail`. Obviously, in a production application this would be obtained from the user during logic authentication, or perhaps from a session cookie. In this case, we don't bother adding user authentication logic to the app since it's unnecessary, so we're just hard-coding authentication for a single, specific user.
 
 To accomplish this we're invoking a custom React hook called `useDgraphGlobal`, which can be found in the `client/src/hooks/dgraph/useDgraphGlobal.ts` [file](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/client/src/hooks/dgraph/useDgraphGlobal.ts).
 
@@ -855,7 +854,7 @@ Here's a sample of what that returns.
 }
 ```
 
-Notice that our schema is structured such that `hashtag.hashtag` is a child of `tweet.hashtag`. However, we are searching for "parent" tweet nodes that contain hashtags with `user` text, so we use a **reverse edge** (`~`) to look at the relationship in the opposite direction as normal. In our Dgraph [schema]({{% relref "../part-1#schema" %}}) we added the `@reverse` directive to the `tweet.hashtag` predicate so Dgraph would automatically compute the reverse edge for us.
+Notice that our schema is structured such that `hashtag.hashtag` is a child of `tweet.hashtag`. However, we are searching for "parent" tweet nodes that contain hashtags with `user` text, so we use a **reverse edge** (`~`) to look at the relationship in the opposite direction as normal. In our Dgraph [schema]({{% ref "/#schema" %}}) we added the `@reverse` directive to the `tweet.hashtag` predicate so Dgraph would automatically compute the reverse edge for us.
 
 ---
 
@@ -1593,7 +1592,7 @@ Other than that, it behave much the same, allowing the `TweetModal` component to
 
 Whew! That was quite a lot to cover throughout this guide, but hopefully this series helped to illustrate how any type of app -- from this relatively simple `dgraph-twitter-clone` to a large production-scale, distributed system -- can realize significant benefits by integrating with a graph database like Dgraph.
 
-In [The Architecture - Schema]({{ < ref "/#schema" >}}) we explored how Dgraph's schema specification makes it easy to design complex data structures _without_ the need to define (or even know about) explicit relationships. This flexibility allows your data layer to be dynamically expanded and mutate to the needs of the application over time. In fact, while not really a recommended practice, Dgraph has no problem accepting data with unknown predicates, and automatically adding them to the schema for future use. Check out the [Schema documentation](https://docs.dgraph.io/query-language/#schema) for more details.
+In [The Architecture - Schema]({{% ref "/#schema" %}}) we explored how Dgraph's schema specification makes it easy to design complex data structures _without_ the need to define (or even know about) explicit relationships. This flexibility allows your data layer to be dynamically expanded and mutate to the needs of the application over time. In fact, while not really a recommended practice, Dgraph has no problem accepting data with unknown predicates, and automatically adding them to the schema for future use. Check out the [Schema documentation](https://docs.dgraph.io/query-language/#schema) for more details.
 
 In the [Search Component](#search-component) section we also explored how Dgraph's GraphQL+- makes it easy to execute performant joins and reverse joins across any shape of data. With features like [reverse edges](https://docs.dgraph.io/query-language/#reverse-edges), [powerful indexing](https://docs.dgraph.io/query-language/#indexing), [filter logic](https://docs.dgraph.io/query-language/#connecting-filters), [query](https://docs.dgraph.io/query-language/#query-variables) and [value](https://docs.dgraph.io/query-language/#value-variables) variables, [GroupBy](https://docs.dgraph.io/query-language/#groupby), and much more, Dgraph eliminates many of the potential headaches found when trying to perform complex joins across large datasets within traditional SQL-like databases. Head over to the [Query Language](https://docs.dgraph.io/query-language/) documentation to get tons more info on GraphQL+- and how it can streamline your data layer.
 

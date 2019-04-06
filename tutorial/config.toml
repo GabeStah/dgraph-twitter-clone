@@ -8,19 +8,17 @@ theme = "hugo-docs"
   fencedCode = true
 
 [[menu.main]]
-  name = "Part 1: The Architecture"
-  url = "/building-twitter-clone-with-dgraph-react-part-1-architecture"
-  identifier = "building-twitter-clone-with-dgraph-react-part-1-architecture"
-  weight = -1
-
+  name        = "Part 1: The Architecture"
+  url         = "/"
+  identifier  = "home"
+  weight      = -1
 [[menu.main]]
   name = "Part 2: The API"
-  url = "/building-twitter-clone-with-dgraph-react-part-2-api"
-  identifier = "building-twitter-clone-with-dgraph-react-part-2-api"
+  url = "/part-2-api/"
+  identifier = "part-2-api"
   weight = 1
-
 [[menu.main]]
   name = "Part 3: The Client"
-  url = "/building-twitter-clone-with-dgraph-react-part-3-client"
-  identifier = "building-twitter-clone-with-dgraph-react-part-3-client"
+  url = "/part-3-client/"
+  identifier = "part-3-client"
   weight = 2
