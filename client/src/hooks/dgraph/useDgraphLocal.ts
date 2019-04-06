@@ -2,33 +2,35 @@
 import { logger } from '../../helpers';
 // Libs
 import { useEffect, useState } from 'react';
-import { DgraphQueryExecutor, Serialization } from 'dgraph-query-manager';
+import { DgraphQueryExecutor } from 'dgraph-query-manager';
 
 /**
  * Custom React hook that performs the heavy lifting of data retrieval
  * from Dgraph and uses local state.  Accepts a DgraphQueryExecutor that is
  * executed, the response of which is assigned to state.
  *
- * @param executor - Executor to be executed.
- * @param dependencies - Values that will trigger a re-render upon change.
+ * @param parameters.executor Executor to be executed.
+ * @param parameters.dependencies Values that will trigger a re-render upon change.
+ * @param parameters.allowFailure Allows failed result to still be dispatched to state.
  */
-export const useDgraphLocal = (
-  executor: DgraphQueryExecutor,
-  dependencies: any
-): [boolean, Serialization] => {
+export const useDgraphLocal = (parameters: {
+  executor: DgraphQueryExecutor;
+  dependencies: any;
+  allowFailure?: boolean;
+}): [boolean, any] => {
+  const { executor, dependencies, allowFailure = false } = parameters;
   const [isLoading, setIsLoading]: [boolean, Function] = useState(true);
-  const [response, setResponse]: [Serialization | any, Function] = useState(
-    executor
-  );
+  const [response, setResponse]: [any, Function] = useState(undefined);
 
-  // Call useEffect unconditionally.
   useEffect(() => {
     setIsLoading(true);
     executor
       .execute()
       .then(serialization => {
         setIsLoading(false);
-        setResponse(serialization.response);
+        if (serialization.success || allowFailure) {
+          setResponse(serialization.response);
+        }
       })
       .catch(exception => {
         logger.error(exception);

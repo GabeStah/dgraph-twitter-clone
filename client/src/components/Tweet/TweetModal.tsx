@@ -23,11 +23,10 @@ const TweetModal = ({ match }) => {
     $id: uid
   });
 
-  const [isLoading, response] = useDgraphLocal(
+  const [isLoading, response] = useDgraphLocal({
     executor,
-    // Only render once.
-    [uid]
-  );
+    dependencies: [uid]
+  });
 
   let content = <></>;
 

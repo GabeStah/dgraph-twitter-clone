@@ -21,12 +21,11 @@ const Main = () => {
   const executor = new DgraphQueryExecutor(Queries.User.findFromEmail, {
     $email: config.user.defaultAuthEmail
   });
-  const [isLoading, response] = useDgraphGlobal(
+  const [isLoading, response] = useDgraphGlobal({
     executor,
-    new Action(ActionType.SET_AUTHENTICATED_USER),
-    // Only render once.
-    [config.user.defaultAuthEmail]
-  );
+    action: new Action(ActionType.SET_AUTHENTICATED_USER),
+    dependencies: [config.user.defaultAuthEmail]
+  });
 
   return (
     <Container>

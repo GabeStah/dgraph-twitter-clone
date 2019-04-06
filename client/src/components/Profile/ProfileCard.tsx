@@ -25,28 +25,28 @@ const ProfileCard = ({ match }) => {
       $screenName: screenName
     }
   );
-  const [isScreenNameLoading, responseScreenName] = useDgraphGlobal(
-    executorScreenName,
-    new Action(ActionType.SET_USER),
+  const [isScreenNameLoading, responseScreenName] = useDgraphGlobal({
+    executor: executorScreenName,
+    action: new Action(ActionType.SET_USER),
     // Re-render if match changes.
-    [screenName],
+    dependencies: [screenName],
     // Invalid if screenName doesn't exist.
-    !screenName
-  );
+    invalid: !screenName
+  });
 
   const [{ user }] = useStateContext();
 
   const executorTweets = new DgraphQueryExecutor(Queries.Tweet.getAllForUser, {
     $id: user && user.uid ? user.uid.toString() : undefined
   });
-  const [isLoading, response] = useDgraphGlobal(
-    executorTweets,
-    new Action(ActionType.SET_TWEETS),
+  const [isLoading, response] = useDgraphGlobal({
+    executor: executorTweets,
+    action: new Action(ActionType.SET_TWEETS),
     // Re-render if user changes.
-    [user],
+    dependencies: [user],
     // Invalid if user doesn't exist.
-    !user
-  );
+    invalid: !user
+  });
 
   let content = <h3>Loading Profile</h3>;
 

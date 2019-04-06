@@ -1,6 +1,6 @@
 baseURL = "https://dgraph-twitter-clone-tutorial.netlify.com/"
 languageCode = "en-us"
-title = "Dgraph Twitter Clone Tutorial"
+title = "Building a Twitter Clone with Dgraph and React"
 theme = "hugo-docs"
 
 [blackfriday]
@@ -9,18 +9,18 @@ theme = "hugo-docs"
 
 [[menu.main]]
   name = "Part 1: The Architecture"
-  url = "/"
-  identifier = "home"
+  url = "/building-twitter-clone-with-dgraph-react-part-1-architecture"
+  identifier = "building-twitter-clone-with-dgraph-react-part-1-architecture"
   weight = -1
 
 [[menu.main]]
   name = "Part 2: The API"
-  url = "/part-2-the-api/"
-  identifier = "part-2"
+  url = "/building-twitter-clone-with-dgraph-react-part-2-api"
+  identifier = "building-twitter-clone-with-dgraph-react-part-2-api"
   weight = 1
 
 [[menu.main]]
   name = "Part 3: The Client"
-  url = "/part-3-the-client/"
-  identifier = "part-3"
+  url = "/building-twitter-clone-with-dgraph-react-part-3-client"
+  identifier = "building-twitter-clone-with-dgraph-react-part-3-client"
   weight = 2

@@ -43,11 +43,14 @@ export const Reducer = (state: State, action: Action): State => {
     case ActionType.SET_TWEETS: {
       return {
         ...state,
-        // Sort in descending order.
-        tweets: action.payload.sort(
-          (a, b) =>
-            +new Date(b['tweet.createdAt']) - +new Date(a['tweet.createdAt'])
-        )
+        // If array, sort in descending order.
+        tweets: Array.isArray(action.payload)
+          ? action.payload.sort(
+              (a, b) =>
+                +new Date(b['tweet.createdAt']) -
+                +new Date(a['tweet.createdAt'])
+            )
+          : action.payload
       };
     }
 

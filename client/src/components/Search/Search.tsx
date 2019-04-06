@@ -2,7 +2,7 @@ import React from 'react';
 import { DgraphQueryExecutor, Queries } from 'dgraph-query-manager';
 import { useDgraphGlobal } from '../../hooks/dgraph';
 import { Action, ActionType } from '../../reducers/base';
-import { Card, Image } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { useStateContext } from '../../state';
 
 const Search = ({ location }) => {
@@ -20,18 +20,21 @@ const Search = ({ location }) => {
     new URLSearchParams(location.search).get('q')
   );
 
+  console.log(queryString);
+
   const executor = new DgraphQueryExecutor(Queries.Search.search, {
     $query: queryString
   });
 
-  useDgraphGlobal(
+  useDgraphGlobal({
     executor,
-    new Action(ActionType.SET_TWEETS),
+    action: new Action(ActionType.SET_TWEETS),
     // Re-render if query changes.
-    [queryString],
-    undefined,
-    true
-  );
+    dependencies: [queryString],
+    invalid: undefined,
+    // Accept empty results.
+    allowFailure: true
+  });
 
   return (
     <Card className='SearchCard'>

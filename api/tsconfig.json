@@ -12,5 +12,16 @@
     "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"],
-  "exclude": [".idea", ".vscode", "node_modules", "dist"]
+  "exclude": [".idea", ".vscode", "node_modules", "dist"],
+  "typedocOptions": {
+    "mode": "file",
+    "excludePrivate": false,
+    "excludeProtected": false,
+    "excludeExternals": true,
+    "excludeNotExported": false,
+    "includeDeclarations": true,
+    "target": "ES6",
+    "gitRevision": "master",
+    "listInvalidSymbolLinks": true
+  }
 }

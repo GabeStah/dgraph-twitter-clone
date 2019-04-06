@@ -19,15 +19,14 @@ import { useStateContext } from '../../state';
 import { Link } from 'react-router-dom';
 import { Action, ActionType } from '../../reducers/';
 
-const TweetCard = props => {
-  const tweet = props.tweet;
+const TweetCard = ({ tweet }) => {
   if (!tweet || !tweet.uid) return <></>;
-  const [{ user }, dispatch] = useStateContext();
+  const [{ authUser }, dispatch] = useStateContext();
   const [replies, setReplies]: [any, Function] = useState(undefined);
   const [, setIsLoading]: [boolean, Function] = useState(true);
 
   /**
-   * Set replies to passed props.tweet.
+   * Set replies.
    */
   useEffect(() => {
     const params = {
@@ -60,16 +59,18 @@ const TweetCard = props => {
   }
 
   /**
-   * Check if current User has replied to Tweet.
+   * Check if currently authed User has replied to Tweet.
    */
-  const hasUserReplied = () => {
-    if (!user || !replies || !user.uid) return false;
+  const hasAuthUserReplied = (): boolean => {
+    if (!authUser || !replies || !authUser.uid) {
+      return false;
+    }
     return replies.some(reply => {
-      if (user.uid && reply) {
+      if (authUser.uid && reply) {
         return (
           reply['tweet.user'] &&
           reply['tweet.user'].uid &&
-          reply['tweet.user'].uid.toString() === user.uid.toString()
+          reply['tweet.user'].uid.toString() === authUser.uid.toString()
         );
       }
     });
@@ -113,7 +114,7 @@ const TweetCard = props => {
           <Button
             className={'reply'}
             variant={'link'}
-            active={hasUserReplied()}
+            active={hasAuthUserReplied()}
           >
             <FontAwesomeIcon icon={['far', 'comment']} />{' '}
             {numeral(replies ? replies.length : 0).format('0a')}

@@ -1,6 +1,6 @@
 {
   "name": "dgraph-twitter-client",
-  "version": "0.4.166",
+  "version": "0.4.167",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
