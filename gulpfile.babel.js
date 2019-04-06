@@ -153,8 +153,7 @@ gulp.task(
     'packages:remove:modules',
     'packages:install:modules',
     'packages:build',
-    'packages:push',
-    'docs:all'
+    'packages:push'
   )
 );
 

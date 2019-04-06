@@ -8,9 +8,13 @@ draft: false
 <script type="text/javascript">window.DGRAPH_ENDPOINT = "http://127.0.0.1:8080/query?latency=true";</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/typescript.min.js"></script>
 
-In [Part 1]({{% ref "/" %}}) of this series we explored the overall architecture of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) application and the how the [`dgraph-query-manager`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager) package provides the majority of the business logic that both the API and client apps use to create a basic Twitter clone powered by a Dgraph data layer.
+In [Part 1 - The Architecture]({{% ref "/" %}}) we explored the overall architecture of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) application and the how the [`dgraph-query-manager`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager) package provides the majority of the business logic that both the API and client apps use to create a basic Twitter clone powered by a Dgraph data layer.
 
 In this second installment we'll dig into the simple `dgraph-twitter-clone` API, which allows for either REST API endpoint requests or JSON-like payload requests, depending on the needs of the requester. The API relies heavily on routing and other functionality provided by the [ExpressJS](https://expressjs.com/) framework, so check out their [official documentation](https://expressjs.com/en/4x/api.html) for more info on Express. With that, let's get into it!
+
+## Installing the API
+
+If you'd like to install and run the `dgraph-twitter-clone/api` app on your local machine to easily follow along with this guide you can do so by following the [installation]({{% ref "/#installation" %}}) instructions from **Part 1**. Alternatively, if you've already cloned the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) repository and have Dgraph up and running, you can start the API by executing the `npm start` or `yarn start` command from the `dgraph-twitter-clone/api` directory.
 
 ## Initializing the API App
 
@@ -259,7 +263,7 @@ query find($query: string) {
 {{</ runnable >}}
 <!-- prettier-ignore-end -->
 
-Back to the `createQueryRoutes()` function above. It loops through every `Query` in the `Queries` object found in `packages/dgraph-query-manager/src/classes/Queries/index.ts`, which itself assigns sub-categories to search, tweet, and user queries. For each `Query` entry it finds it creates an asynchronous wrapper callback that will be invoked when the matching `Query.route` REST endpoint is hit according to ExpressJS.
+Back to the `createQueryRoutes()` function above. It loops through every `Query` in the `Queries` object found in `packages/dgraph-query-manager/src/classes/Queries/index.ts`, which itself assigns sub-categories to search, tweet, and user queries. For each `Query` entry it finds it creates an asynchronous wrapper callback that will be invoked when the matching `Query.route` REST endpoint is hit via ExpressJS.
 
 Within this async wrapper it generates the params object based on the passed params extracted from the API endpoint query params. For example, ExpressJS likes params in a `/:param` format, so the wrapper function extrapolates based on the known `Query.paramTypes` what to extract from the API endpoint URL. With the params in hand the last step is just to create a new `DgraphQueryExecutor` instance into which the query and the newly-generated params are passed. Finally, it executes the `DgraphQueryExecutor` with a `DgraphConnectionType.DIRECT` connection, which will result in a call to the `DgraphQueryExecutor.executeDirectRequest()` method. As we saw in the [Simplifying Query Execution]({{< ref "/#simplifying-query-execution" >}}) section this method invokes a direct Dgraph transaction through the `dgraph-js-http` library and returns a `Serialization` result.
 

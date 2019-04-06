@@ -8,7 +8,7 @@ draft: false
 <script type="text/javascript">window.DGRAPH_ENDPOINT="http://127.0.0.1:8080/query?latency=true";</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/typescript.min.js"></script>
 
-In **Part 1** of this series, [The Architecture]({{% ref "/" %}}), we examined the design and structure of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) app. In **Part 2**, [The API]({{% ref "/part-2-api" %}}), we looked at the API layer and how it allows our Twitter clone to either utilize -- or completely bypass -- the use of an API in favor of direct transactions with its Dgraph data layer.
+In [Part 1 - The Architecture]({{% ref "/" %}}) we examined the design and structure of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) app. In [Part 2 - The API]({{% ref "/part-2-api" %}}) we looked at the API layer and how it allows our Twitter clone to either utilize -- or completely bypass -- the use of an API in favor of direct transactions with its Dgraph data layer.
 
 In this final part we'll explore the React-based client of our `dgraph-twitter-clone` app. We'll see how a basic [React](https://reactjs.org/) app can be used in conjunction with new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature added to React in early 2019 to create a stateful and elegant single-page application powered by a Dgraph database for fast and efficient data management. Let's dive in!
 
