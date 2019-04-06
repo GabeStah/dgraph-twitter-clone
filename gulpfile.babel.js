@@ -40,21 +40,22 @@ function execCommandAsync(command, options) {
 }
 
 gulp.task('api:docs', async () =>
-  execCommandAsync('typedoc --out docs ./src', { cwd: API.root }).catch(e =>
-    reject(e)
-  )
+  execCommandAsync('typedoc --out ../tutorial/static/docs/api ./src', {
+    cwd: API.root
+  }).catch(e => reject(e))
 );
 
 gulp.task('client:docs', async () =>
-  execCommandAsync('typedoc --out docs ./src', { cwd: CLIENT.root }).catch(e =>
-    reject(e)
-  )
+  execCommandAsync('typedoc --out ../tutorial/static/docs/client ./src', {
+    cwd: CLIENT.root
+  }).catch(e => reject(e))
 );
 
 gulp.task('package:docs', async () =>
-  execCommandAsync('typedoc --out docs ./src', { cwd: PACKAGE.root }).catch(e =>
-    reject(e)
-  )
+  execCommandAsync(
+    'typedoc --out ../../tutorial/static/docs/dgraph-query-manager ./src',
+    { cwd: PACKAGE.root }
+  ).catch(e => reject(e))
 );
 
 gulp.task('docs:all', gulp.parallel('api:docs', 'client:docs', 'package:docs'));

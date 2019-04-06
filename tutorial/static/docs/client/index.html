@@ -1,0 +1,267 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>dgraph-twitter-client</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">dgraph-twitter-client</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> dgraph-twitter-client</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="dgraph-twitter-clone-client">Dgraph Twitter Clone - Client</h1>
+				<p>An React-based client application to mimic Twitter&#39;s functionality with Dgraph integration.  Can perform Dgraph transactions directly, or through the <a href="https://github.com/GabeStah/dgraph-twitter-clone-api">Dgraph Twitter Clone - API</a>.</p>
+				<p><em>Note</em>: This project was bootstrapped with <a href="https://github.com/facebook/create-react-app">Create React App</a>.</p>
+				<h2 id="prerequisites">Prerequisites</h2>
+				<p>The Dgraph &#39;trio&#39; should be up and running.  All development was performed using a locally-installed Dgraph via the documentation&#39;s <a href="https://docs.dgraph.io/get-started/#docker-compose">Docker Compose</a> file.</p>
+				<h2 id="install">Install</h2>
+				<p>Install with Yarn or NPM.</p>
+				<pre><code class="language-bash">$ yarn install</code></pre>
+				<h3 id="packages-installation">Packages Installation</h3>
+				<p>Shared packages are locally stored in the <a href="https://github.com/GabeStah/dgraph-twitter-clone-api">Dgraph Twitter Clone - API</a>&#39;s <code>/packages</code> directory.  See that <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/README.md#packages-installation"><code>README.md</code></a> for more information.</p>
+				<h2 id="configuration">Configuration</h2>
+				<p>You may need to change the location to your running Dgraph installation in the <code>dgraph-adapter</code> or <code>dgraph-adapter-http</code> config files (<code>dgraph-adapter-http</code> is the default).</p>
+				<ol>
+					<li>Open <code>dgraph-adapter-http/config/development.ts</code> (or <code>production.ts</code> if applicable).</li>
+					<li>Set the <code>dgraph.adapter.address</code> to the Dgraph server endpoint:</li>
+				</ol>
+				<pre><code class="language-ts"><span class="hljs-keyword">const</span> development = {
+    dgraph: {
+        adapter: {
+            address: <span class="hljs-string">'http://192.168.99.100:8080'</span>
+        },
+    },
+    <span class="hljs-comment">// ...</span>
+}</code></pre>
+				<h2 id="running">Running</h2>
+				<p>Start server with <code>npm start</code> to execute the create react scripts.</p>
+				<h2 id="design">Design</h2>
+				<p>Since React is so popular I decided to build this app in React.  Additionally, <a href="https://reactjs.org/blog/2019/02/06/react-v16.8.0.html">React 16.8</a> just came out a few months ago and included the new <code>React Hooks</code> feature, so it seemed like as good opportunity to illustrate how an app can use Hooks and Effects for stateful logic and data manipulation.</p>
+				<p>I initially began this project by creating the REST API, so I decided to embrace that and allow the <code>Dgraph Twitter Clone - Client</code> to hook into and use either the API or direct calls to the Dgraph server to perform transactions and queries.  More information can be found <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/README.md#models-and-packages">here</a>.</p>
+				<p>Outside of normal React component hierarchies and <code>tsx</code> files, most of the logic for the client&#39;s data retrieval occurs in the <code>useDgraph</code> custom hook found in <a href="https://github.com/GabeStah/dgraph-twitter-clone-client/blob/master/src/hooks/dgraph.ts"><code>src/hooks/dgraph.ts</code></a>.  As discussed in the <a href="https://github.com/GabeStah/dgraph-twitter-clone-api#models-and-packages">API</a> readme, the <code>Serialization</code> class is used here to handle both incoming requests and outgoing responses.  Depending on the user&#39;s configuration, the <code>DgraphConnectionType</code> determines whether the transaction is executed directly on the Dgraph server via <code>dgraph-js-http</code>, or indirectly via the RESTful <code>dgraph-twitter-clone-api</code>.</p>
+				<p>The <code>useEffect</code> call handles what would normally be <code>componentDidMount</code>, <code>componentDidUpdate</code>, and <code>componentWillUnmount</code> methods in a class-based React Component.  In this case, the effect function is executed after the calling component is rendered.  Additionally, if the passed <code>dependencies</code> value changes, React will recognize this diff and execute the <code>useEffect</code> function again on the next render update.  However, if <code>dependencies</code> don&#39;t change, the effect is not called a second time.  A successful response from either source is set to the <code>serializedResponse</code> state value via the <code>setSerialization</code> function call.</p>
+				<p>The <a href="https://github.com/GabeStah/dgraph-twitter-clone-client/blob/master/src/App.tsx"><code>App</code></a> component shows an example of using the <code>useDgraph</code> hook.  It (currently) passes a static email value to the <code>DgraphQueryExecutor</code> instance with the <code>User.findFromEmail</code> query.  The generated <code>Serialization</code> is passed into the <code>useDgraph</code> hook and it returns a <code>Serialization</code> response object that contains the retrieved User, if applicable.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/actiontype.html" class="tsd-kind-icon">Action<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/action.html" class="tsd-kind-icon">Action</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/state.html" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/actioninterface.html" class="tsd-kind-icon">Action<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/stateinterface.html" class="tsd-kind-icon">State<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#statecontext" class="tsd-kind-icon">State<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#config" class="tsd-kind-icon">config</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#logger" class="tsd-kind-icon">logger</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#numeral" class="tsd-kind-icon">numeral</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#app" class="tsd-kind-icon">App</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#main" class="tsd-kind-icon">Main</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#navigationbar" class="tsd-kind-icon">Navigation<wbr>Bar</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#profilecard" class="tsd-kind-icon">Profile<wbr>Card</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#profilecardstats" class="tsd-kind-icon">Profile<wbr>Card<wbr>Stats</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#reducer" class="tsd-kind-icon">Reducer</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#search" class="tsd-kind-icon">Search</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#searchbox" class="tsd-kind-icon">Search<wbr>Box</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#stateprovider" class="tsd-kind-icon">State<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#tweet" class="tsd-kind-icon">Tweet</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#tweetbox" class="tsd-kind-icon">Tweet<wbr>Box</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#tweetcard" class="tsd-kind-icon">Tweet<wbr>Card</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#tweetlist" class="tsd-kind-icon">Tweet<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#tweetmodal" class="tsd-kind-icon">Tweet<wbr>Modal</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#usedgraphglobal" class="tsd-kind-icon">use<wbr>Dgraph<wbr>Global</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#usedgraphlocal" class="tsd-kind-icon">use<wbr>Dgraph<wbr>Local</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#usestatecontext" class="tsd-kind-icon">use<wbr>State<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#initialstate" class="tsd-kind-icon">Initial<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#development" class="tsd-kind-icon">development</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#production" class="tsd-kind-icon">production</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
