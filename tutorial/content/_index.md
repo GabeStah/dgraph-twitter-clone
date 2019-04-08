@@ -101,9 +101,9 @@ With all the basic components planned out let's just right into the code for our
 
 ## Installation
 
-The `dgraph-twitter-clone` application can be installed and configured in just a few steps. This will allow you to see the app in action and start tinkering with the code yourself so you'll get an idea of how easy it is to power modern applications with Dgraph.
+The [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) application can be installed and configured in just a few steps. This will allow you to see the app in action and start tinkering with the code yourself so you'll get an idea of how easy it is to power modern applications with Dgraph.
 
-1.  Starting by cloning the `GabeStah/dgraph-twitter-clone` Git repository to a local directory.
+1.  Starting by cloning the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) Git repository to a local directory.
 
     ```bash
     $ git clone https://github.com/GabeStah/dgraph-twitter-clone.git
