@@ -2,6 +2,31 @@
 
 A Twitter clone using [Dgraph.io](https://dgraph.io/) for back end data management and [React](https://reactjs.org/) for front end UI.
 
+## Table of Contents
+
+- [Dgraph Twitter Clone](#dgraph-twitter-clone)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Documentation](#documentation)
+  - [Gulp Commands](#gulp-commands)
+    - [Database](#database)
+    - [Docs](#docs)
+    - [Packages](#packages)
+    - [API](#api)
+    - [Client](#client)
+  - [API](#api-1)
+    - [Build](#build)
+    - [Test](#test)
+    - [Running](#running)
+    - [Gulp Commands](#gulp-commands-1)
+    - [Routes](#routes)
+  - [Client](#client-1)
+  - [DgraphQueryManager](#dgraphquerymanager)
+    - [Installation or Redeployment](#installation-or-redeployment)
+    - [Configuration](#configuration)
+    - [Connection Types](#connection-types)
+      - [Changing the Connection Type](#changing-the-connection-type)
+
 ## Installation
 
 1.  Clone the [`GabeStah/dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) Git repository to a local directory.
@@ -198,7 +223,7 @@ Auto-generated documentation is available at the following locations.
 - [Client](https://dgraph-twitter-clone.netlify.com/docs/client)
 - [DgraphQueryManager](https://dgraph-twitter-clone.netlify.com/docs/dgraph-query-manager)
 
-### Gulp Commands
+## Gulp Commands
 
 The following Gulp commands can be issued from the root `dgraph-twitter-clone` directory.
 
@@ -207,20 +232,20 @@ The following Gulp commands can be issued from the root `dgraph-twitter-clone` d
 - `start` - Starts both `api` and `client` apps.
 - `default` - Same as `packages:publish`.
 
-#### Database
+### Database
 
 - `db:regenerate` - Drops Dgraph database and regenerates starting data.
 - `db:schema:alter` - Updates Dgraph schema from `api/src/config.dgraph.schema`.
 - `db:generate:data` - Generates Dgraph data.
 
-#### Docs
+### Docs
 
 - `api:docs` - Regenerate docs for `api` project.
 - `client:docs` - Regenerate docs for `client` project.
 - `package:docs` - Regenerate docs for `packages/dgraph-query-manager` project.
 - `docs:all` - Regenerates all docs.
 
-#### Packages
+### Packages
 
 - `packages:remove:modules` - Cleans up `packages/dgraph-query-manager/node_modules` directory by removing all packages, `dist` directory, and `yarn.lock`.
 - `packages:install:modules` - Installs node modules for `packages/dgraph-query-manager`.
@@ -229,13 +254,13 @@ The following Gulp commands can be issued from the root `dgraph-twitter-clone` d
 - `packages:push` - Pushes local package in `yalc` repo to `api` and `client` projects.
 - `packages:publish` - Performs a full node package removal, reinstall, rebuild, and republish of `packages/dgraph-query-manager`.
 
-#### API
+### API
 
 - `api:yarn:install` - Executes the `yarn install` command for the `api` project.
 - `api:transpile` - Transpiles `api` project.
 - `api:start` - Runs the `api` application.
 
-#### Client
+### Client
 
 - `client:yarn:install` - Executes the `yarn install` command for the `client` project.
 - `client:start` - Runs the `client` application.
