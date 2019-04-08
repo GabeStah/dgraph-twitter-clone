@@ -8,26 +8,26 @@ draft: false
 <script type="text/javascript">window.DGRAPH_ENDPOINT="http://127.0.0.1:8080/query?latency=true";</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/typescript.min.js"></script>
 
-In [Part 1 - The Architecture]({{% ref "/" %}}) we examined the design and structure of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) app. In [Part 2 - The API]({{% ref "/part-2-api" %}}) we looked at the API layer and how it allows our Twitter clone to either utilize -- or completely bypass -- the use of an API in favor of direct transactions with its Dgraph data layer.
+In [Part 1 - The Architecture]({{% ref "/" %}}) we examined the design and structure of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) app. In [Part 2 - The API]({{% ref "/part-2-api" %}}) we looked at the API layer and how it allows our Twitter clone to either use an API or even completely bypass it in favor of direct transactions with the Dgraph data layer.
 
-In this final part we'll explore the React-based client of our `dgraph-twitter-clone` app. We'll see how a basic [React](https://reactjs.org/) app can be used in conjunction with new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature added to React in early 2019 to create a stateful and elegant single-page application powered by a Dgraph database for fast and efficient data management. Let's dive in!
+In this final part, we'll explore the React-based client of our `dgraph-twitter-clone` app. We'll see how a basic [React](https://reactjs.org/) app can be used in conjunction with new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature added to React in early 2019 to create a stateful and elegant single-page application powered by a Dgraph database for fast and efficient data management. Let's dive in!
 
 ## Installing the Client
 
-It is highly recommended you install the `dgraph-twitter-clone/client` application in a local dev environment so you can test it out and see the code in action as we walk through it throughout this guide. If you haven't done so, feel free to check out the [installation]({{% ref "/#installation" %}}) instructions from **Part 1**. Alternatively, if you already installed the `dgraph-twitter-clone` repo and have Dgraph up and running, you can start the client app by executing the `npm start` or `yarn start` command from the `dgraph-twitter-clone/client` directory.
+You are encouraged to install the `dgraph-twitter-clone/client` application in a local dev environment so you can test it out and see the code in action as we walk through it. If you haven't done so, feel free to check out the [installation]({{% ref "/#installation" %}}) instructions from **Part 1**. Alternatively, if you already installed the `dgraph-twitter-clone` repo and have Dgraph up and running, you can start the client app by executing the `npm start` or `yarn start` command from the `dgraph-twitter-clone/client` directory.
 
 ## React Overview
 
-Let's start with a brief overview of React and its functionality, to give some context for why the client app is structured as it is. At its core, React is a library to help with the creation of interactive user interfaces. This is often in the form of single-page applications, but [React Native](https://facebook.github.io/react-native/) is also available to use much of the same code and techniques for creating mobile apps.
+Let's start with a brief overview of React and its functionality, to give some context for why the client app is structured as it is. At its core, React is a library to help with the creation of interactive user interfaces. This is often in the form of single-page web applications, but [React Native](https://facebook.github.io/react-native/) allows you to use much of the same code and techniques for creating mobile apps.
 
 ### Components
 
-Nearly all React apps are designed around the concept of [**components.**](https://reactjs.org/docs/components-and-props.html) A component can best be thought of as a self-contained, reusable piece of the overall application. A component can contain any combination of HTML, CSS, or JavaScript, and a component is always rendered to the DOM. React apps typically use a special HTML + JavaScript hybrid syntax called [JSX](https://reactjs.org/docs/introducing-jsx.html). JSX allows your components to embed JavaScript and other mutable data inside traditional HTML markup.
+Nearly all React apps are designed around the concept of [**components.**](https://reactjs.org/docs/components-and-props.html) A component can best be thought of as a self-contained, reusable piece of the overall application. A component can contain any combination of HTML, CSS, and/or JavaScript. Components are always rendered to the DOM. React apps typically use a special HTML + JavaScript hybrid syntax called [JSX](https://reactjs.org/docs/introducing-jsx.html). JSX allows your components to embed JavaScript and other dynamic data inside traditional HTML markup.
 
 For example, here's a `MySection` component defined in JSX that creates a `<section>` and assigns its `id` attribute to the value of the `sectionId` JavaScript constant. Code found inside curly braces (`{ }`) is considered JavaScript that should be evaluated.
 
 ```jsx
-class MySection extends React.component {
+class MySection extends React.Component {
   const sectionId = 'special-section';
 
   render() {
@@ -40,11 +40,11 @@ class MySection extends React.component {
 }
 ```
 
-{{% notice "note" %}} Just as with the `dgraph-query-manager` packaged and the `dgraph-twitter-clone/api` app, the client app uses TypeScript wherever possible. In the realm of React, this takes the form of `.tsx` files, which are just like `.jsx` except they provide the ability to use TypeScript in place of plain JavaScript. {{% /notice %}}
+{{% notice "note" %}} Just as with the `dgraph-query-manager` package and the `dgraph-twitter-clone/api` app, the client app uses TypeScript wherever possible. In the realm of React, this takes the form of `.tsx` files, which similar to `.jsx` except it provides the ability to use TypeScript in place of plain JavaScript. {{% /notice %}}
 
-A React component is traditionally defined as a class component that extends `React.component`, as seen above. However, you can also create **function components,** which behave similarly to class components, except they are defined (and behave) exactly like plain JavaScript functions. It used to be the case that class components were necessary to gain some of the benefits of React (such as state management), but with the recent introduction of [React Hooks](https://reactjs.org/docs/hooks-intro.html) that is no longer the case -- function components can use hooks to gain all the benefits of class components, while remaining easier to create and test. For that reason, the `dgraph-twitter-clone/client` app solely uses function components and hooks.
+A React component is traditionally defined as a class component that extends `React.Component`, as seen above. However, you can also create **function components,** which behave similarly to class components, except they are defined (and behave) exactly like plain JavaScript functions. It used to be the case that class components were necessary to gain some of the benefits of React (such as state management), but with the recent introduction of [React Hooks](https://reactjs.org/docs/hooks-intro.html) that is no longer the case -- function components can use hooks to gain all the benefits of class components, while remaining easier to create and test. For that reason, the `dgraph-twitter-clone/client` app solely uses function components and hooks.
 
-The `MySection` component above could therefore be rewritten as a function component that looks like this.
+The `MySection` component above could, therefore, be rewritten as a function component that looks like this.
 
 ```jsx
 export const MySection = () => {
@@ -74,7 +74,7 @@ const MyApp = () => {
 };
 ```
 
-We're also passing a `props.text` value equal to `sectionText` to the `MySection` component. If we update the MySection component to accept the `props` object we can make use of that passed value.
+We're also passing a `props.text` value equal to `sectionText` to the `MySection` component. If we update the `MySection` component to accept the `props` object we can make use of that passed value.
 
 ```jsx
 export const MySection = props => {
@@ -98,9 +98,9 @@ The rendered HTML output of `MySection` now looks like this.
 
 ### State
 
-The last major React concept to touch on is **state.** Generally, state refers to the current value(s) of an object at a given point in time. In React, state is typically thought of as _mutable_ data related to a component's lifecycle (i.e. from when it's initialized and rendered to de-rendered and destroyed). Component **props**, on the other hand, are generally _immutable_ from the component's perspective -- they're received and perhaps duplicated and used for internal logic, but the original props are not changed within the component. Component state, on the other hand, can be changed and that change should be "remembered" by the component throughout its lifecycle.
+The last major React concept to touch on is **state.** Generally, state refers to the current value of an object at a given point in time. In React, the state is typically thought of as _mutable_ data related to a component's lifecycle (i.e. from when it's initialized and rendered to de-rendered and destroyed). Component **props**, on the other hand, are generally _immutable_ from the component's perspective -- they're received and maybe even duplicated and used for internal logic, but the _original_ props are not changed within the component. **Component state,** on the other hand, can be changed and that change should be "remembered" by the component throughout its lifecycle.
 
-For class components state was usually handled through the `this.state` object, but for function components no such object exists (since it's just a function, after all). This is where the introduction of **hooks** comes in; specifically the [useState](https://reactjs.org/docs/hooks-state.html) hook. The `useState` function hook allows a function component to both retrieve the current state and update that state for the future.
+For class components, state is usually accessed through the `this.state` object, but for function components, no such object exists (since it's just a function, after all). This is where the introduction of **hooks** comes in; specifically the [useState](https://reactjs.org/docs/hooks-state.html) hook. The `useState` function hook allows a function component to both retrieve the current state and update that state in the future.
 
 For example, here we'll add a bit of state to handle the section `id` of our `MySection` function component.
 
@@ -116,9 +116,9 @@ export const MySection = props => {
 };
 ```
 
-The call to `useState()` passes the _initial_ value, which is then assigned to the first returned argument which we've named `sectionId`. Thus, the first time we render the `MySection` component we see the section and its `id` attribute as `<section id="special-section">`.
+The call to `useState()` passes the _initial_ value, which is then assigned to the first returned value which we've named `sectionId`. Thus, the first time we render the `MySection` component we see the section and its `id` attribute as `<section id="special-section">`.
 
-That said, the second value returned by `setState()` is a function that can be called to, well, _set_ the current state of that object. Let's add a `<button>` with an `onClick` handler that calls `setSectionId()` and passes a new value.
+The second value returned by `setState()` is a function that can be called to, well, _set_ the current state of that object. Let's add a `<button>` with an `onClick` handler that calls `setSectionId()` and passes a value of `not-so-special-section` to it.
 
 ```jsx
 export const MySection = props => {
@@ -135,7 +135,7 @@ export const MySection = props => {
 };
 ```
 
-React is named as it is because it is _reactive_. When it recognizes that some component state has changed it triggers a new render of that component. Therefore, clicking the button and triggering the new state for `sectionId` renders `MySection` and the updated HTML output now looks like the following.
+React is appropriately named because it is _reactive_. When it recognizes that some component state has changed it triggers a new render of that component. Therefore, clicking the button and triggering the new state for `sectionId` renders `MySection`, and since the state (i.e. value) of `sectionId` was changed the updated HTML output now looks like the following.
 
 ```html
 <section id="not-so-special-section">
@@ -148,7 +148,7 @@ React is named as it is because it is _reactive_. When it recognizes that some c
 
 {{% notice "tip" %}} React is a powerful library and can create some extremely complex architectures, so feel free to check out the [official documentation](https://reactjs.org/) to learn more about the concepts we've been briefly discussing here. {{% /notice %}}
 
-{{% notice "warning" %}} The `dgraph-twitter-clone/client` was created by a programmer who is not so much of a designer, so this project is definitely function over form. To that end, the basic React app was bootstrapped using [create-react-app](https://facebook.github.io/create-react-app/), which creates a skeleton React app with most of the build tools added and handled out of the box. The look and styling is largely based on [Bootstrap](https://getbootstrap.com/), which only seems appropriate given this is a Twitter clone. Ultimately, as discussed in the introduction, the goal of the client app is to illustrate how easily a graph database like Dgraph can integrate into a modern Twitter-like application, and how much power its many features such as GraphQL+- queries bring to the table. {{% /notice %}}
+{{% notice "warning" %}} The `dgraph-twitter-clone/client` was created by a programmer who is a rather poor designer, so this project is definitely function over form. To that end, the basic React app was bootstrapped using [create-react-app](https://facebook.github.io/create-react-app/), which creates a skeleton React app with most of the build tools added and handled out of the box. The look and styling are largely based on [Bootstrap](https://getbootstrap.com/), which only seems appropriate given that this is a Twitter clone. Ultimately, as discussed in the introduction, the goal of the client app is to illustrate how easily a graph database like Dgraph can integrate into a modern Twitter-like application, and how much power its many features such as GraphQL+- queries bring to the table. {{% /notice %}}
 
 ## Instantiating the App
 
@@ -198,7 +198,7 @@ const App = () => {
 export default App;
 ```
 
-The `App` component wraps our entire application in the `BrowserRouter` component middleware, which comes from the [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) package and allows us to perform routing by rendering certain components based on requested URLs and endpoints. We'll get into that more in a moment.
+The `App` component wraps our entire application in the `BrowserRouter` component middleware, which comes from the [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) package and allows us to perform routing by rendering certain components based on requested URL paths. We'll get into that more in just a moment.
 
 ### Handling App State
 
@@ -222,9 +222,9 @@ export const StateProvider = ({ reducer, initialState, children }) => (
 export const useStateContext = () => useContext(StateContext);
 ```
 
-This component provides global state throughout the application by using using the [useContext](https://reactjs.org/docs/hooks-reference.html#usecontext) React hook. [**Context**](https://reactjs.org/docs/context.html) is how React handles global state (i.e. state that is available to all components, not just those who receive passed down props). As the [React Context.Provider](https://reactjs.org/docs/context.html#contextprovider) documentation shows, a context provider passes its value down to any child components that consume it.
+This component provides global state throughout the application by using the [useContext](https://reactjs.org/docs/hooks-reference.html#usecontext) React hook. [**Context**](https://reactjs.org/docs/context.html) is how React handles "global" state. As the [React Context.Provider](https://reactjs.org/docs/context.html#contextprovider) documentation shows, a context provider passes its value down to any child components that _consume_ it. This is often a sleeker pattern to passing down large chains of props through a big component tree.
 
-In the `StateProvider` component above, we're passing down the provider value of the returned values from the [`useReducer`](https://reactjs.org/docs/hooks-reference.html#usereducer) React hook. `useReducer()` is similar to the `useState()` hook, except it works with the **reducer + action + dispatcher** pattern found in common React libraries like [Redux](https://redux.js.org). Why use **reducers** instead of directly modifying **state**? The primary advantage is a separation of concerns. Rather than allowing our state to be directly mutable, we can instead **dispatch** a series of **actions** that tell the **reducer** to change the state in some way.
+In the `StateProvider` component above, we're passing the returned values from the [`useReducer`](https://reactjs.org/docs/hooks-reference.html#usereducer) React hook down to the child components to consume. `useReducer()` is similar to the `useState()` hook, except it works with the **reducer + action + dispatcher** pattern found in common React libraries like [Redux](https://redux.js.org). Why use **reducers** instead of directly modifying **state**? The primary advantage is a separation of concerns. Rather than allowing our state to be directly mutable, we can instead **dispatch** a series of **actions** that tell the **reducer** to change the state in some way.
 
 ### Actions and Reducers
 
@@ -256,7 +256,7 @@ export class State implements StateInterface {
 }
 ```
 
-As you can see, we've defined a `StateInterface` with a handful of properties and we implement that `StateInterface` in the `State` class. We're also importing the `User` and `Tweet` models from `dgraph-query-manager`, since we want to use those model objects throughout the application. The properties of `State` don't mean a lot right now, but we'll mutate the values of this class in our reducer below based on changes within the app.
+As you can see, we've defined a `StateInterface` with a handful of properties and we implement that `StateInterface` in the `State` class. We're also importing the `User` and `Tweet` models from `dgraph-query-manager` since we want to use those model objects throughout the application. The properties of `State` don't mean a lot right now, but we'll mutate the values of this class in our reducer below based on changes within the app.
 
 Next let's look at the potential actions our reducer can expect, which are found in the `client/src/reducers/base/Action.ts` [file](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/client/src/reducers/base/Action.ts).
 
@@ -286,9 +286,11 @@ export class Action implements ActionInterface {
 }
 ```
 
-As mentioned above, the purpose of a reducer to change state is that it accepts an action and, based on what that action tells it, makes changes to the state. Thus, our simple `Action` class accepts an action type of `ActionType`, which is an enum of explicit options. It also accepts an optional payload, which will be used for additional parameters when necessary.
+As mentioned above, the purpose of a reducer to change state is that it accepts an action and, based on what that action tells it, makes changes to the state. **Critically**, a reducer is meant to be [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning repeated calls to the same reducer with the same arguments should _always_ result in the same outcome. Another common term for this type of code is a **pure function**. Simply put, your reducer logic should have no side effects.
 
-Now let's see how the reducer uses our `Action` and `State` class to mutate application state -- let's [check out](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/client/src/reducers/base/Reducer.ts) `client/src/reducers/base/Reducer.ts`.
+So, our simple `Action` class accepts an `ActionType`, which is an enum of explicit options. It also accepts an optional payload, which will be used for additional parameters when necessary.
+
+Now let's see how the reducer uses our `Action` and `State` class to mutate application state by [checking out](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/client/src/reducers/base/Reducer.ts) `client/src/reducers/base/Reducer.ts`.
 
 ```ts
 // File: client/src/reducers/base/Reducer.ts
@@ -353,7 +355,7 @@ export const Reducer = (state: State, action: Action): State => {
 };
 ```
 
-The `Reducer` class accepts two arguments the current `State` and an `Action` instance. Based on the `ActionType` of the passed `Action` it modifies the state in some way and returns the **new state** object. Nothing too crazy going on here.
+The `Reducer` class accepts two arguments: the current `State` and an `Action` instance. Based on the `ActionType` of the passed `Action` it modifies the state in some way and returns the **new state** object. Nothing too crazy going on here.
 
 Now, if we look back at the `StateProvider` component, and specifically how it passes the returned values from `useReducer()` as the `StateProvider.Provider` `value`, you can start to see what's going on.
 
@@ -368,9 +370,9 @@ export const StateProvider = ({ reducer, initialState, children }) => (
 export const useStateContext = () => useContext(StateContext);
 ```
 
-A call to the `useReducer()` hook returns two values: The current state and a `dispatch` function. The dispatch function is invoked whenever you need to call the reducer and pass it a new action to perform. We'll go over this component in more detail in the [TweetBox Component](#tweetbox-component) section, but here is a snippet from that component code that shows how we're retrieving `State` properties, then later calling the `dispatch` function and passing in a new `Action` instance to inform the reducer that receives that dispatch what to do -- in this case, to `SET_TWEETS` to the array passed as the `payload` argument.
+A call to the `useReducer()` hook returns two values: The current state and a `dispatch` function. The dispatch function is invoked whenever you need to call the reducer and pass it a new action to perform. We'll go over this component in more detail in the [TweetBox](#tweet-box) section, but here is a snippet from that component code that shows how we're retrieving `State` properties. After destructuring the `tweets` state value we later call the `dispatch` function and pass in a new `Action` instance to inform the reducer what it should do -- in this case, to `SET_TWEETS` to the array passed as the `payload` argument.
 
-```tsx
+```ts
 // File: client/src/components/Tweet/TweetBox.tsx
 const [{ authUser, user, tweets }, dispatch] = useStateContext();
 // ...
@@ -444,7 +446,7 @@ const Main = () => {
 export default Main;
 ```
 
-Anything that is to be rendered by a component must be included in its `return` value, so all business logic prior to rendering occurs above the return within a given function component. In this case we start by instantiating a new `DgraphQueryExecutor`, which you can learn more about in the [Simplifying Query Execution]({{% ref "/#simplifying-query-execution" %}}) section from **Part 1**. The `User.findFromEmail` `Query` lets us find a user by email, and we're passing a static value defined in `config.user.defaultAuthEmail`. Obviously, in a production application this would be obtained from the user during logic authentication, or perhaps from a session cookie. In this case, we don't bother adding user authentication logic to the app since it's unnecessary, so we're just hard-coding authentication for a single, specific user.
+Anything that is to be rendered by a component must be included in its `return` value, so all business logic prior to rendering occurs above the return within a given function component. In this case, we start by instantiating a new `DgraphQueryExecutor`, which you can learn more about in the [Part 1 - Simplifying Query Execution]({{% ref "/#simplifying-query-execution" %}}) section. The `User.findFromEmail` `Query` lets us find a user by email, and we're passing a static value defined in `config.user.defaultAuthEmail`. Obviously, in a production application, this would be obtained from the user during login authentication, or perhaps from a session cookie. In this case, we don't bother adding user authentication logic to the app since it's unnecessary, so we're just hard-coding authentication for a single, specific user.
 
 To accomplish this we're invoking a custom React hook called `useDgraphGlobal`, which can be found in the `client/src/hooks/dgraph/useDgraphGlobal.ts` [file](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/client/src/hooks/dgraph/useDgraphGlobal.ts).
 
@@ -528,19 +530,19 @@ export const useDgraphGlobal = (parameters: {
 };
 ```
 
-The function documentation somewhat explains what's going on here, but the basic idea is this hook is passed a `DgraphQueryExecutor` and an `Action`. The `executor` is executed and the result (which we've seen elsewhere throughout the app is a always a `Serialization` instance) is assigned as the `action.payload`. We then `dispatch()` that `action` to the global obtained from calling the `useStateContext()` function.
+The function documentation somewhat explains what's going on here, but the basic idea is this hook is passed a `DgraphQueryExecutor` and an `Action`. The `executor` is executed and the result, which is always a `Serialization` instance, is assigned to the `action.payload`. We then `dispatch()` that `action` obtained by calling the `useStateContext()` hook.
 
-Something new here we haven't discussed yet is React's [`useEffect()`](https://reactjs.org/docs/hooks-effect.html) method. If you're familiar with React you may know that React class components rely upon built-in class methods to handle lifecycle events. These methods are `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount`. Each of those methods are automatically triggered at the appropriate moment in the component's lifecycle. You can read more about the React component lifecycle in the [official documentation](https://reactjs.org/docs/react-component.html#componentdidmount), but for now just consider that those three methods are different moments in a component lifecycle, so handling component state within a class component often requires putting the correct logic within the correct `componentX` method.
+Something new here we haven't discussed yet is React's [`useEffect()`](https://reactjs.org/docs/hooks-effect.html) method. If you're familiar with React you may know that React class components rely upon built-in class methods to handle lifecycle events. These methods are `componentDidMount()`, `componentDidUpdate()`, and `componentWillUnmount()`. Each of those methods is automatically triggered at the appropriate moment in the component's lifecycle. You can read more about the React component lifecycle in the [official documentation](https://reactjs.org/docs/react-component.html#componentdidmount), but for now just consider that those three methods are different moments in a component lifecycle, so handling component state within a class component often requires placing the right logic within the correct `componentDid/Will` method.
 
-**However**, with React hooks we can replace the need for all three of the above methods with the `useEffect()` hook. The purpose of `useEffect()` is to trigger _side effects_ after the component renders. Typically, such side effects are actions that should impact the component in some way, _but_ that are not necessary for initial rendering to take place. A good example is data retrieval, which is often a delayed process that requires an async/await contract to be fulfilled. You typically don't want to trigger such effects inside the rendering logic of your component, so adding those to the lifecycle event methods in the past (or inside `useEffect()`) is ideal -- those effects are free to run after rendering and only make further updates when a change is required.
+However, with React hooks we can replace the need for all three of the above methods with the `useEffect()` hook. The purpose of `useEffect()` is to trigger _side effects_ after the component renders. Typically, such side effects are actions that may impact the component in some way, _but_ that are not necessary for initial rendering to take place. A good example is data retrieval, which is often a delayed process that requires an async/await contract to be fulfilled. You typically don't want to trigger such effects inside the rendering logic of your component, so adding those to the lifecycle event methods for class components (or inside `useEffect()` for function components) is ideal -- those effects are free to execute after rendering and only make further updates when a change is required.
 
-Referring back to our `useDgraphGlobal()` hook above, we see the `useEffect()` call starts by checking for validity (a special argument that was needed elsewhere in the app). It then executes the passed `executor`. Upon successful execution the `serialization.response` property is assigned to the `action.payload` and then the action is dispatched to our main reducer class we looked at before. We also call a `useState()` hook to assign a `response` value _outside_ of the `useEffect()` method. This `response` object (which is the `serialization.response` we received inside the effect) is returned by `useDgraphGlobal`.
+Referring back to our `useDgraphGlobal()` hook above, we see the `useEffect()` call starts by checking for validity (a special argument that was needed elsewhere in the app). It then executes the passed `executor`. Upon successful execution the `serialization.response` property is assigned to the `action.payload` and then the action is dispatched to our main reducer class we looked at before. We also call a `useState()` hook to assign a `response` value _outside_ of the `useEffect()` method. This `response` object (which is the `serialization.response` we received inside the effect) is returned by `useDgraphGlobal()`.
 
-{{% notice "note" %}} Keen observers may notice the odd use of a `Promise.then().catch()` block here, where elsewhere in the app we've typically used `async/await`. The reason for this is that, unfortunately, `useEffect()` hooks cannot accept `async` functions -- that is, a Promise cannot be returned to a `useEffect()` call. Therefore, we use the next best thing which is calling an async function _within_ the `useEffect()` anon function logic. React developers are working on adding data fetching capabilities to a feature called **Suspense**, which will be the preferred way to handle such retrieval in the future, but unfortunately [Suspense for data fetching is not ready](https://github.com/facebook/react/issues/14326#issuecomment-466378700) at time of writing. {{% /notice %}}
+{{% notice "note" %}} Keen observers may notice the odd use of a `Promise.then().catch()` block here, where elsewhere in the app we've typically used `async/await`. The reason for this is that, unfortunately, `useEffect()` hooks cannot accept `async` functions -- that is, a Promise cannot be passed as an argument to a `useEffect()` call. Therefore, we use the next best thing which is calling an async function _within_ the `useEffect()` anon function logic. The React team is working on adding data fetching capabilities through a feature called **Suspense**, which will be the preferred way to handle such retrieval in the future, but unfortunately [Suspense for data fetching is not ready](https://github.com/facebook/react/issues/14326#issuecomment-466378700) at time of writing. {{% /notice %}}
 
 ### Hooking Into useDgraphGlobal
 
-Back to our `Main` component we can re-examine how the custom `useDgraphGlobal()` hook is used here.
+Back to our `Main` component, we can re-examine how the custom `useDgraphGlobal()` hook is used here.
 
 ```tsx
 // File: client/src/components/Main/Main.tsx
@@ -578,7 +580,7 @@ export const Reducer = (state: State, action: Action): State => {
 };
 ```
 
-Here we see the `Reducer` merely creates a new shallow copy of the `State` object, by assigns the `authUser` property to the `action.payload` value, which itself was assigned to the executor's `Serialization.response` value. This logical structure makes it very simple to add new global state to our application in a few short steps:
+Here we see that the `Reducer` merely creates a new shallow copy of the `State` object, but first assigns the `authUser` property to the `action.payload` value, which itself was assigned to the executor's `Serialization.response` value. This logical structure makes it very simple to add new global state to our application in a few short steps:
 
 1. Add a new property to the `State` class.
 2. Add a new type to the `ActionType` enum.
@@ -588,7 +590,7 @@ That's it! While all the state properties we're currently using are at the same 
 
 ### Routing with React Router DOM
 
-The [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) library handles routing similar to ExpressJS and other packages. Our `Main` component renders a handful of `Route` components that are passed a number of properties.
+The [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) library handles routing similarly to [ExpressJS](https://expressjs.com/). Our `Main` component renders a handful of `Route` components that are each passed a few properties.
 
 ```tsx
 // File: client/src/components/Main/Main.tsx
@@ -621,7 +623,7 @@ return (
 // ...
 ```
 
-The `path` property matches any path that the [path-to-regexp](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) dependency package understands. If a match is detected then the `Route` acts upon that based on the additional properties it was provided. For example, `<Route path={'/'} exact component={ProfileCard} />` will _only match_ the root path (`/`) and, if a match is found, it will render the `ProfileCard` component. Typically, **every** matching `Route` will render. However, the `Switch` component that wraps a trio of `Routes` above will render only the _first_ matching `Route` in the set, ignoring any remaining `Routes` below it. In this case, we're first checking if the user is at the root path. We have to use the `exact` property here because otherwise any `Route` with a `path` that contains `/` will also match. If the user isn't at the root path then we check if they are at `/search`. If still no match, we finally assume the extra URI content following the root path `/` is a user `screenName` (just like Twitter URLs), so we match that and render the `ProfileCard` component.
+The `path` property matches any path that the [path-to-regexp](https://github.com/pillarjs/path-to-regexp/tree/v1.7.0) dependency package understands. If a match is detected then the `Route` acts upon that based on the additional properties it was provided. For example, `<Route path={'/'} exact component={ProfileCard} />` will _only match_ the root path (`/`) and, if a match is found, it will render the `ProfileCard` component. Typically, **every** matching `Route` will render. However, the `Switch` component that wraps the trio of `Routes` above will only render the _first_ matching `Route` in the set, ignoring any remaining `Routes` below it. In this case, we're first checking if the user is at the root path. We have to use the `exact` property here because, otherwise, any `Route` with a `path` that starts with `/` will also match. If the user isn't at the root path then we check if they are at `/search`. If there's still no match, we finally assume the extra URI content following the root path `/` is a user `screenName` (just like [Twitter URLs](https://twitter.com/dgraphlabs)), so we match that and render the `ProfileCard` component.
 
 ## Navigation Components
 
@@ -713,7 +715,7 @@ const SearchBox = ({ history }) => {
 export default withRouter(SearchBox);
 ```
 
-We start by creating a local `currentText` state that is initialized to an empty string. The form invokes `handleInputChange()` when the text value changes, which assigns the new value our `currentText` state. The `Form.onSubmit()` event starts by preventing the default behavior, which is critical to do at the beginning of every React component event. To perform a redirect we use the `history` prop that was provided to the `SearchBox` component props object because we wrapped the caller at the bottom in [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) from `react-router-dom`. This is a bit of a trick to perform a simple redirect by essentially adding a new entry to the history stack. In this case, we want to perform a search so we redirect to our `/search?q=` endpoint and include the `currentText` state value.
+We start by creating a local `currentText` state that is initialized to an empty string. The form invokes `handleInputChange()` when the text value changes, which assigns the new value to our `currentText` state. The `Form.onSubmit()` event starts by preventing the default behavior, which is critical to do at the beginning of many React component event callbacks. To perform a redirect we use the `history` prop that was provided to the `SearchBox` component props object because we wrapped the caller at the bottom in [`withRouter`](https://reacttraining.com/react-router/web/api/withRouter) from `react-router-dom`. This trick let's us perform a simple redirect by adding a new entry to the history stack. In this case, we want to perform a search so we redirect to our `/search?q=` endpoint and include the `currentText` state value.
 
 ## Search Component
 
@@ -795,9 +797,9 @@ query find($query: string) {
 }
 ```
 
-The `Query` expects a `$query` parameter indicating what to search for, and looks in the `tweet.text` and `hashtag.hashtag` predicates for that text using the `anyoftext()` GraphQL+- function. We want a result consisting only of tweet nodes, but since the hashtag nodes referenced in the `tweet.hashtag` edge are separate nodes we need to combine the results of our pre-search before obtaining the final result set. We accomplish this by using GraphQL+- [var blocks](https://docs.dgraph.io/query-language/#var-blocks), which are blocks that begin with a `var` keyword and are not returned in the results. We combine that capability with [value variables](https://docs.dgraph.io/query-language/#value-variables) that are written in the form of `varName as ...` to obtain a temporary list of scalar values. In this case, Dgraph recognizes the results of our two `var` blocks are `uid` nodes. We assign those `uid` lists to temporary variables `a` and `b`, and then use those lists as part of the `@filter` for our final query results. The end result is that we return only the subset of tweet nodes that _either_ have a `tweet.text` or a `tweet.hashtag > hashtag.hashtag` predicate containing our search text.
+The `Query` expects a `$query` parameter indicating what to search for, and looks in the `tweet.text` and `hashtag.hashtag` predicates for that text using one of GraphQL+-'s [full-text search](https://docs.dgraph.io/query-language/#full-text-search) functions, `anyoftext()`. We want a result consisting only of tweet nodes, but since the hashtag nodes referenced in the `tweet.hashtag` edge are separate nodes we need to combine the results of our pre-search before obtaining the final result set. We accomplish this by using GraphQL+- [var blocks](https://docs.dgraph.io/query-language/#var-blocks), which are blocks that begin with the `var` keyword and which are not returned in the results. We combine that capability with [value variables](https://docs.dgraph.io/query-language/#value-variables) that are written in the form of `varName as ...` to obtain a temporary list of scalar values. In this case, Dgraph recognizes the results of our two `var` blocks are nodes. We assign those node `uids` to temporary variables `a` and `b`, and then use those collections as part of the `@filter` for our final query. The end result is that we return only the subset of tweet nodes that _either_ have a `tweet.text` or a `tweet.hashtag { hashtag.hashtag }` predicate containing our search text.
 
-To see this in action here we've got the above query looking for the search term `user`, which should return at least a handful of results.
+To see this in action here we've got the above query looking for the search term `user`, which should return at least a handful of results in your local installation if you generated some dummy data during the app install.
 
 <!-- prettier-ignore-start -->
 {{< runnable >}}
@@ -818,10 +820,11 @@ To see this in action here we've got the above query looking for the search term
 {{</ runnable >}}
 <!-- prettier-ignore-end -->
 
-The search query above uses another GraphQL+- feature called [Reverse Edges](https://docs.dgraph.io/query-language/#reverse-edges). The tilde character preceding the `tweet.hashtag` predicate in the line `b as hashtags: ~tweet.hashtag` signifies that the we're querying the _reverse edge_ between `tweet.hashtag` and `hashtag.hashtag`. To better illustrate take a look at the modified query below in which we're only seeking tweets in which the `tweet.hashtag` shares an edge with a `hashtag.hashtag` node that contains the search term of `user`.
+The search query above uses another GraphQL+- feature called [Reverse Edges](https://docs.dgraph.io/query-language/#reverse-edges). The tilde character preceding the `tweet.hashtag` predicate in the line `b as hashtags: ~tweet.hashtag` signifies that we're querying the _reverse edge_ between `tweet.hashtag` and `hashtag.hashtag`. To better illustrate this, take a look at the modified query below in which we're only seeking tweets where `tweet.hashtag` shares an edge with a `hashtag.hashtag` node that contains the search term of `user`.
 
-```bash
-$ curl http://127.0.0.1:8080/query -XPOST -d '{
+<!-- prettier-ignore-start -->
+{{< runnable >}}
+{
   var(func: anyoftext(hashtag.hashtag, "user")) {
     b as hashtags: ~tweet.hashtag
   }
@@ -834,10 +837,11 @@ $ curl http://127.0.0.1:8080/query -XPOST -d '{
       hashtag.hashtag
     }
   }
-}' | jq
-```
+}
+{{</ runnable >}}
+<!-- prettier-ignore-end -->
 
-Here's a sample of what that returns.
+Here's a sample of what that should return.
 
 ```json
 {
@@ -854,11 +858,11 @@ Here's a sample of what that returns.
 }
 ```
 
-Notice that our schema is structured such that `hashtag.hashtag` is a child of `tweet.hashtag`. However, we are searching for "parent" tweet nodes that contain hashtags with `user` text, so we use a **reverse edge** (`~`) to look at the relationship in the opposite direction as normal. In our Dgraph [schema]({{% ref "/#schema" %}}) we added the `@reverse` directive to the `tweet.hashtag` predicate so Dgraph would automatically compute the reverse edge for us.
+Notice that our query is structured such that `hashtag.hashtag` is a child node of `tweet.hashtag`. However, we are searching for "parent" tweet nodes that contain hashtags with `user` text, so we use a **reverse edge** (`~`) to look at the relationship in the opposite direction as normal. In our Dgraph [schema]({{% ref "/#schema" %}}) we added the `@reverse` directive to the `tweet.hashtag` predicate so Dgraph would automatically compute the reverse edge for us.
 
 ---
 
-Back to the `Search` component logic, we saw how the client app uses the `useDgraphGlobal()` hook in the [Hooking Into useDgraphGlobal](#hooking-into-usedgraphglobal) section, but the call to that hook in the `Search` component has a few extra arguments to briefly discuss.
+Back to the `Search` component logic. We saw how the client app uses the `useDgraphGlobal()` hook in the [Hooking Into useDgraphGlobal](#hooking-into-usedgraphglobal) section, but the call to that hook in the `Search` component has a few extra arguments to briefly discuss.
 
 ```ts
 useDgraphGlobal({
@@ -872,7 +876,7 @@ useDgraphGlobal({
 });
 ```
 
-We know that the executor is executed and that the result is passed as a payload to the new `Action` which is a type of `SET_TWEETS`. The `dependencies` param is actually passed as the _second_ argument to the underlying `useEffect()` method. When React recognizes that the component in which `useEffect()` was called must be rendered again (due to a state change or what not), it will first check the list of dependency arguments for changes in their value(s). If none of the dependencies have changed since the previous render, React **does not** re-render the updating component. This is particularly useful when rendering a heavy component could have a negative performance impact, but it's also just good practice to prevent unnecessary renders.
+We know that the executor is executed and that the result is passed as a payload to the new `Action` which is a type of `SET_TWEETS`. The `dependencies` param is actually passed as the _second_ argument to the underlying `useEffect()` method. When React re-renders a component in which `useEffect()` was called (due to a state change or what not), before the `useEffect()` function is invoked _again_ React will first check the list of dependency arguments for changes in their value(s). If none of the dependencies have changed since the previous `useEffect()` invocation, React **will not** call the function passed to `useEffect()` after re-rendering the component. This is particularly useful when the side effect being called is not something that should be executed for every render.
 
 So, in the case above our dependencies consist of just a single reference to our `queryString` value -- in other words, the actual text that is being searched for during this render. In our query example above, `queryString` would be equal to `user`. Thus, after the `Search` component renders initially and executes the underlying `useEffect()` hook that's part of our `useDgraphGlobal()` call, it will only trigger `useEffect()` again **if** the value of the `queryString` has changed. In other words, if a new search parameter is passed. Neato!
 
@@ -996,7 +1000,7 @@ As you may recall one of the `Routes` in our `Main` component uses a path with a
 <Route path={'/:screenName'} component={ProfileCard} />
 ```
 
-Therefore, the `ProfileCard` component first destructures the `match` property [provided by](https://reacttraining.com/react-router/web/api/match) `react-router-dom` and checks to see if the `screenName` param exists. If not, it assumes we've matched the root path instead (`/`), which was also routed to render this component, and uses the static `config.user.defaultAuthScreenName` value instead. As we saw in the [Main Component](#main-component) section, this static value is just used for demonstration purposes, and would be retrieved from an authed user or session in a real-world app. The retrieved `screenName` value is then used in the `User.findFromScreenName` `Query` and that executor is passed to `useDgraphGlobal` to retrieve a matching `User` record with that particular `user.screenName`.
+Therefore, the `ProfileCard` component first destructures the `match` property [provided by](https://reacttraining.com/react-router/web/api/match) `react-router-dom` and checks to see if the `screenName` param exists. If not, it assumes we've matched the root path instead (`/`), which was also routed to render this component, and uses the static `config.user.defaultAuthScreenName` value instead. As we saw in the [Main Component](#main-component) section, this static value is just used for demonstration purposes and would be retrieved from an authed user or session in a real-world app. The retrieved `screenName` value is then used in the `User.findFromScreenName` `Query` and that executor is passed to `useDgraphGlobal` to retrieve a matching `User` record with that particular `user.screenName`.
 
 The `ActionType.SET_USER` causes our `Reducer` to update the `State.user` property with the retrieved value, so we also call the `useStateContext()` hook and destructure the `user` property to get whatever user is currently active. We then use another `Query` and executor to retrieve all `Tweets` for that user and dispatch it with the `ActionType.SET_TWEETS` action. It's worth noting that we used the same `ActionType` in the `Search` component, which illustrates the power of making our components self-contained. Regardless of where in the app we update the global list of tweets, we can use the same process and it will always have the same impact on the rest of the app.
 
@@ -1057,7 +1061,7 @@ const ProfileCardStats = () => {
 export default ProfileCardStats;
 ```
 
-Instead of using passed props we explicitly use global state via the `useStateContext()` hook. But why not just pass props, since `ProfileCard` is just up one level in the component tree and could easily do so? The simple answer is the future-proofing this separation provides. If `ProfileCardStats` expects some props passed to it that contain `user` and `tweets` data, for example, what happens when we move this component to somewhere else in the app structure? We'd have to adjust the immediate parent component, at the very least, to pass the props, and in some cases the component tree gets extremely long, requiring a massive chain of passed props. It's this very reason that the React team added context (i.e. global state), so we're making use of it here as well.
+Instead of using passed props we explicitly use global state via the `useStateContext()` hook. But why not just pass props, since `ProfileCard` is just up one level in the component tree and could easily do so? The simple answer is better future-proofing. For example, if `ProfileCardStats` expects some props passed to it that contain `user` and `tweets` data what happens when we move this component to somewhere else in the app structure? We'd have to adjust the immediate parent component, at the very least, to pass the props, and in some cases the component tree may get extremely long, requiring a massive chain of passed props. It's for this very reason that the React team added context (i.e. global state), so we're making use of it here as well.
 
 Thankfully, by leaning on the work of other components to update our global state, the `ProfileCardStats` component doesn't have to trigger any post-rendering effects -- it just grabs the data it needs and renders its UI.
 
@@ -1159,9 +1163,9 @@ Let's skip down to the `return` render which is basically just a simple form wit
 
 Meanwhile, the `onKeyDown` event checks if the **Enter** key was pressed, in which case it triggers submission, similar to the actual `onSubmit` form event.
 
-The `handleSubmit()` function checks for a valid `authUser` and `currentTweet`, creates an object that matches properties of a `Partial<Tweet>` object, then passes those to the `Tweet.upsert()` method from the `dgraph-query-manager` package. If upsert was successful the tweet box is returned to its initial state. Finally, if the current `user` state matches the `authUser`, that means the `TweetList` component is displaying the list of tweets for the authorized user. In this case we want to immediately update the `tweets` global state to reflect the new addition that was just upserted to the database, so we `dispatch()` the appropriate action and pass the new `tweets` list with the `serialization.response` (i.e. the created `Tweet` instance) added onto it.
+The `handleSubmit()` function checks for a valid `authUser` and `currentTweet`, creates an object that matches properties of a `Partial<Tweet>` object, then passes those to the `Tweet.upsert()` method from the `dgraph-query-manager` package. If upsert was successful the tweet box is returned to its initial state. Finally, if the current `user` state matches the `authUser`, that means the `TweetList` component is displaying the list of tweets for the authorized user. In this case, we want to immediately update the `tweets` global state to reflect the new addition that was just upserted to the database, so we `dispatch()` the appropriate action and pass the new `tweets` list with the `serialization.response` (i.e. the created `Tweet` instance) added onto it.
 
-{{% notice "warning" %}} It's worth pointing out that the logic of comparing the current `user` to the `authUser` should probably be refactored into a separate component or class, somewhere outside of `TweetBox`. It's kept here just because our simple app doesn't update that anywhere else, but a larger application would be wise to only allow the `TweetBox` to dispatch and action, while another section should actually determine what (if any) state data should be updated based on that. {{% /notice %}}
+{{% notice "warning" %}} It's worth pointing out that the logic of comparing the current `user` to the `authUser` should probably be refactored into a separate component or class, somewhere outside of `TweetBox`. It's kept here just because our simple app doesn't update that anywhere else, but a larger application would be wise to only allow the `TweetBox` to dispatch an action, while another section should actually determine what (if any) state data should be updated based on that. {{% /notice %}}
 
 ### Tweet List
 
@@ -1380,15 +1384,15 @@ After executing the query we set the local `replies` state via the `setReplies` 
 
 The `hasAuthUserReplied()` function determines if the currently authorized user is among the set of users that replied to this tweet. Just like the actual Twitter, this value is used to change the highlighting on the `reply` `<Button>` element.
 
-`toggleBooleanField()` is also a helper that makes it possible for the user to toggle certain tweet flags when interacting with the UI. In this case, if the user wants to _favorite_ a tweet he or she clicks on the `favorite` `<Button>`, which triggers the `toggleBooleanField` function for the corresponding `tweet.favorited` field. A new `Partial<TweetModel>` object is used to change the `tweet['favorited']` and `tweet['tweet.favoriteCount']` values, then the whole `Partial<T>` is upserted to the Dgraph database. Upon success the global state is updated via the `dispatch` function to update all components that contain a reference to the `Tweet`. The result is the `TweetCard` is immediately re-rendered with the updated values and `active` flags as soon as the user toggles them.
+The `toggleBooleanField()` function is a helper that makes it possible for the user to toggle certain tweet flags when interacting with the UI. In this case, if the user wants to _favorite_ a tweet they click on the `favorite` `<Button>`, which triggers the `toggleBooleanField` function for the corresponding `tweet.favorited` field. A new `Partial<TweetModel>` object is used to change the `tweet['tweet.favorited']` and `tweet['tweet.favoriteCount']` values, then the whole `Partial<T>` is upserted to the Dgraph database. Upon success, the global state is updated via the `dispatch` function, which re-renders all components that contain a reference to that `Tweet`. The result is the `TweetCard` is immediately re-rendered with the updated values and `active` flags as soon as the user toggles them.
 
-{{% notice "info" %}} We're referencing the `Tweet` model by the name `TweetModel` because otherwise the name clashes with the `Tweet` component that is also used in the `TweetCard` component. {{% /notice %}}
+{{% notice "note" %}} We're referencing the `Tweet` model by the name `TweetModel` because otherwise the name clashes with the `Tweet` component that is also used in the `TweetCard` component. {{% /notice %}}
 
 The rendered HTML for the `TweetCard` is fairly self-explanatory. We're using some [FontAwesome](https://fontawesome.com/) icons for the buttons, but most of the component logic occurs in the functions above and the `useEffect()` hook we already explored. The `Tweet` component is also rendered at the top of this card and the current `tweet` value is passed as a prop to it.
 
 ### Tweet
 
-The `Tweet` [component](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/client/src/components/Tweet/Tweet.tsx) displays the actual tweet text, #hashtags, @mentions, the user info, and post timestamp.
+The `Tweet` [component](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/client/src/components/Tweet/Tweet.tsx) displays the actual tweet text, #hashtags, @mentions, the user info, and the creation timestamp.
 
 ```tsx
 // File: client/src/components/Tweet/Tweet.tsx
@@ -1454,7 +1458,7 @@ const Tweet = props => {
 export default Tweet;
 ```
 
-We're using the [Twitter Text](https://github.com/twitter/twitter-text/) library provided by Twitter to help with parsing our actual tweet text. In this case, the [`autoLink()`](https://github.com/twitter/twitter-text/blob/master/js/src/autoLink.js) function detects where entities like hashtags and mentions are within the tweet, and surrounds those elements with appropriate `<a>` tags. By passing some extra options to the function call we can override the defaults so our search URL is local, rather than linking to `twitter.com`.
+We're using the [Twitter Text](https://github.com/twitter/twitter-text/) library provided by Twitter to help with parsing the tweet text. In this case, the [`autoLink()`](https://github.com/twitter/twitter-text/blob/master/js/src/autoLink.js) function detects where entities like hashtags and mentions are within the tweet, and surrounds those elements with appropriate `<a>` tags. By passing some extra options to the function call we can override the defaults so our search URL is local, rather than linking to `twitter.com`.
 
 ### Tweet Modal
 
@@ -1520,9 +1524,9 @@ As you may recall from the [Routing with React Router DOM](#routing-with-react-r
 <Route path={'/status/:tweetUid'} component={TweetModal} />
 ```
 
-This route path mimics the path that Twitter uses for singular tweet URLs, so the `TweetModal` component will only render when the user is looking at a single tweet.
+This routeing path mimics the path that Twitter uses for singular tweet URLs, so the `TweetModal` component will only render when the user is looking at a single tweet.
 
-The logic we're using here is to grab the `tweetUid` param from the `match` object provided by `react-router-dom` and set it to local `uid` state. From there a new `DgraphQueryExecutor` is passed that tweet `uid` and uses the `Tweet.find` `Query` to see if the `uid` exists in the Dgraph database. Here's what that query looks like.
+The logic we're using here is to grab the `tweetUid` param from the `match` object provided by `react-router-dom` and set it to local `uid` state. From there a new `DgraphQueryExecutor` is passed that tweet's `uid` and it uses the `Tweet.find` `Query` to see if the `uid` exists in the Dgraph database. Here's what that query looks like.
 
 ```js
 query find($id: string) {
@@ -1586,14 +1590,14 @@ export const useDgraphLocal = (parameters: {
 };
 ```
 
-Other than that, it behave much the same, allowing the `TweetModal` component to perform a post-render effect to asynchronously retrieve Dgraph data and use the response for further processing.
+Other than that, it behaves much the same, allowing the `TweetModal` component to perform a post-render effect to asynchronously retrieve Dgraph data and use the response for further processing.
 
 ## Next Steps
 
-Whew! That was quite a lot to cover throughout this guide, but hopefully this series helped to illustrate how any type of app -- from this relatively simple `dgraph-twitter-clone` to a large production-scale, distributed system -- can realize significant benefits by integrating with a graph database like Dgraph.
+Whew! That was quite a lot to cover throughout this guide, but hopefully, this series helped to illustrate how any type of app -- from this relatively simple `dgraph-twitter-clone` to a large-scale, distributed system -- can realize significant benefits by integrating with a graph database like Dgraph.
 
-In [The Architecture - Schema]({{% ref "/#schema" %}}) we explored how Dgraph's schema specification makes it easy to design complex data structures _without_ the need to define (or even know about) explicit relationships. This flexibility allows your data layer to be dynamically expanded and mutate to the needs of the application over time. In fact, while not really a recommended practice, Dgraph has no problem accepting data with unknown predicates, and automatically adding them to the schema for future use. Check out the [Schema documentation](https://docs.dgraph.io/query-language/#schema) for more details.
+In [The Architecture - Schema]({{% ref "/#schema" %}}) we explored how Dgraph's schema specification makes it easy to design complex data structures _without_ the need to define (or even know about) explicit relationships. This flexibility allows your data layer to be dynamically expanded and mutate to the needs of the application over time. In fact, Dgraph has no problem accepting data with unknown predicates and automatically adding them to the schema for future use! Check out the [Schema documentation](https://docs.dgraph.io/query-language/#schema) for more details.
 
 In the [Search Component](#search-component) section we also explored how Dgraph's GraphQL+- makes it easy to execute performant joins and reverse joins across any shape of data. With features like [reverse edges](https://docs.dgraph.io/query-language/#reverse-edges), [powerful indexing](https://docs.dgraph.io/query-language/#indexing), [filter logic](https://docs.dgraph.io/query-language/#connecting-filters), [query](https://docs.dgraph.io/query-language/#query-variables) and [value](https://docs.dgraph.io/query-language/#value-variables) variables, [GroupBy](https://docs.dgraph.io/query-language/#groupby), and much more, Dgraph eliminates many of the potential headaches found when trying to perform complex joins across large datasets within traditional SQL-like databases. Head over to the [Query Language](https://docs.dgraph.io/query-language/) documentation to get tons more info on GraphQL+- and how it can streamline your data layer.
 
-There's plenty more to learn about how Dgraph can benefit your team and your next project, so check out some of the [benefits](https://dgraph.io/), see how to [get started](https://docs.dgraph.io/get-started/), take our [interactive tour](https://tour.dgraph.io/), chat with us on our [discussion forums](https://discuss.dgraph.io/), or even throw us a [star on GitHub](https://github.com/dgraph-io/dgraph) if you're so inclined. If you're ready to get more direct support and see how our team can help you, check out our [Startup and Enterprise Support](https://dgraph.io/support) plans or [get in touch](mailto:contact@dgraph.io?subject=I%20would%20like%20to%20sign%20up%20for%20the%20Enterprise%20Package) directly.
+There's plenty more to learn about how Dgraph can benefit your team and your next project, so check out some of the [benefits](https://dgraph.io/), see how to [get started](https://docs.dgraph.io/get-started/), take our [interactive tour](https://tour.dgraph.io/), chat with us on our [discussion forums](https://discuss.dgraph.io/), or even throw us a [star on GitHub](https://github.com/dgraph-io/dgraph) if you're so inclined. If you're ready to get more direct support and see how Dgraph engineers can help you, check out our [Startup and Enterprise Support](https://dgraph.io/support) plans or [get in touch](mailto:contact@dgraph.io?subject=I%20would%20like%20to%20sign%20up%20for%20the%20Enterprise%20Package) directly.

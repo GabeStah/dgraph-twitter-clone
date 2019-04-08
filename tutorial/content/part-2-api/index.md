@@ -10,7 +10,7 @@ draft: false
 
 In [Part 1 - The Architecture]({{% ref "/" %}}) we explored the overall architecture of the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) application and the how the [`dgraph-query-manager`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager) package provides the majority of the business logic that both the API and client apps use to create a basic Twitter clone powered by a Dgraph data layer.
 
-In this second installment we'll dig into the simple `dgraph-twitter-clone` API, which allows for either REST API endpoint requests or JSON-like payload requests, depending on the needs of the requester. The API relies heavily on routing and other functionality provided by the [ExpressJS](https://expressjs.com/) framework, so check out their [official documentation](https://expressjs.com/en/4x/api.html) for more info on Express. With that, let's get into it!
+In this second installment, we'll dig into the simple `dgraph-twitter-clone` API, which allows for either REST API endpoint requests or JSON-like payload requests, depending on the needs of the requester. The API heavily relies on the routing functionality provided by the [ExpressJS](https://expressjs.com/) framework, so check out their [official documentation](https://expressjs.com/en/4x/api.html) for more info on Express. With that, let's get into it!
 
 ## Installing the API
 
@@ -114,9 +114,9 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
 }
 ```
 
-The first `Routes.post('/json', ...)` method invocation in the `Routes.ts` file is where that request is handled. It does so in a fairly straight-forward fashion. It first creates a new `Query` instance by calling the `Query.factory()` method and passing in `Partial<Query>` parameters. It then uses that `Query` instance to modify the `req.body` -- which is itself `DgraphQueryExecutor` instance transmitted in JSON -- so the `DgraphQueryExecutor` instance has an associated `Query` it can execute. After creating a valid instance using the `DgraphQueryExecutor.factor()` method it then it just calls the `executor.execute()` method and explicitly requires a `DgraphConnectionType.DIRECT` connection type, which forces the executor to perform its query execution **directly** with Dgraph, rather than going through any API. Simple, but effective.
+The first `Routes.post('/json', ...)` method invocation in the `Routes.ts` file is where that request is handled. It does so in a fairly straight-forward fashion. It first creates a new `Query` instance by calling the `Query.factory()` method and passing in `Partial<Query>` parameters. It then uses that `Query` instance to modify the `req.body` -- which is itself a `DgraphQueryExecutor` instance transmitted in JSON -- providing the `DgraphQueryExecutor` instance an associated `Query` it can execute. After creating a valid instance using the `DgraphQueryExecutor.factory()` method it invokes the `executor.execute()` method and explicitly requires a `DgraphConnectionType.DIRECT` connection type, which forces the executor to perform its query execution **directly** with Dgraph, rather than going through an API. Simple, but effective.
 
-While a production application would dramatically cleanup the JSON payload that is sent to this `/api/json` endpoint, as opposed to sending the majority of a `DgraphQueryExecutor` instance, it functions rather elegantly here and provides a nice way to reuse our existing `Query` instances with our API. This should illustrate how easy it would be to expand on this "middleware"-style API to act as a go-between for your primary client/app and the Dgraph back-end that's handling actual data transactions and retrieval.
+While a production application would dramatically clean up the JSON payload that is sent to this `/api/json` endpoint to reduce the payload size it still functions rather elegantly here and provides a nice way to reuse our existing `Query` instances within the API. This should illustrate how easy it would be to expand on this "middleware"-style API by acting as a go-between for a primary client app and the Dgraph back-end that's handling actual data transactions and retrieval.
 
 ## Dynamically Generating Express Routes
 
@@ -184,7 +184,7 @@ const createQueryRoutes = () => {
 createQueryRoutes();
 ```
 
-To understand this code let's briefly look at how one of our queries is instantiated. The `Queries.Search.searchBy` `Query` is a dynamic query that performs a lookup of the passed `$query` value in the passed `$predicate` using the passed `$function` type.
+To understand this code let's briefly look at how one of our queries is instantiated. The `Queries.Search.searchBy` `Query` is a dynamic query that performs a lookup of the passed `$query` value within the `$predicate` using the `$function` type of function.
 
 ```ts
 // File: packages/dgraph-query-manager/src/classes/Queries/SearchQueries.ts
@@ -214,9 +214,9 @@ export const SearchQueries = {
 };
 ```
 
-As mentioned in the [Organizing Queries]({{% ref "/#organizing-queries" %}}) section in **Part 1** one advantage to creating the `Query` class is to provide some additional helper functionality. In the case of the `searchBy` `Query`, the first two `ParamTypes` passed to it have a third argument of `true`, which tells the constructor that these parameters are _substitute_ values. That is, before sending the query string to Dgraph the `$function` and `$predicate` placeholder values within the query string are replaced with the parameter values passed to the `DgraphQueryExecutor` that is invoking this `Query`. This allows us to create some powerful, dynamic queries at runtime with very little overhead.
+As mentioned in the [Organizing Queries]({{% ref "/#organizing-queries" %}}) section one advantage to creating the `Query` class is to provide some additional helper functionality. In the case of the `searchBy` `Query`, the first two `ParamTypes` passed to it have a third argument of `true`, which tells the constructor that these parameters are _substitute_ values. That is, before sending the query string to Dgraph the `$function` and `$predicate` placeholder values within the query string are replaced with the parameter values passed to the `DgraphQueryExecutor` that is invoking this `Query`. This allows us to create some powerful, dynamic queries at runtime with very little overhead.
 
-For example, let's create a new `DgraphQueryExecutor` instance and give it the `Queries.Search.searchBy` `Query` and the following parameters.
+For example, let's create a new `DgraphQueryExecutor` instance and pass in the `Queries.Search.searchBy` `Query` and the following parameters.
 
 ```ts
 const executor = new DgraphQueryExecutor(Queries.Search.searchBy, {
@@ -243,7 +243,7 @@ query find($query: string) {
 }
 ```
 
-The reason we don't need to substitute the `$query` parameter in our business logic is because it's a comparison value which GraphQL+- can accept and substitute itself at runtime as a [GraphQL Variable](https://docs.dgraph.io/query-language/#graphql-variables). However, since it cannot dynamically substitute things like function names or predicates, we're able to use the above technique to accomplish that as well.
+The reason we don't need to substitute the `$query` parameter in our business logic is that it's a [GraphQL Variable](https://docs.dgraph.io/query-language/#graphql-variables) which GraphQL+- can accept and substitute at runtime. However, since GraphQL+- cannot dynamically substitute things like function names or predicates, we're able to use the above technique to accomplish that as well.
 
 The final result is the query seen below.
 
@@ -265,10 +265,10 @@ query find($query: string) {
 
 Back to the `createQueryRoutes()` function above. It loops through every `Query` in the `Queries` object found in `packages/dgraph-query-manager/src/classes/Queries/index.ts`, which itself assigns sub-categories to search, tweet, and user queries. For each `Query` entry it finds it creates an asynchronous wrapper callback that will be invoked when the matching `Query.route` REST endpoint is hit via ExpressJS.
 
-Within this async wrapper it generates the params object based on the passed params extracted from the API endpoint query params. For example, ExpressJS likes params in a `/:param` format, so the wrapper function extrapolates based on the known `Query.paramTypes` what to extract from the API endpoint URL. With the params in hand the last step is just to create a new `DgraphQueryExecutor` instance into which the query and the newly-generated params are passed. Finally, it executes the `DgraphQueryExecutor` with a `DgraphConnectionType.DIRECT` connection, which will result in a call to the `DgraphQueryExecutor.executeDirectRequest()` method. As we saw in the [Simplifying Query Execution]({{< ref "/#simplifying-query-execution" >}}) section this method invokes a direct Dgraph transaction through the `dgraph-js-http` library and returns a `Serialization` result.
+Within this async wrapper, it generates the params object based on the passed params extracted from the API endpoint query params. For example, ExpressJS likes params in a `/:param` format, so the wrapper function extrapolates based on the known `Query.paramTypes` what to extract from the API endpoint URL. With the params in hand, the last step is just to create a new `DgraphQueryExecutor` instance into which the query and the newly-generated params are passed. Finally, it executes the `DgraphQueryExecutor` with a `DgraphConnectionType.DIRECT` connection, which will result in a call to the `DgraphQueryExecutor.executeDirectRequest()` method. As we saw in the [Simplifying Query Execution]({{< ref "/#simplifying-query-execution" >}}) section this method invokes a direct Dgraph transaction through the `dgraph-js-http` library and returns a `Serialization` result.
 
 ---
 
-Believe it or not that's all there is to our entire API app! While much of the logic is handled elsewhere, such as the `dgraph-query-manager` package, it's still relatively simple to create an Express-based API that can serve multiple types of data and calls, including JSON payloads and RESTful endpoints.
+Believe it or not, that's all there is to our entire API app! While much of the logic is handled elsewhere, such as the `dgraph-query-manager` package, it's still relatively simple to create an Express-based API that can serve multiple types of data and calls, including JSON payloads and RESTful endpoints.
 
 Check out [Part 3]({{% ref "/part-3-client" %}}) where we'll explore the client application created with the popular React library. We'll make heavy use of the new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature added in February of this year, which will help us manage both local and global state across our Twitter clone app, so we can query Dgraph directly or via our API.

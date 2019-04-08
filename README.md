@@ -248,7 +248,7 @@ See [The API](https://dgraph-twitter-clone.netlify.com/part-2-api) for more deta
 
 ### Build
 
-Generate executable code and TypeScript map/definition files by running the `default` Gulp task from the `/api` directory.
+Transpile TypeScript into CommonJS, create source maps, and generate definition files by running the `default` Gulp task from the `/api` directory.
 
 ```bash
 $ gulp default
@@ -279,7 +279,7 @@ The following Gulp commands can be issued from the `dgraph-twitter-clone/api` di
 - `db:drop` - Drop all Dgraph data and schema (i.e. a full reset).
 - `db:schema:alter` - Set Dgraph schema to what's specified in `config.dgraph.schema` value.
 - `db:reset` - Executes `db:drop` and `db:schema:alter`.
-- `db:generate:data` - Generates a healthy set of pseudo-randomized Twitter-like data via the `Generator.generateInitialData()` method. Currently generates `25` `Users`, `500` `Tweets`, and randomly assigns various values to integrate the data together (i.e. user tweet authorship, tweet replies, favorite/retweet counts, faked field data, etc).
+- `db:generate:data` - Generates a healthy set of pseudo-randomized Twitter-like data via the [`Generator.generateInitialData()`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/helpers/generator.ts#L332) method. Currently generates `25` `Users`, `500` `Tweets`, and randomly assigns various values to integrate the data together (i.e. user tweet authorship, tweet replies, favorite/retweet counts, faked field data, etc).
 - `db:regenerate` - Refreshes entire database with new data by executing `db:drop`, `db:schema:alter`, and `db:generate:data`.
 - `build:typescript` - Transpiles all `.ts` files in `/api` project, including source maps and definition files.
 - `watch:typescript` - Watches `api/src` directory for changes, performing a transpile if needed.
@@ -369,4 +369,4 @@ Three types of integrations with Dgraph are supported, allowing the `dgraph-twit
 
 #### Changing the Connection Type
 
-The current connection [`DgraphConnectionTypes`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts#L11-L15) enum value is specified in the DgraphQueryManager's [`config`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/config/development.ts) file. Simply change this value then run `gulp default` from the `dgraph-twitter-clone` root directory to redistribute the latest package, then start the API then Client apps.
+The current connection [`DgraphConnectionTypes`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts#L8-L12) enum value is specified in the DgraphQueryManager's [`config`](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/config/development.ts) file. Simply change this value then run `gulp default` from the `dgraph-twitter-clone` root directory to redistribute the latest package, then start the API then Client apps.

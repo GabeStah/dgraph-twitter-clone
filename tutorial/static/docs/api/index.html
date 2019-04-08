@@ -63,85 +63,8 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="dgraph-twitter-clone-api">Dgraph Twitter Clone - API</h1>
-				<p>An Node/Express-based REST API for handling Dgraph Twitter Clone - Client requests.</p>
-				<h2 id="prerequisites">Prerequisites</h2>
-				<p>The Dgraph &#39;trio&#39; should be up and running.  All development was performed using a locally-installed Dgraph via the documentation&#39;s <a href="https://docs.dgraph.io/get-started/#docker-compose">Docker Compose</a> file.</p>
-				<h2 id="install">Install</h2>
-				<p>Install with Yarn or NPM.</p>
-				<pre><code class="language-bash">$ yarn install</code></pre>
-				<h3 id="dgraph-query-manager-package">dgraph-query-manager Package</h3>
-				<p>Since the <code>packages/dgraph-query-manager</code> module isn&#39;t published to NPM it must be made available locally to the API and Client apps.  This is accomplished via the <a href="https://github.com/whitecolor/yalc"><code>Yalc</code></a> library, along with a few Gulp tasks in the root <code>dgraph-twitter-clone</code> directory.</p>
-				<p>First, make sure <code>yarn install</code> is executed in the root <code>dgraph-twitter-clone</code> directory to install required modules.  Then, perform a full rebuild of the <code>dgraph-query-manager</code> package by running the <code>gulp default</code> task:</p>
-				<pre><code class="language-bash">$ gulp default
-[03:02:38] Requiring external module @babel/register
-[03:02:39] Using gulpfile D:\work\dgraph\projects\dgraph-twitter-clone\gulpfile.babel.js
-[03:02:39] Starting <span class="hljs-string">'default'</span>...
-[03:02:39] Starting <span class="hljs-string">'packages:remove:modules'</span>...
-[03:02:39] Starting <span class="hljs-string">'cleanupPackageDirectories'</span>...
-[03:02:40] Finished <span class="hljs-string">'cleanupPackageDirectories'</span> after 1.6 s
-[03:02:40] Finished <span class="hljs-string">'packages:remove:modules'</span> after 1.6 s
-[03:02:40] Starting <span class="hljs-string">'packages:install:modules'</span>...
-[03:02:40] Starting <span class="hljs-string">'installPackageModules'</span>...
-[03:02:47] Finished <span class="hljs-string">'installPackageModules'</span> after 6.47 s
-[03:02:47] Finished <span class="hljs-string">'packages:install:modules'</span> after 6.47 s
-[03:02:47] Starting <span class="hljs-string">'packages:build'</span>...
-[03:02:47] Starting <span class="hljs-string">'buildPackage'</span>...
-[03:02:49] Finished <span class="hljs-string">'buildPackage'</span> after 1.93 s
-[03:02:49] Starting <span class="hljs-string">'bumpVersion'</span>...
-[03:02:49] Bumped 0.6.34 to 0.6.35 with <span class="hljs-built_in">type</span>: patch
-[03:02:49] Finished <span class="hljs-string">'bumpVersion'</span> after 9.82 ms
-[03:02:49] Starting <span class="hljs-string">'publishToYalc'</span>...
-[03:02:49] Finished <span class="hljs-string">'publishToYalc'</span> after 278 ms
-[03:02:49] Finished <span class="hljs-string">'packages:build'</span> after 2.22 s
-[03:02:49] Finished <span class="hljs-string">'default'</span> after 10 s</code></pre>
-				<p>This removes and reinstalls <code>node_modules</code>, rebuilds the <code>dist</code> output, bumps the version, and publishes the <code>dgraph-query-manager</code> package to the <strong>local</strong> <code>Yalc</code> repository on the machine.</p>
-				<p>Finally, to update the local version of <code>dgraph-query-manager</code> in the API or Client application, run <code>yalc update</code> within either directory to automatically pull the newest package version published to the local Yalc repo:</p>
-				<pre><code class="language-bash">$ yalc update
-Package dgraph-query-manager@0.6.34-caf89273 added ==&gt; D:\work\dgraph\projects\dgraph-twitter-clone\api\node_modules\dgraph-query-manager.</code></pre>
-				<h2 id="configuration">Configuration</h2>
-				<p>You may need to change the location to your running Dgraph installation in the <code>dgraph-adapter</code> or <code>dgraph-adapter-http</code> config files (<code>dgraph-adapter-http</code> is the default).</p>
-				<ol>
-					<li>Open <code>packages/dgraph-adapter-http/config/development.ts</code> (or <code>production.ts</code> if applicable).</li>
-					<li>Set the <code>dgraph.adapter.address</code> to the Dgraph server endpoint:</li>
-				</ol>
-				<pre><code class="language-ts"><span class="hljs-keyword">const</span> development = {
-    dgraph: {
-        adapter: {
-            address: <span class="hljs-string">'http://192.168.99.100:8080'</span>
-        },
-    },
-    <span class="hljs-comment">// ...</span>
-}</code></pre>
-				<h2 id="build">Build</h2>
-				<p>Generate executable code and TypeScript map/definition files by running the <code>default</code> Gulp task.</p>
-				<pre><code class="language-bash">$ gulp default</code></pre>
-				<h2 id="test">Test</h2>
-				<p>Run <code>yarn test</code> or manually execute <code>jest</code> to execute test suite.</p>
-				<h2 id="running">Running</h2>
-				<p>Start server with <code>yarn start</code> or manual node command:</p>
-				<pre><code class="language-bash">$ node -r ts-node/register dist/app.js --inspect</code></pre>
-				<p>OR</p>
-				<pre><code class="language-bash">$ nodemon -r ts-node/register dist/app.js --inspect</code></pre>
-				<h2 id="design">Design</h2>
-				<h3 id="models-and-packages">Models and Packages</h3>
-				<p>All helper packages and classes discussed below have now been added to the <code>dgraph-query-manager</code> module.</p>
-				<p>A handful of models were created after the official <a href="https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/tweet-object">Twitter API</a> object specifications.  Even though this app doesn&#39;t use the Twitter API, it made sense to keep similar naming conventions wherever possible.  The <code>BaseModel</code> is the primary model class that provides most child classes with default behaviors.  In general, these models allow for simple manipulation of a <code>Tweet</code> or <code>User</code> object in the code base, and then can be easily serialized into a format acceptable by Dgraph.  Conversely, the models and the <code>DgraphAdapter/DgraphAdapterHttp</code> modules work together to deserialize data returned from Dgraph queries and mutations into data and class instances to be further manipulated.</p>
-				<p>The <code>Serialization</code> class is used throughout both the API and Client applications to help transmit relevant data, such as requests, responses, data, errors, statusCodes, and so forth.</p>
-				<p>The <code>dgraph-adapter</code> and <code>dgraph-adapter-http</code> packages are similar and merely use the <code>dgraph-js</code> and <code>dragph-js-http</code> dependencies, respectively.  Either package can be imported and used interchangeably, but <code>dgraph-adapter-http</code> is used by default since it can run in browser-based environments as well as on Node.  A <code>DgraphAdapter</code> instance executes all transactions with Dgraph server through the underlying Dgraph client.  By passing <code>Serialization</code> instances (and returning <code>Promise&lt;Serialization&gt;</code>) other apps and packages can uniformly create and respond to a transaction as expected.</p>
-				<p>The <code>dgraph-query-executor</code> module simplifies the creation and execution of Dgraph queries.  A <code>Query</code> class instance specifies an actual query string, an expected <code>API</code> route (if applicable), and a collection of required parameters and param types.  <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/packages/dgraph-query-executor/queries/tweet-queries.ts">Here</a> are some simple <code>Tweet</code> <code>Query</code> definitions.</p>
-				<p>A <code>DgraphQueryExecutor</code> instance accepts optional params and checks the validity against the required params of the specified <code>Query</code>, then executes the query and returns a <code>Promise&lt;Serialization&gt;</code> for other packages/apps to utilize.</p>
-				<h3 id="routes">Routes</h3>
-				<p>Creating a new API endpoint and handling the incoming request and outgoing response is done through the Express router and a <code>DgraphQueryExecutor</code> instance.  For example, here&#39;s the router logic for the <code>Tweet.find</code> query:</p>
-				<pre><code class="language-ts"><span class="hljs-comment">/**
- * Find a Tweet
- */</span>
-TweetRoutes.get(Queries.Tweet.find.route,  asyncWrapper(<span class="hljs-keyword">async</span> (req, res) =&gt; {
-    <span class="hljs-keyword">const</span> executor = <span class="hljs-keyword">new</span> DgraphQueryExecutor(Queries.Tweet.find, { $id: req.params.id });
-    <span class="hljs-keyword">const</span> serialization = <span class="hljs-keyword">await</span> executor.execute();
-    res.status(serialization.statusCode).send(serialization);
-}));</code></pre>
-				<p>The full route endpoint in this case is <code>api/tweet/:id</code>, so by passing the <code>Queries.Tweet.find</code> query and the relevant params object to a new <code>DgraphQueryExecutor</code> we can easily execute the query and return the <code>Serialization</code> response.  The goal of this design was to allow the <code>Dgraph Twitter Clone - Client</code> to easily run either via direct calls and transactions to the Dgraph server, <strong>or</strong> indirectly through the <code>Dgraph Twitter Clone - API</code>.</p>
-				<p>Check out the <a href="https://github.com/GabeStah/dgraph-twitter-clone-client">Dgraph Twitter Clone - Client</a> repo for more info.</p>
+				<p>An Express-based REST API for handling Dgraph Twitter Clone requests.</p>
+				<p>See base project <a href="https://github.com/GabeStah/dgraph-twitter-clone">README</a>.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

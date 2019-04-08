@@ -63,31 +63,257 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="dgraph-twitter-clone">Dgraph Twitter Clone</h1>
-				<p>A Twitter clone using <a href="https://dgraph.io/">Dgraph.io</a> for backend data management.</p>
-				<h2 id="todo">TODO</h2>
-				<p>The client app is functional and illustrates of how a Twitter clone using Dgraph (directly or via a REST API) can work.  That said, there&#39;s still a number of additions and improvements to be made to the client app in particular.</p>
+				<p>A Twitter clone using <a href="https://dgraph.io/">Dgraph.io</a> for back end data management and <a href="https://reactjs.org/">React</a> for front end UI.</p>
+				<h2 id="installation">Installation</h2>
+				<ol>
+					<li><p>Clone the <a href="https://github.com/GabeStah/dgraph-twitter-clone"><code>GabeStah/dgraph-twitter-clone</code></a> Git repository to a local directory.</p>
+						<pre><code class="language-bash">$ git <span class="hljs-built_in">clone</span> https://github.com/GabeStah/dgraph-twitter-clone.git
+$ <span class="hljs-built_in">cd</span> dgraph-twitter-clone</code></pre>
+					</li>
+					<li><p>Make sure Dgraph Alpha is installed and running. By default the Dgraph Alpha server is available at <code>localhost:8080</code>, but if you changed this endpoint during your installation, you&#39;ll need to update the configuration to match your setup. To do so open the <code>packages/dgraph-query-manager/src/config/development.ts</code> file and change the <code>dgraph.adapter.address</code> to your Dgraph Alpha server endpoint.</p>
+						<pre><code class="language-ts"><span class="hljs-comment">// File: packages/dgraph-query-manager/src/config/development.ts</span>
+<span class="hljs-keyword">const</span> development = {
+  dgraph: {
+    adapter: {
+      address: <span class="hljs-string">'http://localhost:8080'</span>
+    }
+  }
+};</code></pre>
+					</li>
+					<li><p>Now execute the <code>yarn run build</code> command from the <code>dgraph-twitter-clone</code> root directory.</p>
+						<p><strong>WARNING: This command will <em>drop all existing data</em> from your Dgraph database. If you prefer to keep your existing Dgraph data, please run the <code>yarn run build:safe</code> command instead, which <em>will not</em> drop data, and will only add additional schema and data.</strong></p>
+						<pre><code class="language-bash">$ yarn run build</code></pre>
+						<p>This command will install a few global Node packages (<code>gulp-cli</code> and <code>yalc</code>), install all required local Node packages for the API and Client apps, transpile TypeScript source files into executable CommonJS, connect to Dgraph, add the new schema, and finally generate the initial dummy data used by the <code>dgraph-twitter-clone</code> app. This process will take a couple minutes and may appear to hang during the <code>db:generate</code> step, but the output should look something like the following.</p>
+						<pre><code>yarn run v1<span class="hljs-number">.13</span><span class="hljs-number">.0</span>
+$ yarn global add gulp-cli yalc &amp;&amp; yarn install &amp;&amp; gulp install
+[<span class="hljs-number">1</span>/<span class="hljs-number">4</span>] Resolving packages...
+[<span class="hljs-number">2</span>/<span class="hljs-number">4</span>] Fetching packages...
+[<span class="hljs-number">3</span>/<span class="hljs-number">4</span>] Linking dependencies...
+[<span class="hljs-number">4</span>/<span class="hljs-number">4</span>] Building fresh packages...
+
+success Installed <span class="hljs-string">"gulp-cli@2.1.0"</span> with binaries:
+    - gulp
+success Installed <span class="hljs-string">"yalc@1.0.0-pre.27"</span> with binaries:
+    - yalc
+[<span class="hljs-number">1</span>/<span class="hljs-number">4</span>] Resolving packages...
+[<span class="hljs-number">2</span>/<span class="hljs-number">4</span>] Fetching packages...
+info <span class="hljs-symbol">fsevents@</span><span class="hljs-number">1.2</span><span class="hljs-number">.7</span>: The platform <span class="hljs-string">"linux"</span> <span class="hljs-keyword">is</span> incompatible with <span class="hljs-keyword">this</span> module.
+info <span class="hljs-string">"fsevents@1.2.7"</span> <span class="hljs-keyword">is</span> an optional dependency <span class="hljs-keyword">and</span> failed compatibility check. Excluding it <span class="hljs-keyword">from</span> installation.
+[<span class="hljs-number">3</span>/<span class="hljs-number">4</span>] Linking dependencies...
+[<span class="hljs-number">4</span>/<span class="hljs-number">4</span>] Building fresh packages...
+
+[<span class="hljs-number">16</span>:<span class="hljs-number">54</span>:<span class="hljs-number">29</span>] Requiring <span class="hljs-keyword">external</span> module @babel/register
+[<span class="hljs-number">16</span>:<span class="hljs-number">54</span>:<span class="hljs-number">30</span>] Using gulpfile ~/projects/dgraph-twitter-clone/gulpfile.babel.js
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">13</span>] Starting <span class="hljs-string">'install'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">13</span>] Starting <span class="hljs-string">'api:yarn:install'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">19</span>] Finished <span class="hljs-string">'api:yarn:install'</span> after <span class="hljs-number">5.84</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">19</span>] Starting <span class="hljs-string">'client:yarn:install'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Finished <span class="hljs-string">'client:yarn:install'</span> after <span class="hljs-number">9.88</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Starting <span class="hljs-string">'packages:publish'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Starting <span class="hljs-string">'packages:remove:modules'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Starting <span class="hljs-string">'cleanupPackageDirectories'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Finished <span class="hljs-string">'cleanupPackageDirectories'</span> after <span class="hljs-number">5.92</span> ms
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Finished <span class="hljs-string">'packages:remove:modules'</span> after <span class="hljs-number">6.32</span> ms
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Starting <span class="hljs-string">'packages:install:modules'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">29</span>] Starting <span class="hljs-string">'installPackageModules'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">31</span>] Finished <span class="hljs-string">'installPackageModules'</span> after <span class="hljs-number">2.87</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">31</span>] Finished <span class="hljs-string">'packages:install:modules'</span> after <span class="hljs-number">2.87</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">31</span>] Starting <span class="hljs-string">'packages:build'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">31</span>] Starting <span class="hljs-string">'buildPackage'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Finished <span class="hljs-string">'buildPackage'</span> after <span class="hljs-number">1.76</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Starting <span class="hljs-string">'bumpVersion'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Bumped <span class="hljs-number">0.6</span><span class="hljs-number">.175</span> to <span class="hljs-number">0.6</span><span class="hljs-number">.176</span> with type: patch
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Finished <span class="hljs-string">'bumpVersion'</span> after <span class="hljs-number">6.76</span> ms
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Starting <span class="hljs-string">'publishToYalc'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Finished <span class="hljs-string">'publishToYalc'</span> after <span class="hljs-number">251</span> ms
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Finished <span class="hljs-string">'packages:build'</span> after <span class="hljs-number">2.02</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Starting <span class="hljs-string">'packages:push'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">33</span>] Starting <span class="hljs-string">'pushPackagesToApi'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">34</span>] Finished <span class="hljs-string">'pushPackagesToApi'</span> after <span class="hljs-number">154</span> ms
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">34</span>] Starting <span class="hljs-string">'pushPackagesToClient'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">34</span>] Finished <span class="hljs-string">'pushPackagesToClient'</span> after <span class="hljs-number">192</span> ms
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">34</span>] Finished <span class="hljs-string">'packages:push'</span> after <span class="hljs-number">347</span> ms
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">34</span>] Finished <span class="hljs-string">'packages:publish'</span> after <span class="hljs-number">5.24</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">34</span>] Starting <span class="hljs-string">'api:transpile'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">38</span>] Finished <span class="hljs-string">'api:transpile'</span> after <span class="hljs-number">4.11</span> s
+[<span class="hljs-number">16</span>:<span class="hljs-number">33</span>:<span class="hljs-number">38</span>] Starting <span class="hljs-string">'db:regenerate'</span>...
+[<span class="hljs-number">16</span>:<span class="hljs-number">35</span>:<span class="hljs-number">08</span>] Finished <span class="hljs-string">'db:regenerate'</span> after <span class="hljs-number">1.5</span> min
+[<span class="hljs-number">16</span>:<span class="hljs-number">35</span>:<span class="hljs-number">08</span>] Finished <span class="hljs-string">'install'</span> after <span class="hljs-number">1.92</span> min
+Done <span class="hljs-keyword">in</span> <span class="hljs-number">117.21</span>s.</code></pre></li>
+					<li><p>With everything installed you can now run the <strong>Client</strong> and/or <strong>API</strong> apps with <code>yarn run start</code>.</p>
+						<pre><code class="language-bash">$ yarn run start
+yarn run v1.13.0
+$ gulp start
+[16:57:04] Requiring external module @babel/register
+[16:57:04] Using gulpfile ~/projects/dgraph-twitter-clone/gulpfile.babel.js
+[16:57:04] Starting <span class="hljs-string">'start'</span>...
+[16:57:04] Starting <span class="hljs-string">'api:start'</span>...
+[16:57:04] Starting <span class="hljs-string">'client:start'</span>...</code></pre>
+						<p>The React client should open in a new browser tab automatically. If not, manually browse to the client app at <a href="http://localhost:3000"><code>http://localhost:3000</code></a>.</p>
+					</li>
+					<li><p>You can now access the API at <code>localhost:5000</code>, or via and endpoint such as <a href="http://localhost:5000/api/tweets/10"><code>localhost:5000/api/tweets/10</code></a>:</p>
+						<pre><code class="language-json">$ curl localhost:5000/api/tweets/10 | jq
+{
+  &quot;statusCode&quot;: 200,
+  &quot;success&quot;: true,
+  &quot;uri&quot;: &quot;&quot;,
+  &quot;message&quot;: &quot;tweets found.&quot;,
+  &quot;request&quot;: &quot;query find($count: int) {\n      data(func: has (tweet.text), first: $count) {\n        uid\n        expand(_all_) {\n          uid\n          expand(_all_)\n        }\n      }\n     }&quot;,
+  &quot;response&quot;: [
+    {
+    &quot;uid&quot;: &quot;0x6b950&quot;,
+    &quot;tweet.createdAt&quot;: &quot;2019-04-01T00:16:24.519Z&quot;,
+    &quot;tweet.favorited&quot;: false,
+    &quot;tweet.text&quot;: &quot;@Mossie_Russel61 Realigned homogeneous structure #real-time #front-end&quot;,
+    &quot;tweet.hashtag&quot;: [
+      {
+        &quot;uid&quot;: &quot;0x6b94e&quot;,
+        &quot;hashtag.hashtag&quot;: &quot;real&quot;,
+        &quot;hashtag.indices&quot;: [
+          49,
+          54
+        ]
+      },
+      {
+      &quot;uid&quot;: &quot;0x6b94f&quot;,
+      &quot;hashtag.hashtag&quot;: &quot;front&quot;,
+      &quot;hashtag.indices&quot;: [
+          60,
+          66
+        ]
+      }
+    ],
+    &quot;tweet.retweeted&quot;: false,
+    &quot;tweet.retweetCount&quot;: 400,
+    &quot;tweet.isQuoteStatus&quot;: true,
+    &quot;tweet.inReplyToStatusId&quot;: {
+        &quot;uid&quot;: &quot;0x6bcfc&quot;,
+        &quot;tweet.favorited&quot;: true,
+        &quot;tweet.retweetCount&quot;: 263,
+        &quot;tweet.createdAt&quot;: &quot;2019-04-01T00:16:54.001Z&quot;,
+        &quot;tweet.isQuoteStatus&quot;: true,
+        &quot;tweet.text&quot;: &quot;@David21 Cross-platform user-facing array #collaborative #frictionless&quot;,
+        &quot;tweet.favoriteCount&quot;: 209,
+        &quot;tweet.retweeted&quot;: false
+    },
+    &quot;tweet.user&quot;: {
+        &quot;uid&quot;: &quot;0x6b946&quot;,
+        &quot;user.email&quot;: &quot;Berniece_Klocko66@example.org&quot;,
+        &quot;user.friendsCount&quot;: 832,
+        &quot;user.name&quot;: &quot;Selina Altenwerth&quot;,
+        &quot;user.url&quot;: &quot;https://jamarcus.info&quot;,
+        &quot;user.createdAt&quot;: &quot;2019-04-01T00:16:24.317Z&quot;,
+        &quot;user.followersCount&quot;: 238,
+        &quot;user.avatar&quot;: &quot;https://s3.amazonaws.com/uifaces/faces/twitter/nickfratter/128.jpg&quot;,
+        &quot;user.listedCount&quot;: 735,
+        &quot;user.description&quot;: &quot;Quis a et rem optio. Sunt deserunt quia. Et sit quis enim eum corrupti at velit dolorem. Voluptas maiores natus voluptas beatae delectus.&quot;,
+        &quot;user.location&quot;: &quot;New Brionna, Bahrain&quot;,
+        &quot;user.screenName&quot;: &quot;Ezekiel81&quot;,
+        &quot;user.favouritesCount&quot;: 215
+    },
+    &quot;tweet.favoriteCount&quot;: 500
+    },
+  ]
+}</code></pre>
+					</li>
+					<li><p>You can also skip the API and access Dgraph directly. Running the following GraphQL+- query in Ratel (<code>http://localhost:8000</code>) will return the same results as the API endpoint above.</p>
+						<pre><code class="language-js">{
+  data(func: has (tweet.text), <span class="hljs-attr">first</span>: <span class="hljs-number">10</span>) {
+    uid
+    expand(_all_) {
+      uid
+      expand(_all_)
+    }
+  }
+}</code></pre>
+					</li>
+				</ol>
+				<h2 id="documentation">Documentation</h2>
+				<p>Auto-generated documentation is available at the following locations.</p>
 				<ul>
-					<li><input checked="" disabled="" type="checkbox"> Flesh out the UI with additional pages (e.g. view multiple user timelines).</li>
-					<li><input checked="" disabled="" type="checkbox"> Improve the overall look (though I&#39;m far from a graphical designer, so it&#39;ll still be functional first and foremost).</li>
-					<li><input checked="" disabled="" type="checkbox"> Add additional Dgraph queries, particularly those that illustrate the power and complexity that is possible.  Maybe search functionality?  Hashtags are already parsed and supported in the backend, so adding support for those in the client is also important.</li>
-					<li><input checked="" disabled="" type="checkbox"> Use React context(s) where appropriate, rather than relying on passing props through the component tree.</li>
-					<li><input disabled="" type="checkbox"> Finish actual write-up about this project for publication on Dgraph blog.</li>
+					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/api">API</a></li>
+					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/client">Client</a></li>
+					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/dgraph-query-manager">DgraphQueryManager</a></li>
 				</ul>
-				<h2 id="connection-types">Connection Types</h2>
-				<p>Three types of integrations with Dgraph are supported, allowing the <code>dgraph-twitter-clone</code> app to perform data manipulation in whatever method is suitable to your needs.</p>
+				<h3 id="gulp-commands">Gulp Commands</h3>
+				<p>The following Gulp commands can be issued from the root <code>dgraph-twitter-clone</code> directory.</p>
 				<ul>
-					<li><code>DIRECT</code> - Passes serialized request objects (i.e. JSON) to the <code>dgraph-adapter-http</code> instance, which in turn generates Dgraph transactions via the <code>dgraph-js-http</code> package.  This connection type completely bypasses the <code>/api</code> application and forms a <strong>direct</strong> connection to Dgraph (hence the <code>DIRECT</code> name).  <strong>This is the default connection type</strong>.</li>
-					<li><code>API</code> - Posts the serialized request object to the API&#39;s <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L18-L30"><code>/json</code> endpoint</a>.  The request body is converted to an executable query, which is then passed along as a Dgraph transaction.</li>
-					<li><code>REST_API</code> - Uses an endpoint-based REST API from <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L36-L85">auto-generated</a> Express routes, which are based on the set of <a href="https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager/src/classes/Queries"><code>Queries</code></a> found in <code>dgraph-query-manager</code>.</li>
+					<li><code>install</code> - Executes a full install of <code>api</code>, <code>client</code>, and <code>packages</code> by running <code>api:yarn:install</code>, <code>client:yarn:install</code>, <code>packages:publish</code>, <code>api:transpile</code>, and <code>db:regenerate</code>.</li>
+					<li><code>install:safe</code> - Same as <code>install</code> command, but <strong>does not</strong> drop Dgraph data. Only perform additive operations.</li>
+					<li><code>start</code> - Starts both <code>api</code> and <code>client</code> apps.</li>
+					<li><code>default</code> - Same as <code>packages:publish</code>.</li>
 				</ul>
-				<h3 id="changing-the-connection-type">Changing the Connection Type</h3>
-				<p>The current connection <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts#L11-L15"><code>DgraphConnectionTypes</code></a> enum value is specified in the DgraphQueryManager&#39;s <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/config/development.ts"><code>config</code></a> file.  Simply change this value then run <code>gulp default</code> from the <code>dgraph-twitter-clone</code> root directory to redistribute the latest package, then start the API then Client apps. </p>
-				<h2 id="packages">Packages</h2>
+				<h4 id="database">Database</h4>
+				<ul>
+					<li><code>db:regenerate</code> - Drops Dgraph database and regenerates starting data.</li>
+					<li><code>db:schema:alter</code> - Updates Dgraph schema from <code>api/src/config.dgraph.schema</code>.</li>
+					<li><code>db:generate:data</code> - Generates Dgraph data.</li>
+				</ul>
+				<h4 id="docs">Docs</h4>
+				<ul>
+					<li><code>api:docs</code> - Regenerate docs for <code>api</code> project.</li>
+					<li><code>client:docs</code> - Regenerate docs for <code>client</code> project.</li>
+					<li><code>package:docs</code> - Regenerate docs for <code>packages/dgraph-query-manager</code> project.</li>
+					<li><code>docs:all</code> - Regenerates all docs.</li>
+				</ul>
+				<h4 id="packages">Packages</h4>
+				<ul>
+					<li><code>packages:remove:modules</code> - Cleans up <code>packages/dgraph-query-manager/node_modules</code> directory by removing all packages, <code>dist</code> directory, and <code>yarn.lock</code>.</li>
+					<li><code>packages:install:modules</code> - Installs node modules for <code>packages/dgraph-query-manager</code>.</li>
+					<li><code>packages:cleanup</code> - Executes both <code>packages:remove:modules</code> and <code>packages:install:modules</code>.</li>
+					<li><code>packages:build</code> - Rebuilds <code>packages/dgraph-query-manager</code> by transpiling TypeScript src, creating source maps, and definition files. Also bumps version in <code>package.json</code> and publishes to local <code>yalc</code> repo.</li>
+					<li><code>packages:push</code> - Pushes local package in <code>yalc</code> repo to <code>api</code> and <code>client</code> projects.</li>
+					<li><code>packages:publish</code> - Performs a full node package removal, reinstall, rebuild, and republish of <code>packages/dgraph-query-manager</code>.</li>
+				</ul>
+				<h4 id="api">API</h4>
+				<ul>
+					<li><code>api:yarn:install</code> - Executes the <code>yarn install</code> command for the <code>api</code> project.</li>
+					<li><code>api:transpile</code> - Transpiles <code>api</code> project.</li>
+					<li><code>api:start</code> - Runs the <code>api</code> application.</li>
+				</ul>
+				<h4 id="client">Client</h4>
+				<ul>
+					<li><code>client:yarn:install</code> - Executes the <code>yarn install</code> command for the <code>client</code> project.</li>
+					<li><code>client:start</code> - Runs the <code>client</code> application.</li>
+				</ul>
+				<h2 id="api">API</h2>
+				<p>The <code>dgraph-twitter-clone/api</code> app is an <a href="https://expressjs.com/">Express-based</a> API that dynamically generates routes based on <code>Query</code> configurations found in the <code>dgraph-query-manager</code> package. As such, the API can accept requests to standard REST API endpoints (e.g. <code>/api/tweets/user/:id</code>), or JSON payloads to the <code>/api/json</code> endpoint for more complex API requests.</p>
+				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-2-api">The API</a> for more details.</p>
+				<h3 id="build">Build</h3>
+				<p>Transpile TypeScript into CommonJS, create source maps, and generate definition files by running the <code>default</code> Gulp task from the <code>/api</code> directory.</p>
+				<pre><code class="language-bash">$ gulp default</code></pre>
+				<h3 id="test">Test</h3>
+				<p>Run <code>yarn test</code> or manually execute <code>jest</code> to execute the test suite.</p>
+				<h3 id="running">Running</h3>
+				<p>Start the API server with <code>yarn start</code> or a manual node command.</p>
+				<pre><code class="language-bash">$ node -r ts-node/register dist/app.js --inspect</code></pre>
+				<p>OR</p>
+				<pre><code class="language-bash">$ nodemon -r ts-node/register dist/app.js --inspect</code></pre>
+				<h3 id="gulp-commands">Gulp Commands</h3>
+				<p>The following Gulp commands can be issued from the <code>dgraph-twitter-clone/api</code> directory.</p>
+				<ul>
+					<li><code>db:drop</code> - Drop all Dgraph data and schema (i.e. a full reset).</li>
+					<li><code>db:schema:alter</code> - Set Dgraph schema to what&#39;s specified in <code>config.dgraph.schema</code> value.</li>
+					<li><code>db:reset</code> - Executes <code>db:drop</code> and <code>db:schema:alter</code>.</li>
+					<li><code>db:generate:data</code> - Generates a healthy set of pseudo-randomized Twitter-like data via the <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/helpers/generator.ts#L332"><code>Generator.generateInitialData()</code></a> method. Currently generates <code>25</code> <code>Users</code>, <code>500</code> <code>Tweets</code>, and randomly assigns various values to integrate the data together (i.e. user tweet authorship, tweet replies, favorite/retweet counts, faked field data, etc).</li>
+					<li><code>db:regenerate</code> - Refreshes entire database with new data by executing <code>db:drop</code>, <code>db:schema:alter</code>, and <code>db:generate:data</code>.</li>
+					<li><code>build:typescript</code> - Transpiles all <code>.ts</code> files in <code>/api</code> project, including source maps and definition files.</li>
+					<li><code>watch:typescript</code> - Watches <code>api/src</code> directory for changes, performing a transpile if needed.</li>
+					<li><code>default</code> - Executes <code>build:typescript</code>.</li>
+				</ul>
+				<h3 id="routes">Routes</h3>
+				<p>Routes are dynamically generated from <code>Queries</code> specified in the <code>dgraph-query-manager</code> package. Requsts can be either direct REST endpoints (e.g. <code>api/tweet/:id</code>), or complex JSON payloads to the <code>api/json</code> endpoint.</p>
+				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-2-api/#handling-json-api-payloads">Handling JSON API Payloads</a> and <a href="https://dgraph-twitter-clone.netlify.com/part-2-api/#dynamically-generating-express-routes">Dynamically Generating Express Routes</a> for more info.</p>
+				<h2 id="client">Client</h2>
+				<p>The <code>dgraph-twitter-clone/client</code> app is a <a href="https://reactjs.org/">React-based</a> single page application that mimics the core features of Twitter using the Dgraph back end for all queries, mutations, and data management. It can be configured to execute directly with Dgraph, via the API through REST endpoints, or via the API using JSON payloads, all of which tie back to Dgraph.</p>
+				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-3-client">The Client</a> for more details.</p>
+				<h2 id="dgraphquerymanager">DgraphQueryManager</h2>
 				<p>The <code>dgraph-query-manager</code> package is not publicly published to NPM, so it is built and published locally for use in the <code>/client</code> and <code>/api</code> apps.</p>
-				<h3 id="installation">Installation</h3>
+				<h3 id="installation-or-redeployment">Installation or Redeployment</h3>
 				<ol>
 					<li>Install any missing node packages via <code>yarn install</code>.</li>
-					<li>Execute the default Gulp task to rebuild the <code>dgraph-query-manager</code> package and redistribute it to the <code>/client</code> and <code>/api</code> apps:</li>
+					<li>Make local changes.</li>
+					<li>Execute the default Gulp task from the root <code>dgraph-twitter-clone</code> directory to rebuild the <code>dgraph-query-manager</code> package and redistribute it to the <code>/client</code> and <code>/api</code> apps:</li>
 				</ol>
 				<pre><code class="language-bash">$ gulp default
 [19:34:45] Requiring external module @babel/register
@@ -117,6 +343,33 @@
 [19:34:55] Finished <span class="hljs-string">'pushPackagesToClient'</span> after 734 ms
 [19:34:55] Finished <span class="hljs-string">'packages:push'</span> after 1.59 s
 [19:34:55] Finished <span class="hljs-string">'default'</span> after 9.27 s</code></pre>
+				<h3 id="configuration">Configuration</h3>
+				<p>You may need to change the location to your running Dgraph installation in the <code>dgraph-query-manager/src/config</code> files.</p>
+				<ol>
+					<li>Open <code>packages/dgraph-query-manager/src/config/development.ts</code> (or <code>production.ts</code> if applicable).</li>
+					<li><p>Set the <code>dgraph.adapter.address</code> to the Dgraph server endpoint.</p>
+						<pre><code class="language-ts"><span class="hljs-keyword">const</span> development = {
+  <span class="hljs-comment">// ...</span>
+  dgraph: {
+    adapter: {
+      address: <span class="hljs-string">'http://192.168.99.100:8080'</span>
+    }
+  }
+  <span class="hljs-comment">// ...</span>
+};</code></pre>
+					</li>
+					<li><p>Save your changes and <a href="#installation-or-redeployment">redeploy</a> the <code>dgraph-query-manager</code> package.</p>
+					</li>
+				</ol>
+				<h3 id="connection-types">Connection Types</h3>
+				<p>Three types of integrations with Dgraph are supported, allowing the <code>dgraph-twitter-clone</code> app to perform data manipulation in whatever method is suitable to your needs.</p>
+				<ul>
+					<li><code>DIRECT</code> - Passes serialized request objects (i.e. JSON) to the <code>dgraph-adapter-http</code> instance, which in turn generates Dgraph transactions via the <code>dgraph-js-http</code> package. This connection type completely bypasses the <code>/api</code> application and forms a <strong>direct</strong> connection to Dgraph (hence the <code>DIRECT</code> name). <strong>This is the default connection type</strong>.</li>
+					<li><code>API</code> - Posts the serialized request object to the API&#39;s <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L18-L30"><code>/json</code> endpoint</a>. The request body is converted to an executable query, which is then passed along as a Dgraph transaction.</li>
+					<li><code>REST_API</code> - Uses an endpoint-based REST API from <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/src/routes/Routes.ts#L36-L85">auto-generated</a> Express routes, which are based on the set of <a href="https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-query-manager/src/classes/Queries"><code>Queries</code></a> found in <code>dgraph-query-manager</code>.</li>
+				</ul>
+				<h4 id="changing-the-connection-type">Changing the Connection Type</h4>
+				<p>The current connection <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/DgraphQueryExecutor.ts#L8-L12"><code>DgraphConnectionTypes</code></a> enum value is specified in the DgraphQueryManager&#39;s <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/config/development.ts"><code>config</code></a> file. Simply change this value then run <code>gulp default</code> from the <code>dgraph-twitter-clone</code> root directory to redistribute the latest package, then start the API then Client apps.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

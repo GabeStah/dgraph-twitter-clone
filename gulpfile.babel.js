@@ -129,6 +129,8 @@ function cleanupPackageDirectories() {
   );
 }
 
+gulp.task('packages:bump', gulp.series(bumpVersion));
+
 gulp.task('packages:remove:modules', gulp.series(cleanupPackageDirectories));
 
 gulp.task('packages:install:modules', gulp.series(installPackageModules));
@@ -138,10 +140,7 @@ gulp.task(
   gulp.series(['packages:remove:modules', 'packages:install:modules'])
 );
 
-gulp.task(
-  'packages:build',
-  gulp.series(buildPackage, bumpVersion, publishToYalc)
-);
+gulp.task('packages:build', gulp.series(buildPackage, publishToYalc));
 
 gulp.task(
   'packages:push',

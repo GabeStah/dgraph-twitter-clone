@@ -8,13 +8,19 @@ draft: false
 <script type="text/javascript">window.DGRAPH_ENDPOINT = "http://127.0.0.1:8080/query?latency=true";</script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/typescript.min.js"></script>
 
+Graph databases like Dgraph provide fast and efficient data querying, even across complex, hierarchical data. This capability offers significant advantages over more traditional relational databases, as data creation is not enforced by a rigid schema, and data retrieval is as dynamic and fluid as your application requires. Dgraph expands on these capabilities by providing out-of-the-box horizontally-distributed scaling via sharded storage and query processing, combining the flexibility of the graph databases with unprecedented speed.
+
+While having that much power at your disposal is all well and good, it can be difficult to grasp how many modern applications might integrate with and use a graph database like Dgraph. In this series, we'll explore a real-world Twitter clone application that was created entirely around its integration with Dgraph. Throughout this guide, you'll see how the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) is designed and structured to work with Dgraph and produce an end product that mimics Twitter while having access to the powerful data manipulation capabilities provided by Dgraph. Whether performing queries and transactions directly with the Dgraph server or performing tasks indirectly through an API middleware, the `dgraph-twitter-clone` app illustrates how a modern JavaScript app can take full advantage of Dgraph and the GraphQL+- query language.
+
+You're encouraged to install the repo and play with the application code yourself or feel free to just read and follow along with the guide as we walk through the major features and structure of this app and how it utilizes Dgraph to create a Twitter-like single page application. Let's get into it!
+
 ## Prerequisites
 
-This tutorial aims to provide a step-by-step process of creating a Twitter clone application by using the power of Dgraph to handle the data. We'll also use React to create the front-end client application. However, before you begin, there are a handful of prerequisites to install, or simply to be aware of.
+This guide provides a step-by-step walkthrough of a Twitter clone application created using the power of a Dgraph data layer. It uses [React](https://reactjs.org/) for the front-end client application. However, before we begin, there are a handful of prerequisites to install, or simply to be aware of.
 
 ### Install Dgraph
 
-You'll need the Dgraph cluster installed, either locally or via an accessible Docker container. This entire tutorial was created while running Dgraph on Docker, which can be installed using the [Docker Compose](https://docs.dgraph.io/get-started/#docker-compose) file [found here](https://docs.dgraph.io/get-started/#docker-compose). Alternatively, feel free to install Dgraph in whatever manner best suits your needs. Check out the [official documentation](https://docs.dgraph.io/get-started/#step-1-install-dgraph) for more details.
+You'll need the Dgraph cluster installed, either locally or via an accessible Docker container. This entire application was created while running Dgraph on Docker, which can be installed using the [Docker Compose](https://docs.dgraph.io/get-started/#docker-compose) file [found here](https://docs.dgraph.io/get-started/#docker-compose). Alternatively, feel free to install Dgraph in whatever manner best suits your needs. Check out the [official documentation](https://docs.dgraph.io/get-started/#step-1-install-dgraph) for more details.
 
 ### Install Node
 
@@ -22,27 +28,21 @@ The Dgraph Twitter Clone app relies heavily on Node.js, so you'll also need Node
 
 ### TypeScript
 
-All the code throughout the Dgraph Twitter Clone project is written with [TypeScript](https://www.typescriptlang.org/), which is a superset of plain JavaScript that provides typing and other quality of life features for creating cleaner code. While you won't need to be particularly familiar with TypeScript to follow along with this tutorial, be aware that some of the code syntax used throughout the tutorial is TypeScript-specific. Ultimately, all TypeScript code is converted into normal JavaScript prior to execution, so there's nothing in this tutorial that couldn't have been created in plain JavaScript at the outset.
-
-### IDE
-
-You'll also want a text editor or integrated development environment (IDE). Anything will do, but some popular choices are [VS Code](https://code.visualstudio.com/), [WebStorm](https://www.jetbrains.com/webstorm/), [Atom](https://atom.io/), [Brackets](http://brackets.io/), and [Sublime Text](https://www.sublimetext.com/).
+All the code throughout the `dgraph-twitter-clone` project is written with [TypeScript](https://www.typescriptlang.org/), which is a superset of plain JavaScript that provides typing and other quality of life features for creating cleaner code. While you won't need to be particularly familiar with TypeScript to follow along with this tutorial, be aware that some of the code syntax used throughout the series is TypeScript-specific. Ultimately, all TypeScript code is converted into normal JavaScript prior to execution, so there's nothing in this guide that couldn't have been created in plain JavaScript at the outset.
 
 ## Application Architecture
 
-Before we dig into the code let's take a moment to define what the goal of our application is and roughly how it's structured to accomplish that goal. This tutorial aims to illustrate how Dgraph can simplify the structure and lower the development time of a real-world application. While this application is just a proof of concept and far from production-ready software, the overall goal of the `dgraph-twitter-clone` is to create a solid foundation for a Twitter-like front-end application that is powered by Dgraph.
+Before we dig into the code let's take a moment to define what the goal of our application is and roughly how it's structured to accomplish that goal. This application aims to illustrate how Dgraph can simplify the structure and lower the development time of a real-world application. While this application is just a proof of concept and far from production-ready software, the overall goal of the `dgraph-twitter-clone` is to create a solid foundation for a Twitter-like front-end application that is powered by Dgraph.
 
-Furthermore, since graph databases are not as well-known as relational databases, the secondary goal of our app is to provide some keystone familiarity for those readers coming from a relational database background. The app should illustrate how a "traditional" relational database might handle the app data, while then taking it a step further and showing how that data can be more easily queried and manipulated with a graph database like Dgraph. The following are a few key components we're using to accomplish those goals and to build a functional Twitter clone application.
+Furthermore, since graph databases are not as well-known as relational databases, the secondary goal of our app is to provide some keystone familiarity for those readers coming from a relational database background. The app illustrates how a "traditional" relational database might handle the app data, while then taking it a step further and showing how that data can be more easily queried and manipulated with a graph database like Dgraph. The following are a few key components we've used to accomplish those goals and to build a functional Twitter clone application.
 
 ### Models
 
-As you're undoubtedly aware, Twitter's functionality largely revolves around just two simple pieces of data: **Tweets** and **Users.** A user has something to say, so he or she creates a tweet, publishing it for other users to consume. Additionally, **Hashtags** are also a fundamental piece of Twitter data, even though they are considered secondary citizens to the parent tweet element.
-
-Therefore, at a minimum our application needs a model to represent those three critical pieces of information.
+As you're undoubtedly aware, Twitter's functionality largely revolves around just two simple pieces of data: **Tweets** and **Users.** A user has something to say, so they create a tweet, publishing it for other users to consume. Additionally, **Hashtags** are also a fundamental piece of Twitter data, even though they are considered secondary citizens to the parent tweet element. Therefore, this application has a model to represent those three critical pieces of information.
 
 ### Dgraph Adapter
 
-We need to manipulate data on our Dgraph server. Dgraph's official [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http) package provides a useful API for creating [grpc-based](https://grpc.io/) transactions and mutations. Our application uses `dgraph-js-http`, but we've also added a simple adapter that helps us transform our model data into a format Dgraph understands.
+We need to manipulate data on our Dgraph server. Dgraph's official [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http) package provides a useful API for creating [grpc-based](https://grpc.io/) transactions and mutations. Our application uses `dgraph-js-http`, but we've also added a simple adapter that helps to transform our model data into a format Dgraph understands.
 
 ### GraphQL+-
 
@@ -85,9 +85,9 @@ Since our query specifies exactly the data we want to return, we only retrieve t
 
 ### Front-end React Client
 
-Our app also has a front-end site that loosely emulates Twitter. For this project we've used the [React](https://reactjs.org) JavaScript library to create our Twitter clone single-page application. You don't need any prior React experience to follow along with this tutorial, but we've also taken advantage of the new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature introduced to React in early 2019, so you'll be able to learn a bit about how those work in relation to a somewhat-realistic app.
+Our app also has a front-end site that loosely emulates Twitter. For this project, we've used the [React](https://reactjs.org) JavaScript library to create our Twitter clone single-page application. You don't need any prior React experience to follow along with this tutorial, but we've also taken advantage of the new [React Hooks](https://reactjs.org/docs/hooks-intro.html) feature introduced to React in early 2019, so you'll be able to learn a bit about how those work.
 
-Since our Twitter clone app is primarily focused on how Dgraph and graph databases can be used for a Twitter-esque application, the front-end portion is rather limited in scope -- we just need enough there to lay the groundwork and show how it all integrates together.
+Since our Twitter clone app is primarily focused on how Dgraph and graph databases can be used for a Twitter-esque application, the front-end portion is rather limited in scope -- we have just enough there to lay the groundwork and show how it all integrates together.
 
 ### Back-end Express API
 
@@ -101,7 +101,7 @@ With all the basic components planned out let's just right into the code for our
 
 ## Installation
 
-The `dgraph-twitter-clone` application can be installed and configured in just a few steps. This will allow you to see the app in action and start tinkering with the code yourself so you can see how easy it is to power modern applications with Dgraph.
+The `dgraph-twitter-clone` application can be installed and configured in just a few steps. This will allow you to see the app in action and start tinkering with the code yourself so you'll get an idea of how easy it is to power modern applications with Dgraph.
 
 1.  Starting by cloning the `GabeStah/dgraph-twitter-clone` Git repository to a local directory.
 
@@ -131,7 +131,7 @@ The `dgraph-twitter-clone` application can be installed and configured in just a
     $ yarn run build
     ```
 
-    This command will install a few global Node packages (`gulp-cli` and `yalc`), install all required local Node packages for the API and Client apps, transpile TypeScript source files into executable CommonJS, connect to Dgraph, add the new schema, and finally generate the initial dummy data used by the `dgraph-twitter-clone` app. This process will take a couple minutes and may appear to hang during the `db:generate` step, but the output should look something like the following.
+    This command will install a few global Node packages (`gulp-cli` and `yalc`), install all required local Node packages for the API and Client apps, transpile TypeScript source files into executable CommonJS, connect to Dgraph, add the new schema, and finally generate the initial dummy data used by the `dgraph-twitter-clone` app. This process will take a couple of minutes and may appear to hang during the `db:generate` step, but the output should look something like the following.
 
     ```
     yarn run v1.13.0
@@ -281,25 +281,20 @@ The `dgraph-twitter-clone` application can be installed and configured in just a
 
 6.  Better yet, you can skip the API and access Dgraph directly. Running the following query will return the same results as the API endpoint above.
 
-    {{% notice "warning" %}} ED-NOTE-TODO: Fix `runnable` code indentation bug. {{% /notice %}}
-
-    <!-- prettier-ignore-start -->
-
+    <!-- prettier-ignore -->
     {{< runnable >}}
     {
-    data(func: has (tweet.text), first: 10) {
-    uid
-    expand(_all_) {
-    uid
-    expand(_all_)
-    }
-    }
+      data(func: has (tweet.text), first: 10) {
+        uid
+        expand(_all_) {
+          uid
+          expand(_all_)
+        }
+      }
     }
     {{< /runnable >}}
 
-    <!-- prettier-ignore-end -->
-
-    {{% notice "tip" %}} This tutorial will feature many executable Dgraph query snippet similar to above. If your Dgraph Alpha server is running at the default location (`localhost:8080`) and you [installed](#installation) the schema for the `dgraph-twitter-clone` you can execute these runnable queries in the browser and receive output from your own Dgraph installation. If your installation is running elsewhere, feel free to manually adjust the endpoint field in the runnable dialog box to send the query to that location. {{% /notice %}}
+    {{% notice "tip" %}} This tutorial will feature many executable Dgraph query snippets similar to the above. If your Dgraph Alpha server is running at the default location (`localhost:8080`) and you [installed](#installation) the schema for the `dgraph-twitter-clone` you can execute these runnable queries in the browser and receive output from your own Dgraph installation. If your installation is running elsewhere, feel free to manually adjust the endpoint field in the runnable dialog box to send the query to that location. {{% /notice %}}
 
 ## Schema
 
@@ -352,13 +347,13 @@ predicate
 ```
 
 - The `tweet.text` predicate is essentially the data field that we're defining. In this case, anytime we want to perform a query or mutation that interacts with the _text_ of a Tweet we'll be using this `tweet.text` predicate.
-- The [`@index`](https://docs.dgraph.io/query-language/#indexing) directive tells Dgraph to index the predicate based on the passed `tokenizer(s)`. In this case, our data type of `string` allows us to perform a full text search, which will be useful later so users can easily search through Tweets.
-- The `@count` directive tells Dgraph to index the _number_ of edges with this predicate, so we can query the quantity of tweets, perhaps based on filters like the user that authored those tweets.
+- The [`@index`](https://docs.dgraph.io/query-language/#indexing) directive tells Dgraph to index the predicate based on the passed `tokenizer(s)`. In this case, our data type of `string` allows us to perform a full-text search, which will be useful later so users can easily search through Tweets.
+- The `@count` directive tells Dgraph to index the _number_ of edges with this predicate, so we can query the number of tweets, perhaps based on filters like the user that authored those tweets.
 - The [`@upsert` directive](https://docs.dgraph.io/query-language/#upsert-directive) enables conflict checking when committing a transaction. While this still requires business logic on our part, it can be useful to help prevent duplicate entries under certain circumstances.
 
 The schema specification is quite in-depth, so check out the [official schema documentation](https://docs.dgraph.io/query-language/#schema) for more details.
 
-{{% notice "tip" %}} While most of the query samples we'll be using throughout this guide can be executed directly in the browser, your Dgraph installation likely also included the Ratel UI, which provides a beautiful interface for performing queries and mutations on your Dgraph server. Feel free to manually copy any of the queries throughout this tutorial and execute them directly within Ratel, which is typically located at [localhost:8000](http://localhost:8000). {{% /notice %}}
+{{% notice "tip" %}} While most of the query samples we'll be using throughout this guide can be executed directly in the browser, your Dgraph installation likely also included the Ratel UI, which provides a beautiful interface for performing queries and mutations on your Dgraph server. Feel free to manually copy any of the queries throughout this tutorial and execute them directly within Ratel, which is typically located at [http://localhost:8000](http://localhost:8000). {{% /notice %}}
 
 ## DgraphQueryManager Package
 
@@ -366,7 +361,7 @@ Since this project is split into multiple parts, we need to share a lot of code 
 
 ### Working with Serialization
 
-As with most modern JavaScript apps, the majority of transferred data is in a JSON-like format. Additionally, a great deal of that data is transmitted after sending or receiving `Promise`-like objects, including requests and results. Therefore, it's useful for our app to have a core "transaction object" that cam be used throughout our app. This object indicates when a request is created, what data the request holds, what response was provided, any errors that were generated, and so forth.
+As with most modern JavaScript apps, most transferred data is in a JSON-like format. Additionally, a great deal of that data is transmitted after sending or receiving `Promises`, including requests and results. Therefore, it's useful for our app to have a core "transaction object" that can be used throughout our app. This object indicates when a request is created, what data the request holds, what response was provided, any errors that were generated, and so forth.
 
 Take a look at the `dgraph-query-manager/src/classes/Serialization.ts` [file](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Serialization.ts).
 
@@ -403,7 +398,7 @@ export class Serialization implements SerializationInterface {
 }
 ```
 
-While it doesn't look like much, this `Serialization` class is used throughout our application. Since JavaScript class instances are effectively just plain JavaScript objects during execution, the `Serialization` class just provides some beauty and structure to a basic object that can have useful properties like `data`, `request`, `error`, `success`, and so forth. The [`Partial<T>`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-1.html) construct is quite beneficial and is used throughout the app to accept an unknown set of parameters of a given instance type, and to use those parameters in a useful fashion. In this case, a `Serialization` instance can be created with a partial representation of a `Serialization`.
+While it doesn't look like much, this `Serialization` class is used throughout our application. Since JavaScript class instances are effectively just plain JavaScript objects during execution, the `Serialization` class provides some elegance and structure to an otherwise basic object that can now have useful properties like `request`, `response`, `data`, `error`, `success`, and so forth. The [`Partial<T>`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-1.html#mapped-types) construct is quite beneficial and is used throughout the app to accept an unknown set of parameters of a given instance type and to use those parameters in a useful fashion. In this case, a `Serialization` instance can be created with a partial representation of a `Serialization`.
 
 ### Handling Unique Identifiers
 
@@ -523,13 +518,13 @@ export class Uid implements UidInterface {
 }
 ```
 
-We start by defining the `UidInterface` that the `Uid` class will implement. We only really need to store a few properties, the primary of which is the actual `uid: string` value. The `Uid.constructor()` method accepts a passed argument of any of the types specified in `UidParamsType`, which allows this class to handle just about any uid format we can throw at it. The `Uid.generateString()` method creates a new random uid string in the event that a new `Uid` instance is created without passing an initial value. Otherwise, the `getUidAsHex()` method converts a passed value into a hex format.
+We start by defining the `UidInterface` that the `Uid` class will implement. We only really need to store a few properties, the primary of which is the actual `uid: string` value. The `constructor()` accepts a passed argument of any of the types specified in `UidParamsType`, which allows this class to handle just about any uid format we can throw at it. The `generateString()` method creates a new random uid string in the event that a new `Uid` instance are created without passing an initial value. Otherwise, the `getUidAsHex()` method converts a passed value into a hex format.
 
-{{% notice "note" %}} Throughout this guide there will be too much code to go through it all line-by-line without being overwhelming and verbose. Instead, we'll typically go through the main features and functionality of a given snippet, and then redirect your attention to the actual files found in the [public repo](https://github.com/GabeStah/dgraph-twitter-clone) to provide more details and see how everything works together. {{% /notice %}}
+{{% notice "note" %}} Throughout this guide there will be too much code to go through it all line-by-line without being overwhelming and verbose. Instead, we'll typically go through the main features and functionality of a given snippet or file, and then redirect your attention to the actual files found in the [public repo](https://github.com/GabeStah/dgraph-twitter-clone) which can provide more details and let you see how everything works together. {{% /notice %}}
 
 ### Managing Our Models
 
-We already got a sneak peak at the models we're using when we defined our schema, but now let's [take a look](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/BaseModel.ts) at the `dgraph-query-manager/src/models/BaseModel.ts` class, which is the driving logic behing our specific model classes like `Tweet` and `User`.
+We already got a sneak peek at the models we're using when we defined our schema, but now let's [take a look](https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/BaseModel.ts) at the `dgraph-query-manager/src/models/BaseModel.ts` class, which is the driving logic behind our specific model classes like `Tweet`, `User`, and `Hashtag`.
 
 ```ts
 // File: packages/dgraph-query-manager/src/models/BaseModel.ts
@@ -554,7 +549,7 @@ export class BaseModel<T> implements BaseModelInterface {
 }
 ```
 
-The `BaseModelInterface` is kept as simple as possible, so our child classes that inherit `BaseModel` can define those properties unique to them. We're using a generic type in the `BaseModel<T>` definition so we can reference the inheriting class instances/types throughout the various `BaseModel` methods. We'll see this in action shortly, but this makes it easier to, for example, differentiate between when a `Tweet` class instance is being used, versus a `User` or `Hashtag` instance.
+The `BaseModelInterface` is kept as simple as possible, so our child classes that inherit `BaseModel` can define those properties that are unique to them. We're using a generic type in the `BaseModel<T>` definition so we can reference the inheriting class instances/types throughout the various `BaseModel` methods. We'll see this in action shortly, but this makes it easier to, for example, differentiate between when a `Tweet` class instance is being used, versus a `User` or `Hashtag` instance.
 
 The overall purpose of `BaseModel` is to allow for the creation and manipulation of inheriting instances, such as `Tweet` and `User`. Therefore, let's take a look at the `create()` method, along with a few helper methods that accompany it.
 
@@ -615,9 +610,9 @@ static async load<T>(
 }
 ```
 
-It's worth noting that the `create()` method, like many of the `BaseModel` methods, are intentionally `static` as opposed to instance methods. This is because we often need to create a new child instance from scratch, so a factory method pattern is ideal.
+It's worth noting that the `create()` method, as many of the `BaseModel` methods, are intentionally `static` as opposed to instance methods. This is because we often need to create a new child instance from scratch, so a factory method pattern is ideal.
 
-Working backwards here the `injectDefaults()` method does just what the name implies and combines all default properties of the child `T` instance with optional passed properties that will override those defaults. The `load()` method is a generic method that is further expanded upon in child classes like `Tweet`, but `load()` effectively performs the entire creation process of each new `BaseModel<T>` instance.
+Working backward here the `injectDefaults()` method does just what the name implies and combines all default properties of the child `T` instance with optional passed properties that will override those defaults. The `load()` method is a generic method that is further expanded upon in child classes like `Tweet`, but `load()` effectively performs the entire creation process of each new `BaseModel<T>` instance.
 
 Finally, the `create()` method accepts some partial parameters, creates a new `Serialization` instance, then invokes the `load()` method of the inheriting `T` type instance. Upon a successful promise the `serialization.response` property is set to a `new` instance of the child instance.
 
@@ -626,9 +621,9 @@ const processed = await this.load(params);
 serialization.response = new this(processed);
 ```
 
-This illustrates the importance of defining `BaseModel` as a generic `BaseModel<T>` type, so we can retrieve information about generic instance types that inherit from `BaseModel<T>`, but without knowing anything more about them. As we'll soon see, when we invoke the `Tweet.create()` method, the `BaseModel<T>.create()` method recognizes it is a type `Tweet` and populates fields like `className`.
+This illustrates the importance of defining `BaseModel<T>` as a generic type, so we can retrieve information about generic instance types that inherit from `BaseModel<T>`, but without knowing anything more about them. As we'll soon see, when we invoke the `Tweet.create()` method, the `BaseModel<T>.create()` method recognizes it is a type `Tweet` and populates fields like `className`.
 
-We're also using a common pattern you'll see throughout the app, in which we create a `Serialization` instance and return a `Promise<Serialization>` so that other logic throughout the app can evaluate the different properties of the returned `Serialization` and perform futher actions.
+We're also using a common pattern you'll see throughout the app, in which we create a `Serialization` instance and return a `Promise<Serialization>` so that other logic throughout the app can evaluate the different properties of the returned `Serialization` and perform further actions.
 
 You may also notice the `BaseModel.upsert<T>()` method looks _suspiciously_ similar to the `BaseModel.create<T>()` method.
 
@@ -781,7 +776,7 @@ That's great and all, but how does this deserialization help? Let's look at the 
 {{</ runnable >}}
 <!-- prettier-ignore-end -->
 
-Since initial data is psuedo-randomly generated your result will differ slightly, but it should look something like the following.
+Since initial data is pseudo-randomly generated your result will differ slightly, but it should look something like the following.
 
 ```json
 {
@@ -843,13 +838,15 @@ Since initial data is psuedo-randomly generated your result will differ slightly
 }
 ```
 
-As you may recall from our schema, predicates like `tweet.user`, `tweet.hashtag`, and `tweet.inReplyToStatusId` are `uid`, `[uid]`, `uid` types, respectively. Dgraph knows to retrieve the nodes and relevant data for predicates of such data types when we request them. This provides a tremendous amount of power since we can easily retrieve nodes and their relationships without requiring any complex SQL-like queries. Consider the `tweet.inReplyToStatusId` predicate in particular. Our base tweet node has a `uid` of `0xbf8` and its own edge values like `"tweet.text": "@GabeStah Totam et quo rem et quisquam eligendi quod enim. #efficient #ducimus"`. However, `tweet.inReplyTostatusId` references a _different_ tweet node with a `uid` of `0x10a3`, and its entire set of related edges is returned in the query above, including its own `tweet.text` of `"@Keara_Walter33 Open-architected multi-state utilisation #clicks-and-mortar #out-of-the-box"`. Pretty cool!
+As you may recall from our schema, predicates like `tweet.user`, `tweet.hashtag`, and `tweet.inReplyToStatusId` are `uid`, `[uid]`, `uid` types, respectively. Dgraph knows to retrieve the nodes and relevant data for predicates of such data types when we request them, because of the "edge" the two nodes share. This provides a tremendous amount of power since we can easily retrieve nodes and their relationships without requiring any complex SQL-like queries. Consider the `tweet.inReplyToStatusId` predicate in particular. Our base tweet node has a `uid` of `0xbf8` and its own edge values like `"tweet.text": "@GabeStah Totam et quo rem et quisquam eligendi quod enim. #efficient #ducimus"`. However, `tweet.inReplyTostatusId` references a _different_ tweet node with a `uid` of `0x10a3`, and its entire set of related edges is returned in the query above, including its own `tweet.text` of `"@Keara_Walter33 Open-architected multi-state utilisation #clicks-and-mortar #out-of-the-box"`. Pretty cool!
 
 So, when we query Dgraph and get a result like the one above how do we convert that JSON into our model-like formats? We **deserialize** it! With the logic we explored above in `Tweet.ts` and `BaseModel.ts`, our constructor can accept a _partial_ `Tweet` object retrieved from Dgraph and go through the process of deserializing it to convert fields like `tweet.inReplyToStatusId` into a `Tweet` model instance.
 
+{{% notice "note" %}} You may be wondering why we opted for this predicate naming convention -- prefixing predicates with the "object" type they refer to, such as `tweet.inReplyToStatusId`. Dgraph and GraphQL+- do not have any such requirements, so the first reason is just to better illustrate the separation of concerns between where we expect data to be stored. The second reason is since this is a Twitter clone app, we're using many of the same field names that the official [Twitter API](https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-show-id) uses. That said, feel free to name your predicates however you see fit.{{% /notice %}}
+
 #### Creating Tweets
 
-To see how we create new `Tweet` first recall that the `BaseModel<T>.create()` method invokes the `this.load()` method and uses that result to generate a new instance of `this`.
+To see how we create a new `Tweet` first recall that the `BaseModel<T>.create()` method invokes the `this.load()` method and uses that result to generate a new instance of `this`.
 
 ```ts
 // File: packages/dgraph-query-manager/src/models/BaseModel.ts
@@ -934,13 +931,13 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
 }
 ```
 
-Stepping through the logic of `Tweet.load()` we already saw how `injectDefaults()`, but after default values are loaded we then need to ensure any children are also loaded **before** the parent `Tweet` object is created. This prevents invalid data from being inserted into the database, and also ensures the data we _do_ add is as complete as possible, since we don't want to perform unnecessary mutations and queries.
+Stepping through the logic of `Tweet.load()` we already saw how `injectDefaults()` works, but after default values are loaded we then need to ensure any children are also loaded **before** the parent `Tweet` object is created. This prevents invalid data from being inserted into the database and also ensures the data we _do_ add is as complete as possible since we don't want to perform unnecessary mutations or queries.
 
-In this case, `Tweet.loadChildren()` determines if the existing params contain `Hashtags`, and if not, then extracts potential hashtags from the `tweet.text` value via the `this.extractHashtags()` method. If any hashtags are extracted it creates a new `Hashtag[]` array by calling `Hashtag.createMany()` with the passes parameters. Here we see the importance of our `BaseModel<T>` using generic types, since the `Hashtag` class doesn't actually have a `createMany()` method -- we're just invoking the `BaseModel<Hashtag>.createMany()` method instead.
+In this case, `Tweet.loadChildren()` determines if the existing params contain `Hashtags`, and if not, it then extracts potential hashtags from the `tweet.text` value via the `this.extractHashtags()` method. If any hashtags are extracted it creates a new `Hashtag[]` array by calling `Hashtag.createMany()` with the passed parameters. Here we see the importance of our `BaseModel<T>` using generic types, since the `Hashtag` class doesn't actually have a `createMany()` method -- we're just invoking the `BaseModel<Hashtag>.createMany()` method instead.
 
-A similar process occurs for the `tweet.user` parameter, and a new `User` instance is created if params indicate one exists.
+A similar process occurs for the `tweet.user` parameter by creating a new `User` instance if the params indicate that one exists.
 
-{{% notice "tip" %}} Since the `Tweet.loadChildren()` method invokes `Hashtag.createMany()` and `User.create()` as necessary, this provides the proper order of operations discussed above. Calling `.create()` within the `User` and `Hashtag` classes invokes their own `.load()` procedures, respectively, which ensures the result of `Tweet.loadChildren()` contains all the newly created child instances that are needed for the `Tweet` to be created. {{% /notice %}}
+{{% notice "tip" %}} Since the `Tweet.loadChildren()` method invokes `Hashtag.createMany()` and `User.create()` as necessary, this provides the proper order of operations discussed above. Calling `.create()` within the `User` and `Hashtag` classes invokes their own `.load()` procedures, respectively, which ensures the result of `Tweet.loadChildren()` contains all the newly created child instances that are needed for the `Tweet` to be created. Since the load process of any individual model actually connects to Dgraph and performs a new transaction as needed, the resulting model instances will even contain their newly-generated `uid` values. {{% /notice %}}
 
 After children are loaded we need to invoke the `BaseModel<T>.serialize()` method, which does just as it sounds and converts our model instance into a serialized format that Dgraph can work with.
 
@@ -991,7 +988,7 @@ export class BaseModel<T> implements BaseModelInterface {
 }
 ```
 
-The majority of the serialization process is converting `Uid` instances into string representations since Dgraph can't handle a scalar value where it expects a `uid` type.
+The majority of the serialization process is converting `Uid` instances into string representations since Dgraph can't handle a scalar value (i.e. a JavaScript object) where it expects a `uid` type.
 
 The last major step for creating a new `Tweet` is to perform the actual mutation in Dgraph, then deserialize and return the result. Thus, the `.load()` method invokes the `BaseModel<T>.insert()` method, which can be seen below.
 
@@ -1032,7 +1029,7 @@ export class BaseModel<T> implements BaseModelInterface {
 }
 ```
 
-Similar to the `BaseModel<T>.create()` method, `BaseModel<T>.insert()` returns a `Serialization` instance based on the result of the mutation. The critical line here is `serialization = await adapter.mutate(serialization);` in which we connect to Dgraph and perform the actual mutation. The result (which is also a `Serialization`) is then returned by `BaseModel<T>.insert()` and tells us whether we succeeded or not. Thus, let's now take a look at how we perform mutations, which is done in the `DgraphAdapterHttp` class.
+Similar to the `BaseModel<T>.create()` method, `BaseModel<T>.insert()` returns a `Serialization` instance based on the result of the mutation. The critical line here is `serialization = await adapter.mutate(serialization);` in which we connect to Dgraph and perform the actual mutation. The result (which is also a `Serialization`) is then returned by `BaseModel<T>.insert()` and tells us whether we succeeded or not. Thus, this is a great time to take a look at how we perform mutations, which is done in the `DgraphAdapterHttp` class.
 
 ### Using Our Dgraph Adapter
 
@@ -1223,7 +1220,9 @@ export class DgraphAdapterHttp {
 
 Logically, the `DgraphAdapterHttp` class mimics much of the [client](https://github.com/dgraph-io/dgraph-js-http/blob/master/src/clientStub.ts) and [transaction](https://github.com/dgraph-io/dgraph-js-http/blob/master/src/txn.ts) logic found in the [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http) package. The `DgraphAdapterHttp` exposes helper methods for _adapting_ our custom business logic and models to the underlying transaction methods of `dgraph-js-http`. To that end, the constructor creates a new Dgraph client and client stub used to connect to our Dgraph server. As you'll recall, the `BaseModel<T>.insert()` method that performs the actual creation of data in our app invokes the `DgraphAdapterHttp.mutate<T>()` method, so let's examine what's going on in there.
 
-As we've seen before, the main argument passed to the `DgraphAdapterHttp.mutate<T>()` is a `Serialization` instance which has a `.request` property. We create a new transaction using the Dgraph client, then create a temporary `payload` object into which we'll assign the appropriate properties that Dgraph expects, depending on the mutation we want to perform. For example, the `setJson` property is used when we want to set data in JSON format. This comes directly from the [`DgraphClientStub`](https://github.com/dgraph-io/dgraph-js-http/blob/master/src/clientStub.ts#L60) class in `dgraph-js-http`. We assign the `payload.setJson` property to our `serialization.request` value, then invoke the `transaction.mutate()` method from `dgraph-js-http`, which passes the payload and returns the result. If applicable, we also grab the node `uids(s)` that were generated as a result of this transaction and assign them to our returned serialization object. As you can see, the other `DgraphAdapterHttp` methods such as `.query()` and `.queryWithVars()` function much the same way, so we won't go into detail on how those work.
+As we've seen before, the main argument passed to the `DgraphAdapterHttp.mutate<T>()` is a `Serialization` instance which has a `.request` property. We create a new transaction using the Dgraph client, then create a temporary `payload` object into which we'll assign the appropriate properties that Dgraph expects, depending on the mutation we want to perform. For example, the `setJson` property is used when we want to set data in JSON format. This comes directly from the [`DgraphClientStub`](https://github.com/dgraph-io/dgraph-js-http/blob/master/src/clientStub.ts#L60) class in `dgraph-js-http`. We assign the `payload.setJson` property to our `serialization.request` value, then invoke the `transaction.mutate()` method from `dgraph-js-http`, which passes the payload and returns the result. If applicable, we also grab the node `uid(s)` that were generated as a result of this transaction and assign them to our returned serialization object. As you can see, the other `DgraphAdapterHttp` methods such as `.query()` and `.queryWithVars()` function much the same way, so we won't go into detail on how those work.
+
+{{% notice "tip" %}} If your application is Node-based and doesn't need to integrate with a client-side application, the [`DgraphAdapter`](https://github.com/GabeStah/dgraph-twitter-clone/tree/master/packages/dgraph-adapter) package is also included in the `dgraph-query-manager/packages` directory. It functions similarly to the `DgraphAdapterHttp` class that is covered in this guide section, but it uses the [`dgraph-js`](https://github.com/dgraph-io/dgraph-js) library for Node-based grpc transactions. {{% /notice %}}
 
 ### Organizing Queries
 
@@ -1397,7 +1396,7 @@ export class Query implements QueryInterface {
 }
 ```
 
-I've cut out of a few extra helper methods above so only focus on the main logic. As seen in the `getAllPaginated` query instantiation above we've passed a number of arguments to the `Query` constructor. The first is obviously our GraphQL+- query string. The second is a `route` string, which will be by [ExpressJS](https://expressjs.com/) in the event we want to perform a query with the API (more on that later). The third parameter is an array of custom `ParamType` objects, which are just a custom types that help determine if passed parameters are valid.
+I've cut out of a few extra helper methods above to focus on the main logic. As seen in the `TweetQueries.getAllPaginated` query instantiation above we've passed a number of arguments to the `Query` constructor. The first is our GraphQL+- query string. The second is a `route` string, which will be used by [ExpressJS](https://expressjs.com/) in the event we want to perform a query with the API (more on that later). The third parameter is an array of custom `ParamType` objects, which are custom types that help determine if passed runtime parameters are valid. We'll see how these are validated in the next section.
 
 ### Simplifying Query Execution
 
@@ -1595,9 +1594,9 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
 }
 ```
 
-As the name implies, all `DgraphQueryExecutor` really does is provides a logical wrapper for executing `Query` instances in the appropriate manner. The constructor accepts a `Query` argument, along with a few optional arguments. As mentioned, we want to allow Dgraph transactions to occur in a variety of ways, so the `DgraphQueryExecutor.execute()` method accepts an optional `connectionType` argument and executes a request based on that type of transaction. There's also a bit of logic to cleanup the `Serialization` response by removing extraneous data, flattening singular arrays, and so forth. However, the real meat and potatoes are in the `executeX` methods.
+As the name implies, all `DgraphQueryExecutor` really does is provides a logical wrapper for executing `Query` instances in the appropriate manner. The constructor accepts a `Query` argument, along with a few optional arguments. As mentioned, we want to allow Dgraph transactions to occur in a variety of ways, so the `DgraphQueryExecutor.execute()` method accepts an optional `connectionType` argument and executes a request based on that type of transaction. There's also a bit of logic to clean up the `Serialization` response by removing extraneous data, flattening singular arrays, and so forth. However, the real meat and potatoes are in the `executeX` methods.
 
-For example, `DgraphQueryExecutor.executeDirectRequest()` takes the `this.query` property and creates a valid `Serialization` request object out of it, which is then passed along to the appropriate `DgraphAdapterHttp` method that performs the actual Dgraph transaction. While this fancies things up, invoking this `executeDirectRequest` method is no different than directly calling our Dgraph adapter and passing the appropriate query string and optional params.
+For example, `DgraphQueryExecutor.executeDirectRequest()` takes the `this.query` property and creates a valid `Serialization` request object out of it, which is then passed along to the appropriate `DgraphAdapterHttp` method that performs the actual Dgraph transaction. While this fancies things up, invoking the `executeDirectRequest()` method is no different than directly calling our Dgraph adapter and passing the appropriate query string and optional params.
 
 The `DgraphQueryExecutor.executeRestApiRequest()` method starts by generating a valid `uri` using the `Query` instance `uri` property and the query params.
 
@@ -1627,10 +1626,10 @@ The `DgraphQueryExecutor.executeRestApiRequest()` method uses the [Axios](https:
 
 {{% notice "warning" %}} The endpoints created for the `dgraph-twitter-clone` example app merely return data based on their simple parameters. A fully-fledged app would obviously expand on the endpoint system and even accept custom data at those endpoints, but merely calling `axois.get(url)` to illustrate the point works fine here. {{% /notice %}}
 
-Lastly, the `DgraphQueryExecutor.executeJsonApiRequest()` method is similar to `executeRestApiRequest()`, but what's critically different is the call to `axios.post(url, this)`. First you'll notice the generated url endpoint is a static `/api/json`. Second, we're actually passing the entire `DgraphQueryExecutor` instance (`this`) to our API endpoint. What does this accomplish? It effectively allows us to perform **direct** JSON-like transactions through Dgraph, however we can do so by passing through our API first. We'll see how the API handles this in that section of the guide, but this method of performing a Dgraph transaction is a nice middleground between direct calls and pure REST API -- we can still use complex objects and instances along with the power of Dgraph's GraphQL+- query language, while also invoking our own "middleware" API for pre-transaction processing. Cool!
+Lastly, the `DgraphQueryExecutor.executeJsonApiRequest()` method is similar to `executeRestApiRequest()`, but what's critically different is the call to `axios.post(url, this)`. First, you'll notice the generated url endpoint is a static `/api/json`. Second, we're actually passing the entire `DgraphQueryExecutor` instance (`this`) to our API endpoint. What does this accomplish? It effectively allows us to perform **direct** JSON-like transactions on Dgraph, but by first passing through our API. We'll see how the API handles this in that section of the guide, but this method of performing a Dgraph transaction is a nice middle ground between direct calls and pure REST API -- we can still use complex objects and instances along with the power of Dgraph's GraphQL+- query language, while also invoking our own "middleware" API for pre-transaction processing. Cool!
 
 ## Next Steps
 
-We've gone over the architecture of our `dgraph-twitter-clone` app and examined how we'll use the `dgraph-query-manager` package to enable both our API and client apps to communicate with one another -- or directly with Dgraph -- with a stable groundwork for expanding on these apps or taking these concepts int your own projects. Take a look at [Part 2 - The API]({{% ref "/part-2-api" %}}) where we'll dig into the API side of our application, which is built using the popular [ExpressJS](https://expressjs.com/) library. You'll see how a few smart design decisions give us tremendous flexibility to connect with and utilize Dgraph in whatever manner best suits our team or application needs.
+We've gone over the architecture of our `dgraph-twitter-clone` app and examined how we'll use the `dgraph-query-manager` package to enable both our API and client apps to communicate with one another -- or directly with Dgraph -- with a stable groundwork for expanding on these apps or taking these concepts into your own projects. Take a look at [Part 2 - The API]({{% ref "/part-2-api" %}}) where we'll dig into the API side of our application, which is built using the popular [ExpressJS](https://expressjs.com/) library. You'll see how a few smart design decisions give us tremendous flexibility to connect with and utilize Dgraph in whatever manner best suits our team or application needs.
 
 From there, head over to [Part 3 - The Client]({{% ref "/part-3-client" %}}), which explores our [React](https://reactjs.org/) client application. You'll see how its use of [React Hooks](https://reactjs.org/docs/hooks-intro.html), effective state management, and actions + reducers allow us to create a simple, but effective Twitter-like application backed by Dgraph and its powerful GraphQL+- syntax.

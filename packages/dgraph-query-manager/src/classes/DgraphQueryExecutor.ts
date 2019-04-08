@@ -73,7 +73,7 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
       serialization = await this.executeDirectRequest(this.request);
     }
 
-    // Assume singular array of 'data' if not included.
+    // Assume a singular array of 'data' if not included.
     const tree =
       this.query.tree && this.query.tree.length > 0
         ? this.query.tree

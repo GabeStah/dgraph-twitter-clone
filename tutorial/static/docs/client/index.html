@@ -63,37 +63,8 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="dgraph-twitter-clone-client">Dgraph Twitter Clone - Client</h1>
-				<p>An React-based client application to mimic Twitter&#39;s functionality with Dgraph integration.  Can perform Dgraph transactions directly, or through the <a href="https://github.com/GabeStah/dgraph-twitter-clone-api">Dgraph Twitter Clone - API</a>.</p>
-				<p><em>Note</em>: This project was bootstrapped with <a href="https://github.com/facebook/create-react-app">Create React App</a>.</p>
-				<h2 id="prerequisites">Prerequisites</h2>
-				<p>The Dgraph &#39;trio&#39; should be up and running.  All development was performed using a locally-installed Dgraph via the documentation&#39;s <a href="https://docs.dgraph.io/get-started/#docker-compose">Docker Compose</a> file.</p>
-				<h2 id="install">Install</h2>
-				<p>Install with Yarn or NPM.</p>
-				<pre><code class="language-bash">$ yarn install</code></pre>
-				<h3 id="packages-installation">Packages Installation</h3>
-				<p>Shared packages are locally stored in the <a href="https://github.com/GabeStah/dgraph-twitter-clone-api">Dgraph Twitter Clone - API</a>&#39;s <code>/packages</code> directory.  See that <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/README.md#packages-installation"><code>README.md</code></a> for more information.</p>
-				<h2 id="configuration">Configuration</h2>
-				<p>You may need to change the location to your running Dgraph installation in the <code>dgraph-adapter</code> or <code>dgraph-adapter-http</code> config files (<code>dgraph-adapter-http</code> is the default).</p>
-				<ol>
-					<li>Open <code>dgraph-adapter-http/config/development.ts</code> (or <code>production.ts</code> if applicable).</li>
-					<li>Set the <code>dgraph.adapter.address</code> to the Dgraph server endpoint:</li>
-				</ol>
-				<pre><code class="language-ts"><span class="hljs-keyword">const</span> development = {
-    dgraph: {
-        adapter: {
-            address: <span class="hljs-string">'http://192.168.99.100:8080'</span>
-        },
-    },
-    <span class="hljs-comment">// ...</span>
-}</code></pre>
-				<h2 id="running">Running</h2>
-				<p>Start server with <code>npm start</code> to execute the create react scripts.</p>
-				<h2 id="design">Design</h2>
-				<p>Since React is so popular I decided to build this app in React.  Additionally, <a href="https://reactjs.org/blog/2019/02/06/react-v16.8.0.html">React 16.8</a> just came out a few months ago and included the new <code>React Hooks</code> feature, so it seemed like as good opportunity to illustrate how an app can use Hooks and Effects for stateful logic and data manipulation.</p>
-				<p>I initially began this project by creating the REST API, so I decided to embrace that and allow the <code>Dgraph Twitter Clone - Client</code> to hook into and use either the API or direct calls to the Dgraph server to perform transactions and queries.  More information can be found <a href="https://github.com/GabeStah/dgraph-twitter-clone-api/blob/master/README.md#models-and-packages">here</a>.</p>
-				<p>Outside of normal React component hierarchies and <code>tsx</code> files, most of the logic for the client&#39;s data retrieval occurs in the <code>useDgraph</code> custom hook found in <a href="https://github.com/GabeStah/dgraph-twitter-clone-client/blob/master/src/hooks/dgraph.ts"><code>src/hooks/dgraph.ts</code></a>.  As discussed in the <a href="https://github.com/GabeStah/dgraph-twitter-clone-api#models-and-packages">API</a> readme, the <code>Serialization</code> class is used here to handle both incoming requests and outgoing responses.  Depending on the user&#39;s configuration, the <code>DgraphConnectionType</code> determines whether the transaction is executed directly on the Dgraph server via <code>dgraph-js-http</code>, or indirectly via the RESTful <code>dgraph-twitter-clone-api</code>.</p>
-				<p>The <code>useEffect</code> call handles what would normally be <code>componentDidMount</code>, <code>componentDidUpdate</code>, and <code>componentWillUnmount</code> methods in a class-based React Component.  In this case, the effect function is executed after the calling component is rendered.  Additionally, if the passed <code>dependencies</code> value changes, React will recognize this diff and execute the <code>useEffect</code> function again on the next render update.  However, if <code>dependencies</code> don&#39;t change, the effect is not called a second time.  A successful response from either source is set to the <code>serializedResponse</code> state value via the <code>setSerialization</code> function call.</p>
-				<p>The <a href="https://github.com/GabeStah/dgraph-twitter-clone-client/blob/master/src/App.tsx"><code>App</code></a> component shows an example of using the <code>useDgraph</code> hook.  It (currently) passes a static email value to the <code>DgraphQueryExecutor</code> instance with the <code>User.findFromEmail</code> query.  The generated <code>Serialization</code> is passed into the <code>useDgraph</code> hook and it returns a <code>Serialization</code> response object that contains the retrieved User, if applicable.</p>
+				<p>An React-based client application to mimic Twitter&#39;s functionality with Dgraph integration.</p>
+				<p>See base project <a href="https://github.com/GabeStah/dgraph-twitter-clone">README</a>.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

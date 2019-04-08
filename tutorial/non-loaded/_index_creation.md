@@ -34,7 +34,7 @@ Furthermore, since graph databases are not as well-known as relational databases
 
 ### Models
 
-As you're undoubtedly aware, Twitter's functionality largely revolves around just two simple pieces of data, and their relationship to one another: **Tweets** and **Users.** A user has something to say, so he or she creates a tweet, publishing it for other users to consume. While they are secondary to their parent tweet, **Hashtags** are also a popular piece of data Twitter data.
+As you're undoubtedly aware, Twitter's functionality largely revolves around just two simple pieces of data, and their relationship to one another: **Tweets** and **Users.** A user has something to say, so they create a tweet, publishing it for other users to consume. While they are secondary to their parent tweet, **Hashtags** are also a popular piece of data Twitter data.
 
 Therefore, at a minimum our application will need a model to represent those three critical pieces of information.
 
@@ -604,8 +604,6 @@ The `dgraph-twitter-clone` application can be installed and configured in just a
 
     The React client should open in a new browser tab automatically. If not, manually browse to the client app at `http://localhost:3000`.
 
-    {{% notice "warning" %}} ED-NOTE-TODO: Add Client app screenshot. {{% /notice %}}
-
     {{% notice "tip" %}} Throughout this tutorial the packaging tool [`yarn`](https://yarnpkg.com/en/) will be referenced and used. This is just my personal preference, so you are free to substitute `npm` commands in place of `yarn` commands and everything will function the same. {{% /notice %}}
 
 5.  The API should also be running at `localhost:5000`. You can access it via an endpoint such as `localhost:5000/api/tweets/10`:
@@ -677,8 +675,6 @@ The `dgraph-twitter-clone` application can be installed and configured in just a
     ```
 
 6.  Better yet, you can skip the API and access Dgraph directly. Running the following query will return the same results as the API endpoint above.
-
-    {{% notice "warning" %}} ED-NOTE-TODO: Fix `runnable` code indentation bug. {{% /notice %}}
 
     <!-- prettier-ignore -->
     {{< runnable endpoint="http://128.0.0.1:8080/query" >}}

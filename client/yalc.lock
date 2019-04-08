@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "dgraph-query-manager": {
-      "signature": "93813d969fc965c3c38819d1fd8d1a5f",
+      "signature": "ccbcc97aa42931ab27528798dddcc9ce",
       "file": true
     }
   }
