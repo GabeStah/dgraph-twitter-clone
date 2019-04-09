@@ -375,7 +375,7 @@ You may need to change the location to your running Dgraph installation in the `
      // ...
      dgraph: {
        adapter: {
-         address: 'http://192.168.99.100:8080'
+         address: 'http://localhost:8080'
        }
      }
      // ...

@@ -4,7 +4,7 @@ const production = {
   connectionType: DgraphConnectionType.DIRECT,
   dgraph: {
     adapter: {
-      address: 'localhost:9080'
+      address: 'http://localhost:8080'
     },
     api: {
       protocol: 'http',
