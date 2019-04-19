@@ -64,6 +64,41 @@
 			<div class="tsd-panel tsd-typography">
 				<h1 id="dgraph-twitter-clone">Dgraph Twitter Clone</h1>
 				<p>A Twitter clone using <a href="https://dgraph.io/">Dgraph.io</a> for back end data management and <a href="https://reactjs.org/">React</a> for front end UI.</p>
+				<h2 id="table-of-contents">Table of Contents</h2>
+				<ul>
+					<li><a href="#dgraph-twitter-clone">Dgraph Twitter Clone</a><ul>
+							<li><a href="#table-of-contents">Table of Contents</a></li>
+							<li><a href="#installation">Installation</a></li>
+							<li><a href="#documentation">Documentation</a></li>
+							<li><a href="#gulp-commands">Gulp Commands</a><ul>
+									<li><a href="#database">Database</a></li>
+									<li><a href="#docs">Docs</a></li>
+									<li><a href="#packages">Packages</a></li>
+									<li><a href="#api">API</a></li>
+									<li><a href="#client">Client</a></li>
+								</ul>
+							</li>
+							<li><a href="#api-1">API</a><ul>
+									<li><a href="#build">Build</a></li>
+									<li><a href="#test">Test</a></li>
+									<li><a href="#running">Running</a></li>
+									<li><a href="#gulp-commands-1">Gulp Commands</a></li>
+									<li><a href="#routes">Routes</a></li>
+								</ul>
+							</li>
+							<li><a href="#client-1">Client</a></li>
+							<li><a href="#dgraphquerymanager">DgraphQueryManager</a><ul>
+									<li><a href="#installation-or-redeployment">Installation or Redeployment</a></li>
+									<li><a href="#configuration">Configuration</a></li>
+									<li><a href="#connection-types">Connection Types</a><ul>
+											<li><a href="#changing-the-connection-type">Changing the Connection Type</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
 				<h2 id="installation">Installation</h2>
 				<ol>
 					<li><p>Clone the <a href="https://github.com/GabeStah/dgraph-twitter-clone"><code>GabeStah/dgraph-twitter-clone</code></a> Git repository to a local directory.</p>
@@ -231,11 +266,11 @@ $ gulp start
 				<h2 id="documentation">Documentation</h2>
 				<p>Auto-generated documentation is available at the following locations.</p>
 				<ul>
-					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/api">API</a></li>
-					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/client">Client</a></li>
-					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/dgraph-query-manager">DgraphQueryManager</a></li>
+					<li><a href="https://dgraph-twitter-clone.pingpub.dev/docs/api">API</a></li>
+					<li><a href="https://dgraph-twitter-clone.pingpub.dev/docs/client">Client</a></li>
+					<li><a href="https://dgraph-twitter-clone.pingpub.dev/docs/dgraph-query-manager">DgraphQueryManager</a></li>
 				</ul>
-				<h3 id="gulp-commands">Gulp Commands</h3>
+				<h2 id="gulp-commands">Gulp Commands</h2>
 				<p>The following Gulp commands can be issued from the root <code>dgraph-twitter-clone</code> directory.</p>
 				<ul>
 					<li><code>install</code> - Executes a full install of <code>api</code>, <code>client</code>, and <code>packages</code> by running <code>api:yarn:install</code>, <code>client:yarn:install</code>, <code>packages:publish</code>, <code>api:transpile</code>, and <code>db:regenerate</code>.</li>
@@ -243,20 +278,20 @@ $ gulp start
 					<li><code>start</code> - Starts both <code>api</code> and <code>client</code> apps.</li>
 					<li><code>default</code> - Same as <code>packages:publish</code>.</li>
 				</ul>
-				<h4 id="database">Database</h4>
+				<h3 id="database">Database</h3>
 				<ul>
 					<li><code>db:regenerate</code> - Drops Dgraph database and regenerates starting data.</li>
 					<li><code>db:schema:alter</code> - Updates Dgraph schema from <code>api/src/config.dgraph.schema</code>.</li>
 					<li><code>db:generate:data</code> - Generates Dgraph data.</li>
 				</ul>
-				<h4 id="docs">Docs</h4>
+				<h3 id="docs">Docs</h3>
 				<ul>
 					<li><code>api:docs</code> - Regenerate docs for <code>api</code> project.</li>
 					<li><code>client:docs</code> - Regenerate docs for <code>client</code> project.</li>
 					<li><code>package:docs</code> - Regenerate docs for <code>packages/dgraph-query-manager</code> project.</li>
 					<li><code>docs:all</code> - Regenerates all docs.</li>
 				</ul>
-				<h4 id="packages">Packages</h4>
+				<h3 id="packages">Packages</h3>
 				<ul>
 					<li><code>packages:remove:modules</code> - Cleans up <code>packages/dgraph-query-manager/node_modules</code> directory by removing all packages, <code>dist</code> directory, and <code>yarn.lock</code>.</li>
 					<li><code>packages:install:modules</code> - Installs node modules for <code>packages/dgraph-query-manager</code>.</li>
@@ -265,20 +300,20 @@ $ gulp start
 					<li><code>packages:push</code> - Pushes local package in <code>yalc</code> repo to <code>api</code> and <code>client</code> projects.</li>
 					<li><code>packages:publish</code> - Performs a full node package removal, reinstall, rebuild, and republish of <code>packages/dgraph-query-manager</code>.</li>
 				</ul>
-				<h4 id="api">API</h4>
+				<h3 id="api">API</h3>
 				<ul>
 					<li><code>api:yarn:install</code> - Executes the <code>yarn install</code> command for the <code>api</code> project.</li>
 					<li><code>api:transpile</code> - Transpiles <code>api</code> project.</li>
 					<li><code>api:start</code> - Runs the <code>api</code> application.</li>
 				</ul>
-				<h4 id="client">Client</h4>
+				<h3 id="client">Client</h3>
 				<ul>
 					<li><code>client:yarn:install</code> - Executes the <code>yarn install</code> command for the <code>client</code> project.</li>
 					<li><code>client:start</code> - Runs the <code>client</code> application.</li>
 				</ul>
 				<h2 id="api">API</h2>
 				<p>The <code>dgraph-twitter-clone/api</code> app is an <a href="https://expressjs.com/">Express-based</a> API that dynamically generates routes based on <code>Query</code> configurations found in the <code>dgraph-query-manager</code> package. As such, the API can accept requests to standard REST API endpoints (e.g. <code>/api/tweets/user/:id</code>), or JSON payloads to the <code>/api/json</code> endpoint for more complex API requests.</p>
-				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-2-api">The API</a> for more details.</p>
+				<p>See <a href="https://dgraph-twitter-clone.pingpub.dev/part-2-api">The API</a> for more details.</p>
 				<h3 id="build">Build</h3>
 				<p>Transpile TypeScript into CommonJS, create source maps, and generate definition files by running the <code>default</code> Gulp task from the <code>/api</code> directory.</p>
 				<pre><code class="language-bash">$ gulp default</code></pre>
@@ -303,10 +338,10 @@ $ gulp start
 				</ul>
 				<h3 id="routes">Routes</h3>
 				<p>Routes are dynamically generated from <code>Queries</code> specified in the <code>dgraph-query-manager</code> package. Requsts can be either direct REST endpoints (e.g. <code>api/tweet/:id</code>), or complex JSON payloads to the <code>api/json</code> endpoint.</p>
-				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-2-api/#handling-json-api-payloads">Handling JSON API Payloads</a> and <a href="https://dgraph-twitter-clone.netlify.com/part-2-api/#dynamically-generating-express-routes">Dynamically Generating Express Routes</a> for more info.</p>
+				<p>See <a href="https://dgraph-twitter-clone.pingpub.dev/part-2-api/#handling-json-api-payloads">Handling JSON API Payloads</a> and <a href="https://dgraph-twitter-clone.pingpub.dev/part-2-api/#dynamically-generating-express-routes">Dynamically Generating Express Routes</a> for more info.</p>
 				<h2 id="client">Client</h2>
 				<p>The <code>dgraph-twitter-clone/client</code> app is a <a href="https://reactjs.org/">React-based</a> single page application that mimics the core features of Twitter using the Dgraph back end for all queries, mutations, and data management. It can be configured to execute directly with Dgraph, via the API through REST endpoints, or via the API using JSON payloads, all of which tie back to Dgraph.</p>
-				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-3-client">The Client</a> for more details.</p>
+				<p>See <a href="https://dgraph-twitter-clone.pingpub.dev/part-3-client">The Client</a> for more details.</p>
 				<h2 id="dgraphquerymanager">DgraphQueryManager</h2>
 				<p>The <code>dgraph-query-manager</code> package is not publicly published to NPM, so it is built and published locally for use in the <code>/client</code> and <code>/api</code> apps.</p>
 				<h3 id="installation-or-redeployment">Installation or Redeployment</h3>
@@ -352,7 +387,7 @@ $ gulp start
   <span class="hljs-comment">// ...</span>
   dgraph: {
     adapter: {
-      address: <span class="hljs-string">'http://192.168.99.100:8080'</span>
+      address: <span class="hljs-string">'http://localhost:8080'</span>
     }
   }
   <span class="hljs-comment">// ...</span>
