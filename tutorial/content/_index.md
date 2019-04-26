@@ -44,7 +44,7 @@ As you're undoubtedly aware, Twitter's functionality largely revolves around jus
 
 ### Dgraph Adapter
 
-We need to manipulate data on our Dgraph server. Dgraph's official [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http) package provides a useful API for creating [grpc-based](https://grpc.io/) transactions and mutations. Our application uses `dgraph-js-http`, but we've also added a simple adapter that helps to transform our model data into a format Dgraph understands.
+We need to manipulate data on our Dgraph server. Dgraph's official [dgraph-js-http](https://github.com/dgraph-io/dgraph-js-http) package provides a useful API for HTTP-based transactions and mutations. Our application uses `dgraph-js-http`, but we've also added a simple adapter that helps to transform our model data into a format Dgraph understands.
 
 ### GraphQL+-
 
