@@ -33,7 +33,7 @@ const Main = () => {
       <NavigationBar />
       <Container className='AppContainer'>
         <Row>
-          <Col sm={3}>
+          <Col sm={4}>
             <Switch>
               <Route path={'/'} exact component={ProfileCard} />
               <Route path={'/search'} exact component={Search} />
@@ -47,7 +47,6 @@ const Main = () => {
               component={TweetList}
             />
           </Col>
-          <Col sm={3} />
         </Row>
       </Container>
     </Container>

@@ -27,6 +27,8 @@ A Twitter clone using [Dgraph.io](https://dgraph.io/) for back end data manageme
     - [Connection Types](#connection-types)
       - [Changing the Connection Type](#changing-the-connection-type)
 
+![Dgraph Twitter Client](tutorial/static/images/dgraph-twitter-client.gif)
+
 ## Installation
 
 1.  Clone the [`GabeStah/dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) Git repository to a local directory.
