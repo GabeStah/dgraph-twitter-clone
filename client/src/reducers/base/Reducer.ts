@@ -1,6 +1,6 @@
 import { Action, ActionType } from './Action';
 import { State } from '../../state/';
-import { BaseModelDeletionMode, Uid, User } from 'dgraph-query-manager';
+import { Uid } from 'dgraph-query-manager';
 import * as _ from 'lodash';
 
 export const Reducer = (state: State, action: Action): State => {

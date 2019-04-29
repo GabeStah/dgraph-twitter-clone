@@ -5,11 +5,7 @@ export interface UserInterface extends BaseModelInterface {
   'user.description'?: string;
   'user.email': string;
   'user.favorites': Tweet[];
-  'user.favoritesCount': number;
-  'user.followersCount': number;
   'user.friends': User[];
-  'user.friendsCount': number;
-  'user.listedCount': number;
   'user.location'?: string;
   'user.name': string;
   'user.retweets': Tweet[];
@@ -42,29 +38,9 @@ export declare class User extends BaseModel<User> implements UserInterface {
    */
   'user.favorites': Tweet[];
   /**
-   * The number of Tweets this user has liked in the account’s lifetime
-   * @type {number}
-   */
-  'user.favoritesCount': number;
-  /**
-   * The number of followers this account currently has.
-   * @type {number}
-   */
-  'user.followersCount': number;
-  /**
    * Users that are being followed.
    */
   'user.friends': User[];
-  /**
-   * The number of users this account is following.
-   * @type {number}
-   */
-  'user.friendsCount': number;
-  /**
-   * The number of public lists that this user is a member of.
-   * @type {number}
-   */
-  'user.listedCount': number;
   /**
    * The user-defined location for this account’s profile. Not necessarily a location, nor machine-parseable.
    * @type {?string}

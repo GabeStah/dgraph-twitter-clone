@@ -9,15 +9,11 @@ import logger from '../logger';
 
 export interface TweetInterface extends BaseModelInterface {
   'tweet.createdAt': Date | string;
-  'tweet.favoriteCount'?: number;
-  'tweet.favorited': boolean;
   'tweet.hashtag'?: Hashtag[];
   'tweet.inReplyToStatusId'?: Uid;
   'tweet.inReplyToUserId'?: Uid;
   'tweet.isQuoteStatus': boolean;
   'tweet.quotedStatus'?: Tweet;
-  'tweet.retweetCount'?: number;
-  'tweet.retweeted': boolean;
   'tweet.text': string;
   'tweet.user': User;
 }
@@ -44,18 +40,6 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
   'tweet.hashtag'?: Hashtag[];
 
   /**
-   * Indicates approximately how many times this Tweet has been liked by Twitter users.
-   * @type {?number}
-   */
-  'tweet.favoriteCount' = 0;
-
-  /**
-   * Indicates whether this Tweet has been favorited by the authenticating user.
-   * @type {boolean}
-   */
-  'tweet.favorited' = false;
-
-  /**
    * If the represented Tweet is a reply, this field will contain the integer representation of the original Tweet’s ID.
    * @type {?Uid}
    */
@@ -78,18 +62,6 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
    * @type {?Tweet}
    */
   'tweet.quotedStatus'?: Tweet;
-
-  /**
-   * Number of times this Tweet has been retweeted.
-   * @type {number}
-   */
-  'tweet.retweetCount' = 0;
-
-  /**
-   * Indicates whether this Tweet has been liked by the authenticating user.
-   * @type {boolean}
-   */
-  'tweet.retweeted' = false;
 
   /**
    * The actual UTF-8 text of the status upsert.
@@ -205,11 +177,7 @@ export class Tweet extends BaseModel<Tweet> implements TweetInterface {
     faker.seed(seed);
     const max = 500;
     return {
-      'tweet.favoriteCount': faker.random.number(max),
-      'tweet.favorited': faker.random.boolean(),
       'tweet.isQuoteStatus': faker.random.boolean(),
-      'tweet.retweetCount': faker.random.number(max),
-      'tweet.retweeted': faker.random.boolean(),
       'tweet.text': this.generateRandomTweetText(seed, mention),
       'tweet.user': User.generate(),
       ...params

@@ -27,30 +27,10 @@ class Tweet extends models_1.BaseModel {
      */
     this['tweet.createdAt'] = new Date();
     /**
-     * Indicates approximately how many times this Tweet has been liked by Twitter users.
-     * @type {?number}
-     */
-    this['tweet.favoriteCount'] = 0;
-    /**
-     * Indicates whether this Tweet has been favorited by the authenticating user.
-     * @type {boolean}
-     */
-    this['tweet.favorited'] = false;
-    /**
      * Indicates whether this is a Quoted Tweet.
      * @type {boolean}
      */
     this['tweet.isQuoteStatus'] = false;
-    /**
-     * Number of times this Tweet has been retweeted.
-     * @type {number}
-     */
-    this['tweet.retweetCount'] = 0;
-    /**
-     * Indicates whether this Tweet has been liked by the authenticating user.
-     * @type {boolean}
-     */
-    this['tweet.retweeted'] = false;
     // Override defaults
     Object.assign(this, Tweet.deserialize(params));
   }
@@ -147,11 +127,7 @@ class Tweet extends models_1.BaseModel {
     const max = 500;
     return Object.assign(
       {
-        'tweet.favoriteCount': faker.random.number(max),
-        'tweet.favorited': faker.random.boolean(),
         'tweet.isQuoteStatus': faker.random.boolean(),
-        'tweet.retweetCount': faker.random.number(max),
-        'tweet.retweeted': faker.random.boolean(),
         'tweet.text': this.generateRandomTweetText(seed, mention),
         'tweet.user': models_1.User.generate()
       },

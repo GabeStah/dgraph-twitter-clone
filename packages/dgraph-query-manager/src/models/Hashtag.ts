@@ -3,7 +3,6 @@ import { BaseModel, BaseModelInterface, Tweet, Uid } from '../models';
 export interface HashtagInterface extends BaseModelInterface {
   'hashtag.hashtag': string;
   'hashtag.indices': [number];
-  'hashtag.tweet': Tweet;
 }
 
 export class Hashtag extends BaseModel<Hashtag> implements HashtagInterface {
@@ -20,12 +19,6 @@ export class Hashtag extends BaseModel<Hashtag> implements HashtagInterface {
    * @type {[number]}
    */
   'hashtag.indices': [number];
-
-  /**
-   * The associated tweet containing this hashtag.
-   * @type {!Tweet}
-   */
-  'hashtag.tweet': Tweet;
 
   constructor(params: Partial<Hashtag> = {}) {
     super(params);
