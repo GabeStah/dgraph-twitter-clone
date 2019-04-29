@@ -1,6 +1,7 @@
 import config from '../config';
 import * as faker from 'faker';
 import logger from './logger';
+import * as _ from 'lodash';
 import {
   BaseModel,
   BaseModelDeletionMode,
@@ -282,7 +283,7 @@ export class Generator {
     // Create random children
     for (const tweet of tweets) {
       // Decide if should be a reply (25% chance)
-      if (weightedBoolean(0.85)) {
+      if (weightedBoolean(config.generator.tweetReplyStatusChance)) {
         // Get random tweet
         const parentTweet = getRandomElement(tweets);
         if (parentTweet.uid !== tweet.uid) {
@@ -301,7 +302,7 @@ export class Generator {
     await adapter.alterSchema(config.dgraph.schema);
 
     logger.info(`Starting random data generation.`);
-    const users = await this.createUsers(25);
+    const users = await this.createUsers(config.generator.userCount);
     // Update a single user
     const primaryUser = getRandomElement(users);
     primaryUser['user.email'] = 'gabe@gabewyatt.com';
@@ -311,11 +312,11 @@ export class Generator {
       'https://pbs.twimg.com/profile_images/488421746274340864/tVfs2FJs_bigger.png';
     await User.upsert(primaryUser);
     // Assign Tweets to random Users
-    const tweets = await this.createTweets(users, 500);
+    const tweets = await this.createTweets(users, config.generator.tweetCount);
     // Create random children
     for (const tweet of tweets) {
       // Decide if should be a reply (25% chance)
-      if (weightedBoolean(0.85)) {
+      if (weightedBoolean(config.generator.tweetReplyStatusChance)) {
         // Get random tweet
         const parentTweet = getRandomElement(tweets);
         if (parentTweet.uid !== tweet.uid) {
@@ -337,7 +338,7 @@ export class Generator {
     }
 
     logger.info(`Starting random data generation.`);
-    const users = await this.createUsers(25);
+    const users: User[] = await this.createUsers(config.generator.userCount);
     // Update a single user
     const primaryUser = getRandomElement(users);
     primaryUser['user.email'] = 'gabe@gabewyatt.com';
@@ -347,21 +348,72 @@ export class Generator {
       'https://pbs.twimg.com/profile_images/488421746274340864/tVfs2FJs_bigger.png';
     await User.upsert(primaryUser);
     // Assign Tweets to random Users
-    const tweets = await this.createTweets(users, 500);
-    // Create random children
-    for (const tweet of tweets) {
-      // Decide if should be a reply (25% chance)
-      if (weightedBoolean(0.85)) {
-        // Get random tweet
-        const parentTweet = getRandomElement(tweets);
-        if (parentTweet.uid !== tweet.uid) {
-          // Assign other Uid tweets
-          tweet['tweet.inReplyToStatusId'] = parentTweet.uid;
-          // Upsert changes.
-          await Tweet.upsert(tweet);
+    const tweets: Tweet[] = await this.createTweets(
+      users,
+      config.generator.tweetCount
+    );
+
+    // follower: someone following USER (reverse from user.friend)
+    // user.friends: uids of USERS the USER is following
+    // user.favorites: uids of TWEETS USER has favorited
+    // user.retweets: uids of TWEETS USER have retweeted
+
+    // Add associations for friends, favorites, and retweets.
+    // Select random number of existing tweets/users, up to maximum of half total count.
+    for (const user of users) {
+      const favorites: Uid[] = _.sampleSize(
+        tweets,
+        _.random(Math.floor(config.generator.tweetCount / 2))
+      ).map(e => e.uid);
+
+      const friends: Uid[] = _.reject(
+        _.sampleSize(
+          users,
+          _.random(Math.floor(config.generator.userCount / 2))
+        ),
+        other => {
+          return user.uid ? user.uid.toString() === other.uid.toString() : true;
         }
-      }
+      ).map(e => e.uid);
+
+      const retweets: Uid[] = _.sampleSize(
+        tweets,
+        _.random(Math.floor(config.generator.tweetCount / 2))
+      ).map(e => e.uid);
+
+      // Update User with associated nodes.
+      await User.insert({
+        uid: user.uid ? user.uid.toString() : '',
+        'user.favorites': favorites,
+        'user.friends': friends,
+        'user.retweets': retweets
+      });
     }
+
+    // Set Tweet's `inReplyToStatusId` property to another Tweet, based on
+    // weighted chance.  If set, also set matching User uid.
+    await Tweet.insert(
+      _.reduce(
+        tweets,
+        (accumulator, tweet) => {
+          // Decide if should be a reply.
+          if (weightedBoolean(config.generator.tweetReplyStatusChance)) {
+            // Get random tweet
+            const parentTweet = _.sample(tweets);
+            if (tweet.uid && parentTweet.uid !== tweet.uid) {
+              accumulator.push({
+                uid: tweet.uid.toString(),
+                'tweet.inReplyToStatusId': parentTweet.uid,
+                'tweet.inReplyToUserId': parentTweet['tweet.user'].uid
+              });
+            }
+          }
+          return accumulator;
+        },
+        []
+      )
+    );
+
     logger.info(`Random data generation complete.`);
   }
 
@@ -377,13 +429,13 @@ export class Generator {
       let tempUser;
       if (user) {
         if (Array.isArray(user)) {
-          tempUser = getRandomElement(user);
+          tempUser = _.sample(user);
         } else {
           tempUser = user;
         }
       }
       const generated = Tweet.generateFakeParams(
-        getRandomInt(1, 999_999_999),
+        _.random(1, 999_999_999),
         undefined,
         tempUser
       );
@@ -391,7 +443,7 @@ export class Generator {
       if (user) {
         if (Array.isArray(user)) {
           // Pick random User.
-          generated['tweet.user'] = getRandomElement(user);
+          generated['tweet.user'] = _.sample(user);
         } else {
           generated['tweet.user'] = user;
         }

@@ -6,13 +6,15 @@ import { Hashtag, Tweet, Uid, UidParamsType, User } from '../models';
  * Edge - Deletes specified edge(s).
  * AllChildEdges - Removes all child edges from node.
  * AllChildNodes - Deletes all child nodes and edge references from node.
+ * Raw - Bypasses Model-based logic and passes direct JSON object.
  */
 export declare enum BaseModelDeletionMode {
   All = 0,
   Node = 1,
   Edge = 2,
   AllChildEdges = 3,
-  AllChildNodes = 4
+  AllChildNodes = 4,
+  Raw = 5
 }
 export declare type BaseModelNodeableType = Hashtag | Tweet | User;
 export interface BaseModelInterface {

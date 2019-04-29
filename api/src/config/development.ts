@@ -20,7 +20,7 @@ user.avatar: string .
 user.createdAt: dateTime @index(hour) .
 user.description: string @index(fulltext) @count .
 user.email: string @index(exact) @upsert .
-user.favouritesCount: int @index(int) .
+user.favoritesCount: int @index(int) .
 user.followersCount: int @index(int) .
 user.friendsCount: int @index(int) .
 user.listedCount: int @index(int) .
@@ -28,10 +28,18 @@ user.location: string @index(term) @count .
 user.name: string @index(hash) @count .
 user.screenName: string @index(term) @count .
 user.url: string @index(exact, fulltext) @count .
+user.friends: uid @count @reverse .
+user.favorites: uid @count @reverse .
+user.retweets: uid @count @reverse .
 `
   },
   faker: {
     seed: 1234567890
+  },
+  generator: {
+    tweetReplyStatusChance: 0.85,
+    userCount: 10,
+    tweetCount: 50
   }
 };
 

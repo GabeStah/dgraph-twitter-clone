@@ -2,19 +2,22 @@
 import * as faker from 'faker';
 // Local
 import config from '../config';
-import { BaseModel, BaseModelInterface, Uid } from '../models';
+import { BaseModel, BaseModelInterface, Hashtag, Tweet, Uid } from '../models';
 
 export interface UserInterface extends BaseModelInterface {
   'user.avatar': string;
   'user.createdAt': Date | string;
   'user.description'?: string;
   'user.email': string;
-  'user.favouritesCount': number;
+  'user.favorites': Tweet[];
+  'user.favoritesCount': number;
   'user.followersCount': number;
+  'user.friends': User[];
   'user.friendsCount': number;
   'user.listedCount': number;
   'user.location'?: string;
   'user.name': string;
+  'user.retweets': Tweet[];
   'user.screenName': string;
   'user.url'?: string;
 }
@@ -45,16 +48,26 @@ export class User extends BaseModel<User> implements UserInterface {
   'user.email': string;
 
   /**
+   * Favorited Tweets.
+   */
+  'user.favorites': Tweet[] = [];
+
+  /**
    * The number of Tweets this user has liked in the account’s lifetime
    * @type {number}
    */
-  'user.favouritesCount': number;
+  'user.favoritesCount': number;
 
   /**
    * The number of followers this account currently has.
    * @type {number}
    */
   'user.followersCount': number;
+
+  /**
+   * Users that are being followed.
+   */
+  'user.friends': User[] = [];
 
   /**
    * The number of users this account is following.
@@ -81,6 +94,11 @@ export class User extends BaseModel<User> implements UserInterface {
   'user.name': string;
 
   /**
+   * Tweets that have been retweeted.
+   */
+  'user.retweets': Tweet[] = [];
+
+  /**
    * The screen key, handle, or alias that this user identifies themselves with.
    * @type {string}
    */
@@ -103,8 +121,24 @@ export class User extends BaseModel<User> implements UserInterface {
    * @param params
    */
   static deserialize<User>(params: Partial<User | any> = {}): Partial<User> {
-    if (params['user.createdAt'])
+    if (params['user.createdAt']) {
       params['user.createdAt'] = new Date(params['user.createdAt']);
+    }
+    if (params['user.favorites'] && params['user.favorites'].length > 0) {
+      params['user.favorites'] = params['user.favorites'].map(
+        tweet => new Tweet(tweet)
+      );
+    }
+    if (params['user.friends'] && params['user.friends'].length > 0) {
+      params['user.friends'] = params['user.friends'].map(
+        user => new User(user)
+      );
+    }
+    if (params['user.retweets'] && params['user.retweets'].length > 0) {
+      params['user.retweets'] = params['user.retweets'].map(
+        tweet => new Tweet(tweet)
+      );
+    }
     params = super.deserialize(params);
     return params;
   }
@@ -137,7 +171,7 @@ export class User extends BaseModel<User> implements UserInterface {
       'user.avatar': faker.image.avatar(),
       'user.description': faker.lorem.paragraph(),
       'user.email': faker.internet.exampleEmail(),
-      'user.favouritesCount': faker.random.number(max),
+      'user.favoritesCount': faker.random.number(max),
       'user.followersCount': faker.random.number(max),
       'user.friendsCount': faker.random.number(max),
       'user.listedCount': faker.random.number(max),

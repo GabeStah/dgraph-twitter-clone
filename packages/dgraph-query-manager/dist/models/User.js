@@ -13,6 +13,18 @@ class User extends models_1.BaseModel {
      * @type {Date}
      */
     this['user.createdAt'] = new Date();
+    /**
+     * Favorited Tweets.
+     */
+    this['user.favorites'] = [];
+    /**
+     * Users that are being followed.
+     */
+    this['user.friends'] = [];
+    /**
+     * Tweets that have been retweeted.
+     */
+    this['user.retweets'] = [];
     // Override defaults
     Object.assign(this, User.deserialize(params));
   }
@@ -21,8 +33,24 @@ class User extends models_1.BaseModel {
    * @param params
    */
   static deserialize(params = {}) {
-    if (params['user.createdAt'])
+    if (params['user.createdAt']) {
       params['user.createdAt'] = new Date(params['user.createdAt']);
+    }
+    if (params['user.favorites'] && params['user.favorites'].length > 0) {
+      params['user.favorites'] = params['user.favorites'].map(
+        tweet => new models_1.Tweet(tweet)
+      );
+    }
+    if (params['user.friends'] && params['user.friends'].length > 0) {
+      params['user.friends'] = params['user.friends'].map(
+        user => new User(user)
+      );
+    }
+    if (params['user.retweets'] && params['user.retweets'].length > 0) {
+      params['user.retweets'] = params['user.retweets'].map(
+        tweet => new models_1.Tweet(tweet)
+      );
+    }
     params = super.deserialize(params);
     return params;
   }
@@ -48,7 +76,7 @@ class User extends models_1.BaseModel {
         'user.avatar': faker.image.avatar(),
         'user.description': faker.lorem.paragraph(),
         'user.email': faker.internet.exampleEmail(),
-        'user.favouritesCount': faker.random.number(max),
+        'user.favoritesCount': faker.random.number(max),
         'user.followersCount': faker.random.number(max),
         'user.friendsCount': faker.random.number(max),
         'user.listedCount': faker.random.number(max),

@@ -1,15 +1,18 @@
-import { BaseModel, BaseModelInterface } from '../models';
+import { BaseModel, BaseModelInterface, Tweet } from '../models';
 export interface UserInterface extends BaseModelInterface {
   'user.avatar': string;
   'user.createdAt': Date | string;
   'user.description'?: string;
   'user.email': string;
-  'user.favouritesCount': number;
+  'user.favorites': Tweet[];
+  'user.favoritesCount': number;
   'user.followersCount': number;
+  'user.friends': User[];
   'user.friendsCount': number;
   'user.listedCount': number;
   'user.location'?: string;
   'user.name': string;
+  'user.retweets': Tweet[];
   'user.screenName': string;
   'user.url'?: string;
 }
@@ -35,15 +38,23 @@ export declare class User extends BaseModel<User> implements UserInterface {
    */
   'user.email': string;
   /**
+   * Favorited Tweets.
+   */
+  'user.favorites': Tweet[];
+  /**
    * The number of Tweets this user has liked in the account’s lifetime
    * @type {number}
    */
-  'user.favouritesCount': number;
+  'user.favoritesCount': number;
   /**
    * The number of followers this account currently has.
    * @type {number}
    */
   'user.followersCount': number;
+  /**
+   * Users that are being followed.
+   */
+  'user.friends': User[];
   /**
    * The number of users this account is following.
    * @type {number}
@@ -64,6 +75,10 @@ export declare class User extends BaseModel<User> implements UserInterface {
    * @type {string}
    */
   'user.name': string;
+  /**
+   * Tweets that have been retweeted.
+   */
+  'user.retweets': Tweet[];
   /**
    * The screen key, handle, or alias that this user identifies themselves with.
    * @type {string}

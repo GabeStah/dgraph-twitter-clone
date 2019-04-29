@@ -29,7 +29,7 @@ const Main = () => {
 
   return (
     <Container>
-      <Route path={'/status/:tweetUid'} component={TweetModal} />
+      <Route path={'/:screenName/status/:tweetUid'} component={TweetModal} />
       <NavigationBar />
       <Container className='AppContainer'>
         <Row>
@@ -43,7 +43,7 @@ const Main = () => {
           <Col>
             <TweetBox />
             <Route
-              path={['/', '/:screenName', '/search', '/status/:tweetUid']}
+              path={['/', '/:screenName', '/search', '/:screenName/status/:tweetUid']}
               component={TweetList}
             />
           </Col>

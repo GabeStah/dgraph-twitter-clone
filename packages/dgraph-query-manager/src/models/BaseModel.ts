@@ -10,13 +10,15 @@ import { Hashtag, Tweet, Uid, UidParamsType, User } from '../models';
  * Edge - Deletes specified edge(s).
  * AllChildEdges - Removes all child edges from node.
  * AllChildNodes - Deletes all child nodes and edge references from node.
+ * Raw - Bypasses Model-based logic and passes direct JSON object.
  */
 export enum BaseModelDeletionMode {
   All,
   Node,
   Edge,
   AllChildEdges,
-  AllChildNodes
+  AllChildNodes,
+  Raw
 }
 
 export type BaseModelNodeableType = Hashtag | Tweet | User;
@@ -104,7 +106,9 @@ export class BaseModel<T> implements BaseModelInterface {
     });
 
     try {
-      if (
+      if (mode === BaseModelDeletionMode.Raw) {
+        serialization.request = item;
+      } else if (
         item instanceof BaseModel ||
         (typeof item === 'object' && !(item instanceof Uid))
       ) {

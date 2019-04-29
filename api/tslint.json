@@ -80,7 +80,7 @@
 
     // Config different from tslint:latest
     "no-implicit-dependencies": [true, "dev"],
-    "object-literal-key-quotes": [true, "consistent-as-needed"],
+    //    "object-literal-key-quotes": [true, "consistent-as-needed"],
     "variable-name": [
       true,
       "ban-keywords",

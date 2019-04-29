@@ -3,7 +3,10 @@ export enum ActionType {
   SET_SEARCH_RESULTS,
   SET_USER,
   SET_TWEETS,
-  UPDATE_TWEET
+  UPDATE_TWEET,
+  TOGGLE_FAVORITED,
+  TOGGLE_TWEET_PROPERTY,
+  TOGGLE_RETWEETED
 }
 
 export interface ActionInterface {

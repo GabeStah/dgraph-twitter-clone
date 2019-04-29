@@ -45,6 +45,7 @@ const models_1 = require('../models');
  * Edge - Deletes specified edge(s).
  * AllChildEdges - Removes all child edges from node.
  * AllChildNodes - Deletes all child nodes and edge references from node.
+ * Raw - Bypasses Model-based logic and passes direct JSON object.
  */
 var BaseModelDeletionMode;
 (function(BaseModelDeletionMode) {
@@ -55,6 +56,7 @@ var BaseModelDeletionMode;
     'AllChildEdges';
   BaseModelDeletionMode[(BaseModelDeletionMode['AllChildNodes'] = 4)] =
     'AllChildNodes';
+  BaseModelDeletionMode[(BaseModelDeletionMode['Raw'] = 5)] = 'Raw';
 })(
   (BaseModelDeletionMode =
     exports.BaseModelDeletionMode || (exports.BaseModelDeletionMode = {}))
@@ -141,7 +143,9 @@ class BaseModel {
       data: item
     });
     try {
-      if (
+      if (mode === BaseModelDeletionMode.Raw) {
+        serialization.request = item;
+      } else if (
         item instanceof BaseModel ||
         (typeof item === 'object' && !(item instanceof models_1.Uid))
       ) {

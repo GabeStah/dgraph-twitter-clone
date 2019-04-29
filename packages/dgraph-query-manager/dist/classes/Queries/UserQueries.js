@@ -9,15 +9,15 @@ exports.UserQueries = {
    */
   find: new Query_1.Query(
     `query find($id: string) {
-        data(func: uid($id))
-        {
-            uid
-            expand(_all_) {
-                uid
-                expand(_all_) 
-            }
+      data(func: uid($id))
+      {
+        uid
+        expand(_all_) {
+          uid
+          expand(_all_) 
         }
-     }`,
+      }
+    }`,
     '/user/:id',
     [new ParamType_1.ParamType('$id', TypeOf_1.TypeOf(String))]
   ),
@@ -26,12 +26,15 @@ exports.UserQueries = {
    */
   findFromEmail: new Query_1.Query(
     `query find($email: string) {
-        data(func: eq(user.email, $email))
-        {
-            uid
-            expand(_all_)
+      data(func: eq(user.email, $email))
+      {
+        uid
+        expand(_all_) {
+          uid
+          expand(_all_)
         }
-     }`,
+      }
+    }`,
     '/user/from/email/:email',
     [new ParamType_1.ParamType('$email', TypeOf_1.TypeOf(String))]
   ),
@@ -40,12 +43,15 @@ exports.UserQueries = {
    */
   findFromScreenName: new Query_1.Query(
     `query find($screenName: string) {
-        data(func: eq(user.screenName, $screenName))
-        {
-            uid
-            expand(_all_)
+      data(func: eq(user.screenName, $screenName))
+      {
+        uid
+        expand(_all_) {
+          uid
+          expand(_all_)
         }
-     }`,
+      }
+    }`,
     '/user/from/screenName/:screenName',
     [new ParamType_1.ParamType('$screenName', TypeOf_1.TypeOf(String))]
   ),
@@ -54,11 +60,11 @@ exports.UserQueries = {
    */
   getAll: new Query_1.Query(
     `query {
-        data(func: has (user.email)) {
-            uid
-            expand(_all_)
-        }
-     }`,
+      data(func: has (user.email)) {
+        uid
+        expand(_all_)
+      }
+    }`,
     '/users'
   ),
   /**
@@ -66,14 +72,14 @@ exports.UserQueries = {
    */
   getAllWithChildren: new Query_1.Query(
     `query {
-        data(func: has (user.email)) {
-            uid
-            expand(_all_) {
-                uid
-                expand(_all_)
-            }
+      data(func: has (user.email)) {
+        uid
+        expand(_all_) {
+          uid
+          expand(_all_)
         }
-     }`,
+      }
+    }`,
     '/users'
   )
 };

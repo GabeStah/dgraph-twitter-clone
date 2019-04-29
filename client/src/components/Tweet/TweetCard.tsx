@@ -7,28 +7,39 @@ import { Button, ButtonGroup, Card } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { logger, numeral } from '../../helpers';
 import {
+  BaseModelDeletionMode,
   DgraphQueryExecutor,
   Queries,
-  Tweet as TweetModel
+  Uid,
+  User
 } from 'dgraph-query-manager';
+import * as _ from 'lodash';
 // Font
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRetweet } from '@fortawesome/free-solid-svg-icons';
 import config from '../../config';
 import { useStateContext } from '../../state';
 import { Link } from 'react-router-dom';
-import { Action, ActionType } from '../../reducers/';
+import { Action, ActionType } from '../../reducers/base';
 
 const TweetCard = ({ tweet }) => {
-  if (!tweet || !tweet.uid) return <></>;
   const [{ authUser }, dispatch] = useStateContext();
   const [replies, setReplies]: [any, Function] = useState(undefined);
   const [, setIsLoading]: [boolean, Function] = useState(true);
+  const [hasUserFavorited, setHasUserFavorited]: [boolean, Function] = useState(
+    false
+  );
+  const [hasUserRetweeted, setHasUserRetweeted]: [boolean, Function] = useState(
+    false
+  );
+  const [favoriteCount, setFavoriteCount]: [number, Function] = useState(0);
+  const [retweetCount, setRetweetCount]: [number, Function] = useState(0);
 
   /**
    * Set replies.
    */
   useEffect(() => {
+    if (!tweet) return;
     const params = {
       $id: tweet && tweet.uid ? tweet.uid.toString() : undefined
     };
@@ -50,13 +61,37 @@ const TweetCard = ({ tweet }) => {
         logger.error(exception);
         setIsLoading(false);
       });
-  }, [tweet]);
+  }, [authUser, tweet]);
 
-  // Debug output Tweet Uid
-  let debugElement;
-  if (config.debug) {
-    debugElement = <p>Uid: {tweet.uid.toString()}</p>;
-  }
+  useEffect(() => {
+    if (!authUser || !authUser.uid || !tweet) return;
+
+    const favorites = tweet['~user.favorites'];
+    const retweets = tweet['~user.retweets'];
+
+    setHasUserFavorited(
+      _.isArray(favorites)
+        ? _.some(
+            favorites,
+            other => other && other.uid === authUser.uid.toString()
+          )
+        : !!_.isObject(favorites)
+    );
+    setHasUserRetweeted(
+      _.isArray(retweets)
+        ? _.some(
+            retweets,
+            other => other && other.uid === authUser.uid.toString()
+          )
+        : !!_.isObject(retweets)
+    );
+    setFavoriteCount(
+      _.isArray(favorites) ? favorites.length : _.isObject(favorites) ? 1 : 0
+    );
+    setRetweetCount(
+      _.isArray(retweets) ? retweets.length : _.isObject(retweets) ? 1 : 0
+    );
+  }, [authUser, tweet]);
 
   /**
    * Check if currently authed User has replied to Tweet.
@@ -78,33 +113,57 @@ const TweetCard = ({ tweet }) => {
 
   /**
    * Toggle boolean field of Tweet.
-   * @param field
+   * @param property
    * @param event
+   * @param current
    */
-  const toggleBooleanField = async (field, event) => {
+  const toggleBooleanField = async (
+    property: string,
+    event: any,
+    current: any
+  ) => {
     event.preventDefault();
-    if (!tweet || !tweet.uid) return;
+    if (!tweet || !tweet.uid || !authUser || !authUser.uid) return;
 
-    const partial: Partial<TweetModel> = {};
     // Toggle current value.
-    partial[field] = !tweet[field];
-    // Update counter field.
-    if (field === 'tweet.favorited') {
-      partial['tweet.favoriteCount'] = partial[field]
-        ? tweet['tweet.favoriteCount'] + 1
-        : tweet['tweet.favoriteCount'] - 1;
-    } else if (field === 'tweet.retweeted') {
-      partial['tweet.retweetCount'] = partial[field]
-        ? tweet['tweet.retweetCount'] + 1
-        : tweet['tweet.retweetCount'] - 1;
+    current = !current;
+    if (current) {
+      const result = await User.insert({
+        uid: new Uid(authUser.uid).toString(),
+        [property]: {
+          uid: new Uid(tweet.uid).toString()
+        }
+      });
+    } else {
+      await User.delete(
+        {
+          uid: new Uid(authUser.uid).toString(),
+          [property]: {
+            uid: new Uid(tweet.uid).toString()
+          }
+        },
+        BaseModelDeletionMode.Raw
+      );
     }
-    const serialization = await TweetModel.upsert(tweet, partial);
-    // Tweet created
-    if (serialization.success) {
-      // Dispatch state update to other components.
-      dispatch(new Action(ActionType.UPDATE_TWEET, serialization.response));
-    }
+
+    dispatch(
+      new Action(ActionType.TOGGLE_TWEET_PROPERTY, {
+        isEnabled: current,
+        // Reverse predicate for Tweets
+        property: `~${property}`,
+        tweet,
+        user: authUser
+      })
+    );
   };
+
+  if (!tweet || !tweet.uid) return <></>;
+
+  // Debug output Tweet Uid
+  let debugElement;
+  if (config.debug) {
+    debugElement = <p>Uid: {tweet.uid.toString()}</p>;
+  }
 
   return (
     <Card className='TweetCard'>
@@ -122,25 +181,35 @@ const TweetCard = ({ tweet }) => {
           <Button
             className={'retweet'}
             variant={'link'}
-            active={tweet['tweet.retweeted']}
-            onClick={e => toggleBooleanField('tweet.retweeted', e)}
+            active={hasUserRetweeted}
+            onClick={e =>
+              toggleBooleanField('user.retweets', e, hasUserRetweeted)
+            }
           >
             <FontAwesomeIcon icon={faRetweet} />{' '}
-            {numeral(tweet['tweet.retweetCount']).format('0a')}
+            {numeral(retweetCount).format('0a')}
           </Button>
           <Button
             className={'favorite'}
             variant={'link'}
-            active={tweet['tweet.favorited']}
-            onClick={e => toggleBooleanField('tweet.favorited', e)}
+            active={hasUserFavorited}
+            onClick={e =>
+              toggleBooleanField('user.favorites', e, hasUserFavorited)
+            }
           >
             <FontAwesomeIcon icon={['far', 'heart']} />{' '}
-            {numeral(tweet['tweet.favoriteCount']).format('0a')}
+            {numeral(favoriteCount).format('0a')}
           </Button>
           <Button className={'dm'} variant={'link'}>
             <FontAwesomeIcon icon={['far', 'envelope']} />
           </Button>
-          <Link to={`/status/${tweet.uid.toString()}`}>
+          <Link
+            to={{
+              pathname: `${
+                tweet['tweet.user']['user.screenName']
+              }/status/${tweet.uid.toString()}`
+            }}
+          >
             <Button className={'details'} variant={'link'}>
               <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />{' '}
             </Button>
