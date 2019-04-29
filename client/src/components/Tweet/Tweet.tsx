@@ -10,7 +10,9 @@ import * as _ from 'lodash';
 
 const Tweet = props => {
   const tweet = props.tweet;
-  const user = _.first(tweet['tweet.user']);
+  const user = _.isArray(tweet['tweet.user'])
+    ? _.first(tweet['tweet.user'])
+    : tweet['tweet.user'];
   const name = user['user.name'];
   const screenName = user['user.screenName'];
 

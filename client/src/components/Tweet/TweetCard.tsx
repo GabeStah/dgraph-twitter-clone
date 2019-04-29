@@ -129,7 +129,7 @@ const TweetCard = ({ tweet }) => {
     // Toggle current value.
     enabled = !enabled;
     if (enabled) {
-      const result = await User.insert({
+      await User.insert({
         uid: new Uid(authUser.uid).toString(),
         [property]: {
           uid: new Uid(tweet.uid).toString()
@@ -207,7 +207,9 @@ const TweetCard = ({ tweet }) => {
           <Link
             to={{
               pathname: `/${
-                _.first(tweet['tweet.user'])['user.screenName']
+                _.isArray(tweet['tweet.user'])
+                  ? _.first(tweet['tweet.user'])['user.screenName']
+                  : tweet['tweet.user']['user.screenName']
               }/status/${tweet.uid.toString()}`
             }}
           >

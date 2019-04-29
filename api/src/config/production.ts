@@ -28,7 +28,8 @@ user.url: string @index(exact, fulltext) @count .
     seed: 1234567890
   },
   generator: {
-    userCount: 100,
+    tweetReplyStatusChance: 0.85,
+    userCount: 50,
     tweetCount: 1000
   }
 };

@@ -486,40 +486,43 @@ class BaseModel {
 
       ) {
         const key = _d.value;
-        // Check if Uid
-        if (params[key] instanceof models_1.Uid && key === 'uid') {
-          // Convert Uid to string values
-          serialization[key] = params[key].toString();
-        } else if (params[key] instanceof BaseModel) {
-          // For BaseModel instances recursively serialize
-          serialization[key] = await this.serialize(params[key]);
-        } else if (
-          Array.isArray(params[key]) &&
-          params[key].filter(instance => instance instanceof BaseModel).length >
-            0
-        ) {
-          const instances = [];
-          try {
-            for (
-              var _e = __asyncValues(params[key]), _f;
-              (_f = await _e.next()), !_f.done;
-
-            ) {
-              const instance = _f.value;
-              instances.push(await this.serialize(instance));
-            }
-          } catch (e_3_1) {
-            e_3 = { error: e_3_1 };
-          } finally {
+        // Ignore reverse edges.
+        if (key.charAt(0) !== '~') {
+          // Check if Uid
+          if (params[key] instanceof models_1.Uid && key === 'uid') {
+            // Convert Uid to string values
+            serialization[key] = params[key].toString();
+          } else if (params[key] instanceof BaseModel) {
+            // For BaseModel instances recursively serialize
+            serialization[key] = await this.serialize(params[key]);
+          } else if (
+            Array.isArray(params[key]) &&
+            params[key].filter(instance => instance instanceof BaseModel)
+              .length > 0
+          ) {
+            const instances = [];
             try {
-              if (_f && !_f.done && (_b = _e.return)) await _b.call(_e);
+              for (
+                var _e = __asyncValues(params[key]), _f;
+                (_f = await _e.next()), !_f.done;
+
+              ) {
+                const instance = _f.value;
+                instances.push(await this.serialize(instance));
+              }
+            } catch (e_3_1) {
+              e_3 = { error: e_3_1 };
             } finally {
-              if (e_3) throw e_3.error;
+              try {
+                if (_f && !_f.done && (_b = _e.return)) await _b.call(_e);
+              } finally {
+                if (e_3) throw e_3.error;
+              }
             }
+            serialization[key] = instances;
+          } else {
+            serialization[key] = params[key];
           }
-          serialization[key] = instances;
-        } else {
-          serialization[key] = params[key];
         }
       }
     } catch (e_2_1) {

@@ -1,13 +1,8 @@
 import config from '../config';
-import * as faker from 'faker';
 import logger from './logger';
 import * as _ from 'lodash';
 import {
-  BaseModel,
-  BaseModelDeletionMode,
   DgraphAdapterHttp as DgraphAdapter,
-  DgraphQueryExecutor,
-  Queries,
   Tweet,
   Uid,
   User

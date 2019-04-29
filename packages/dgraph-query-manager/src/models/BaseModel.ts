@@ -372,7 +372,10 @@ export class BaseModel<T> implements BaseModelInterface {
     params: Partial<T> = {}
   ): InstanceType<T> {
     const temp = new this() as InstanceType<T>;
-    return { ...temp, ...params };
+    return {
+      ...temp,
+      ...params
+    };
   }
 
   /**
@@ -493,27 +496,33 @@ export class BaseModel<T> implements BaseModelInterface {
         params.uid = new Uid(params.uid);
       }
     }
+
     for await (const key of Object.keys(params)) {
-      // Check if Uid
-      if (params[key] instanceof Uid && key === 'uid') {
-        // Convert Uid to string values
-        serialization[key] = params[key].toString();
-      } else if (params[key] instanceof BaseModel) {
-        // For BaseModel instances recursively serialize
-        serialization[key] = await this.serialize(params[key]);
-      } else if (
-        Array.isArray(params[key]) &&
-        params[key].filter(instance => instance instanceof BaseModel).length > 0
-      ) {
-        const instances: any[] = [];
-        for await (const instance of params[key]) {
-          instances.push(await this.serialize(instance));
+      // Ignore reverse edges.
+      if (key.charAt(0) !== '~') {
+        // Check if Uid
+        if (params[key] instanceof Uid && key === 'uid') {
+          // Convert Uid to string values
+          serialization[key] = params[key].toString();
+        } else if (params[key] instanceof BaseModel) {
+          // For BaseModel instances recursively serialize
+          serialization[key] = await this.serialize(params[key]);
+        } else if (
+          Array.isArray(params[key]) &&
+          params[key].filter(instance => instance instanceof BaseModel).length >
+            0
+        ) {
+          const instances: any[] = [];
+          for await (const instance of params[key]) {
+            instances.push(await this.serialize(instance));
+          }
+          serialization[key] = instances;
+        } else {
+          serialization[key] = params[key];
         }
-        serialization[key] = instances;
-      } else {
-        serialization[key] = params[key];
       }
     }
+
     return serialization;
   }
 

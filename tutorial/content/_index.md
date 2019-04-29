@@ -12,7 +12,7 @@ Graph databases like Dgraph provide fast and efficient data querying, even acros
 
 While having that much power at your disposal is all well and good, it can be difficult to grasp how many modern applications might integrate with and use a graph database like Dgraph. In this series, we'll explore a real-world Twitter clone application that was created entirely around its integration with Dgraph. Throughout this guide, you'll see how the [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) is designed and structured to work with Dgraph and produce an end product that mimics Twitter while having access to the powerful data manipulation capabilities provided by Dgraph. Whether performing queries and transactions directly with the Dgraph server or performing tasks indirectly through an API middleware, the `dgraph-twitter-clone` app illustrates how a modern JavaScript app can take full advantage of Dgraph and the GraphQL+- query language.
 
-You're encouraged to install the repo and play with the application code yourself or feel free to just read and follow along with the guide as we walk through the major features and structure of this app and how it utilizes Dgraph to create a Twitter-like single page application.   Below is a short animation showing the client application we've created.  Let's get into it!
+You're encouraged to install the repo and play with the application code yourself or feel free to just read and follow along with the guide as we walk through the major features and structure of this app and how it utilizes Dgraph to create a Twitter-like single page application. Below is a short animation showing the client application we've created. Let's get into it!
 
 ![Dgraph Twitter Client](/images/dgraph-twitter-client.gif)
 
@@ -222,60 +222,71 @@ The [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) a
       "success": true,
       "uri": "",
       "message": "tweets found.",
-      "request": "query find($count: int) {\n      data(func: has (tweet.text), first: $count) {\n        uid\n        expand(_all_) {\n          uid\n          expand(_all_)\n        }\n      }\n     }",
+      "request": "query find($count: int = 10) {\n      data(func: has (tweet.text), first: $count) {\n        uid\n        expand(_all_) {\n          uid\n          expand(_all_)\n        }\n      }\n     }",
       "response": [
         {
-        "uid": "0x6b950",
-        "tweet.createdAt": "2019-04-01T00:16:24.519Z",
-        "tweet.favorited": false,
-        "tweet.text": "@Mossie_Russel61 Realigned homogeneous structure #real-time #front-end",
-        "tweet.hashtag": [
-          {
-            "uid": "0x6b94e",
-            "hashtag.hashtag": "real",
-            "hashtag.indices": [
-              49,
-              54
-            ]
-          },
-          {
-          "uid": "0x6b94f",
-          "hashtag.hashtag": "front",
-          "hashtag.indices": [
-              60,
-              66
-            ]
-          }
-        ],
-        "tweet.retweeted": false,
-        "tweet.retweetCount": 400,
-        "tweet.isQuoteStatus": true,
-        "tweet.inReplyToStatusId": {
-            "uid": "0x6bcfc",
-            "tweet.favorited": true,
-            "tweet.retweetCount": 263,
-            "tweet.createdAt": "2019-04-01T00:16:54.001Z",
-            "tweet.isQuoteStatus": true,
-            "tweet.text": "@David21 Cross-platform user-facing array #collaborative #frictionless",
-            "tweet.favoriteCount": 209,
-            "tweet.retweeted": false
-        },
-        "tweet.user": {
-            "uid": "0x6b946",
-            "user.email": "Berniece_Klocko66@example.org",
-            "user.friendsCount": 832,
-            "user.name": "Selina Altenwerth",
-            "user.url": "https://jamarcus.info",
-            "user.createdAt": "2019-04-01T00:16:24.317Z",
-            "user.followersCount": 238,
-            "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/nickfratter/128.jpg",
-            "user.listedCount": 735,
-            "user.description": "Quis a et rem optio. Sunt deserunt quia. Et sit quis enim eum corrupti at velit dolorem. Voluptas maiores natus voluptas beatae delectus.",
-            "user.location": "New Brionna, Bahrain",
-            "user.screenName": "Ezekiel81",
-            "user.favouritesCount": 215
-        },
-        "tweet.favoriteCount": 500
+          "uid": "0x30ca9",
+          "tweet.createdAt": "2019-04-29T14:35:14.799Z",
+          "tweet.isQuoteStatus": false,
+          "tweet.user": [
+            {
+              "uid": "0x30c99",
+              "user.createdAt": "2019-04-29T14:35:14.409Z",
+              "user.location": "Schummville, Marshall Islands",
+              "user.email": "Desiree_Altenwerth55@example.net",
+              "user.screenName": "Jedidiah7",
+              "user.name": "Heber Roberts",
+              "user.url": "https://kieran.biz",
+              "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/gonzalorobaina/128.jpg",
+              "user.description": "Dolorem debitis sunt. Qui praesentium est optio tenetur. Maxime voluptas accusamus debitis. Hic quod cum est voluptas qui harum."
+            }
+          ],
+          "tweet.text": "@Marilou_Bins28 The EXE protocol is down, transmit the bluetooth bandwidth so we can transmit the EXE capacitor! #parsing #haptic",
+          "tweet.hashtag": [
+            {
+              "uid": "0x30ca7",
+              "hashtag.indices": [
+                113,
+                121
+              ],
+              "hashtag.hashtag": "parsing"
+            },
+            {
+              "uid": "0x30ca8",
+              "hashtag.indices": [
+                122,
+                129
+              ],
+              "hashtag.hashtag": "haptic"
+            }
+          ],
+          "~user.favorites": [
+            {
+              "uid": "0x30c75",
+              "user.name": "Norbert Hirthe",
+              "user.url": "https://pink.biz",
+              "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/tobysaxon/128.jpg",
+              "user.description": "Ipsam ut inventore qui. Officia rem ipsa. Quasi quae consectetur sit libero possimus exercitationem.",
+              "user.location": "Arleneland, Holy See (Vatican City State)",
+              "user.screenName": "Cletus_Hilpert",
+              "user.createdAt": "2019-04-29T14:35:13.393Z",
+              "user.email": "Nina_Lynch98@example.com"
+            },
+
+          ],
+          "~user.retweets": [
+            {
+              "uid": "0x30c7b",
+              "user.location": "O'Connellport, Bhutan",
+              "user.name": "William Zemlak",
+              "user.url": "http://gerson.org",
+              "user.createdAt": "2019-04-29T14:35:13.565Z",
+              "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/shvelo96/128.jpg",
+              "user.description": "Alias expedita fugiat harum. Sapiente eum quisquam velit consectetur enim temporibus. Dolorum explicabo eius sequi voluptas repellendus ea rerum et. Sunt nihil rerum necessitatibus occaecati natus aut qui.",
+              "user.email": "Brett_Oberbrunner79@example.org",
+              "user.screenName": "Cierra65"
+            }
+          ]
         },
       ]
     }
@@ -306,29 +317,23 @@ Before we dive into the code let's briefly look at the schema our Twitter app is
 {{< runnable uri="alter" >}}
 hashtag.indices: [int] .
 hashtag.hashtag: string @index(exact, fulltext) @count .
-hashtag.tweet: uid @count .
 tweet.createdAt: dateTime @index(hour) .
-tweet.favoriteCount: int @index(int) .
-tweet.favorited: bool .
 tweet.hashtag: uid @count @reverse .
 tweet.inReplyToStatusId: uid @count .
 tweet.inReplyToUserId: uid @count .
 tweet.isQuoteStatus: bool .
 tweet.quotedStatus: uid @count .
-tweet.retweetCount: int @index(int) .
-tweet.retweeted: bool .
 tweet.text: string @index(fulltext) @count @upsert .
 tweet.user: uid @count @reverse .
 user.avatar: string .
 user.createdAt: dateTime @index(hour) .
 user.description: string @index(fulltext) @count .
 user.email: string @index(exact) @upsert .
-user.favouritesCount: int @index(int) .
-user.followersCount: int @index(int) .
-user.friendsCount: int @index(int) .
-user.listedCount: int @index(int) .
+user.favorites: uid @count @reverse .
+user.friends: uid @count @reverse .
 user.location: string @index(term) @count .
 user.name: string @index(hash) @count .
+user.retweets: uid @count @reverse .
 user.screenName: string @index(term) @count .
 user.url: string @index(exact, fulltext) @count .
 {{< /runnable >}}
@@ -964,27 +969,33 @@ export class BaseModel<T> implements BaseModelInterface {
         params.uid = new Uid(params.uid);
       }
     }
+
     for await (const key of Object.keys(params)) {
-      // Check if Uid
-      if (params[key] instanceof Uid && key === 'uid') {
-        // Convert Uid to string values
-        serialization[key] = params[key].toString();
-      } else if (params[key] instanceof BaseModel) {
-        // For BaseModel instances recursively serialize
-        serialization[key] = await this.serialize(params[key]);
-      } else if (
-        Array.isArray(params[key]) &&
-        params[key].filter(instance => instance instanceof BaseModel).length > 0
-      ) {
-        const instances: any[] = [];
-        for await (const instance of params[key]) {
-          instances.push(await this.serialize(instance));
+      // Ignore reverse edges.
+      if (key.charAt(0) !== '~') {
+        // Check if Uid
+        if (params[key] instanceof Uid && key === 'uid') {
+          // Convert Uid to string values
+          serialization[key] = params[key].toString();
+        } else if (params[key] instanceof BaseModel) {
+          // For BaseModel instances recursively serialize
+          serialization[key] = await this.serialize(params[key]);
+        } else if (
+          Array.isArray(params[key]) &&
+          params[key].filter(instance => instance instanceof BaseModel).length >
+            0
+        ) {
+          const instances: any[] = [];
+          for await (const instance of params[key]) {
+            instances.push(await this.serialize(instance));
+          }
+          serialization[key] = instances;
+        } else {
+          serialization[key] = params[key];
         }
-        serialization[key] = instances;
-      } else {
-        serialization[key] = params[key];
       }
     }
+
     return serialization;
   }
 }
@@ -1093,6 +1104,15 @@ export class DgraphAdapterHttp {
   }
 
   /**
+   * Removes top-level array from object if singular value.
+   * @param {object} obj
+   * @returns {any}
+   */
+  static flatten(obj: any) {
+    return _.isArray(obj) && obj.length === 1 ? obj[0] : obj;
+  }
+
+  /**
    * Recursively flattens arrays within passed object.
    * Sets object key value pointing to a single-element array to value of that only element.
    * @param {object} obj
@@ -1182,7 +1202,7 @@ export class DgraphAdapterHttp {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.query(serialization.request);
-      serialization.response = DgraphAdapterHttp.flattenArrays(res.data);
+      serialization.response = DgraphAdapterHttp.flatten(res.data);
     } catch (e) {
       logger.error('DgraphAdapterHttp.query, error: %o', e);
     } finally {
@@ -1204,7 +1224,7 @@ export class DgraphAdapterHttp {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.queryWithVars(serialization.request, vars);
-      serialization.response = DgraphAdapterHttp.flattenArrays(res.data);
+      serialization.response = DgraphAdapterHttp.flatten(res.data);
     } catch (e) {
       logger.error(
         'DgraphAdapterHttp.queryWithVars, query: %s, paramTypes: %o, error: %o',
@@ -1596,7 +1616,7 @@ export class DgraphQueryExecutor implements DgraphQueryExecutorInterface {
 }
 ```
 
-As the name implies, all `DgraphQueryExecutor` really does is provides a logical wrapper for executing `Query` instances in the appropriate manner. The constructor accepts a `Query` argument, along with a few optional arguments. As mentioned, we want to allow Dgraph transactions to occur in a variety of ways, so the `DgraphQueryExecutor.execute()` method accepts an optional `connectionType` argument and executes a request based on that type of transaction. There's also a bit of logic to clean up the `Serialization` response by removing extraneous data, flattening singular arrays, and so forth. However, the real meat and potatoes are in the `executeX` methods.
+As the name implies, all `DgraphQueryExecutor` really does is provides a logical wrapper for executing `Query` instances in the appropriate manner. The constructor accepts a `Query` argument, along with a few optional arguments. As mentioned, we want to allow Dgraph transactions to occur in a variety of ways, so the `DgraphQueryExecutor.execute()` method accepts an optional `connectionType` argument and executes a request based on that type of transaction. There's also a bit of logic to clean up the `Serialization` response by removing extraneous data, flattening singular top-level arrays, and so forth. However, the real meat and potatoes are in the `executeX` methods.
 
 For example, `DgraphQueryExecutor.executeDirectRequest()` takes the `this.query` property and creates a valid `Serialization` request object out of it, which is then passed along to the appropriate `DgraphAdapterHttp` method that performs the actual Dgraph transaction. While this fancies things up, invoking the `executeDirectRequest()` method is no different than directly calling our Dgraph adapter and passing the appropriate query string and optional params.
 

@@ -4,9 +4,7 @@ export enum ActionType {
   SET_USER,
   SET_TWEETS,
   UPDATE_TWEET,
-  TOGGLE_FAVORITED,
-  TOGGLE_TWEET_PROPERTY,
-  TOGGLE_RETWEETED
+  TOGGLE_TWEET_PROPERTY
 }
 
 export interface ActionInterface {

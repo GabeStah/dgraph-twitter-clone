@@ -268,6 +268,7 @@ export enum ActionType {
   SET_USER,
   SET_TWEETS,
   UPDATE_TWEET,
+  TOGGLE_TWEET_PROPERTY,
 }
 
 export interface ActionInterface {
@@ -296,6 +297,8 @@ Now let's see how the reducer uses our `Action` and `State` class to mutate appl
 // File: client/src/reducers/base/Reducer.ts
 import { Action, ActionType } from './Action';
 import { State } from '../../state/';
+import { Uid } from 'dgraph-query-manager';
+import * as _ from 'lodash';
 
 export const Reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -337,14 +340,47 @@ export const Reducer = (state: State, action: Action): State => {
     case ActionType.SET_TWEETS: {
       return {
         ...state,
-        // Sort in descending order.
+        // If array, sort in descending order.
         tweets: Array.isArray(action.payload)
           ? action.payload.sort(
               (a, b) =>
                 +new Date(b['tweet.createdAt']) -
                 +new Date(a['tweet.createdAt'])
             )
-          : action.payload,
+          : [action.payload],
+      };
+    }
+
+    case ActionType.TOGGLE_TWEET_PROPERTY: {
+      const isEnabled = action.payload.isEnabled;
+      const property = action.payload.property;
+      const tweet = action.payload.tweet;
+      const user = action.payload.user;
+
+      const clone = _.clone(tweet);
+
+      if (!_.has(clone, property)) {
+        clone[property] = [];
+      } else if (!_.isArray(clone[property])) {
+        clone[property] = [clone[property]];
+      }
+      if (isEnabled) {
+        clone[property].push(user);
+      } else {
+        clone[property] = _.reject(
+          clone[property],
+          other =>
+            new Uid(other.uid).toString() === new Uid(user.uid).toString()
+        );
+      }
+
+      return {
+        ...state,
+        tweets: _.map(state.tweets, original => {
+          return original.uid.toString() === tweet.uid.toString()
+            ? clone
+            : original;
+        }),
       };
     }
 
@@ -418,11 +454,11 @@ const Main = () => {
 
   return (
     <Container>
-      <Route path={'/status/:tweetUid'} component={TweetModal} />
+      <Route path={'/:screenName/status/:tweetUid'} component={TweetModal} />
       <NavigationBar />
       <Container className="AppContainer">
         <Row>
-          <Col sm={3}>
+          <Col sm={4}>
             <Switch>
               <Route path={'/'} exact component={ProfileCard} />
               <Route path={'/search'} exact component={Search} />
@@ -432,11 +468,15 @@ const Main = () => {
           <Col>
             <TweetBox />
             <Route
-              path={['/', '/:screenName', '/search', '/status/:tweetUid']}
+              path={[
+                '/',
+                '/:screenName',
+                '/search',
+                '/:screenName/status/:tweetUid',
+              ]}
               component={TweetList}
             />
           </Col>
-          <Col sm={3} />
         </Row>
       </Container>
     </Container>
@@ -597,11 +637,11 @@ The [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-s
 // ...
 return (
   <Container>
-    <Route path={'/status/:tweetUid'} component={TweetModal} />
+    <Route path={'/:screenName/status/:tweetUid'} component={TweetModal} />
     <NavigationBar />
     <Container className="AppContainer">
       <Row>
-        <Col sm={3}>
+        <Col sm={4}>
           <Switch>
             <Route path={'/'} exact component={ProfileCard} />
             <Route path={'/search'} exact component={Search} />
@@ -611,11 +651,15 @@ return (
         <Col>
           <TweetBox />
           <Route
-            path={['/', '/:screenName', '/search', '/status/:tweetUid']}
+            path={[
+              '/',
+              '/:screenName',
+              '/search',
+              '/:screenName/status/:tweetUid',
+            ]}
             component={TweetList}
           />
         </Col>
-        <Col sm={3} />
       </Row>
     </Container>
   </Container>
@@ -1021,13 +1065,9 @@ import React from 'react';
 import { useStateContext } from '../../state';
 
 const ProfileCardStats = () => {
-  const [{ user, tweets }] = useStateContext();
+  const [{ user }] = useStateContext();
 
   let content = <h3>Loading Stats</h3>;
-  let tweetCount = 0;
-  if (tweets) {
-    tweetCount = Array.isArray(tweets) ? tweets.length : 1;
-  }
 
   if (user) {
     const screenName = user['user.screenName'];
@@ -1036,19 +1076,23 @@ const ProfileCardStats = () => {
         <Col xs={3}>
           <a href={`/${screenName}`}>
             <span className="ProfileCardStat-title">Tweets</span>
-            <span>{tweetCount}</span>
+            <span>{user['~tweet.user'] ? user['~tweet.user'].length : 0}</span>
           </a>
         </Col>
         <Col xs={4}>
           <a href={`/${screenName}/following`}>
             <span className="ProfileCardStat-title">Following</span>
-            <span>{user['user.favouritesCount']}</span>
+            <span>
+              {user['user.friends'] ? user['user.friends'].length : 0}
+            </span>
           </a>
         </Col>
         <Col xs={5}>
           <a href={`/${screenName}/followers`}>
             <span className="ProfileCardStat-title">Followers</span>
-            <span>{user['user.followersCount']}</span>
+            <span>
+              {user['~user.friends'] ? user['~user.friends'].length : 0}
+            </span>
           </a>
         </Col>
       </Row>
@@ -1064,6 +1108,8 @@ export default ProfileCardStats;
 Instead of using passed props we explicitly use global state via the `useStateContext()` hook. But why not just pass props, since `ProfileCard` is just up one level in the component tree and could easily do so? The simple answer is better future-proofing. For example, if `ProfileCardStats` expects some props passed to it that contain `user` and `tweets` data what happens when we move this component to somewhere else in the app structure? We'd have to adjust the immediate parent component, at the very least, to pass the props, and in some cases the component tree may get extremely long, requiring a massive chain of passed props. It's for this very reason that the React team added context (i.e. global state), so we're making use of it here as well.
 
 Thankfully, by leaning on the work of other components to update our global state, the `ProfileCardStats` component doesn't have to trigger any post-rendering effects -- it just grabs the data it needs and renders its UI.
+
+We're also making heavy use of more reverse edges provided by Dgraph for `user` node predicates such as `~tweet.user` and `~user.friends`. These reverse edges retrieved from our query make it easy to determine the number of followers, friends, and tweets applicable to this user.
 
 ## Tweet Components
 
@@ -1112,12 +1158,10 @@ const TweetBox = () => {
       return;
     }
 
-    const params = {
+    const serialization = await Tweet.upsert({
       'tweet.text': currentTweet['tweet.text'],
       'tweet.user': authUser,
-    };
-
-    const serialization = await Tweet.upsert(params as Partial<Tweet>);
+    });
 
     // Tweet created
     if (serialization.success) {
@@ -1216,28 +1260,39 @@ import { Button, ButtonGroup, Card } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { logger, numeral } from '../../helpers';
 import {
+  BaseModelDeletionMode,
   DgraphQueryExecutor,
   Queries,
-  Tweet as TweetModel,
+  Uid,
+  User,
 } from 'dgraph-query-manager';
+import * as _ from 'lodash';
 // Font
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRetweet } from '@fortawesome/free-solid-svg-icons';
 import config from '../../config';
 import { useStateContext } from '../../state';
 import { Link } from 'react-router-dom';
-import { Action, ActionType } from '../../reducers/';
+import { Action, ActionType } from '../../reducers/base';
 
 const TweetCard = ({ tweet }) => {
-  if (!tweet || !tweet.uid) return <></>;
   const [{ authUser }, dispatch] = useStateContext();
   const [replies, setReplies]: [any, Function] = useState(undefined);
   const [, setIsLoading]: [boolean, Function] = useState(true);
+  const [hasUserFavorited, setHasUserFavorited]: [boolean, Function] = useState(
+    false
+  );
+  const [hasUserRetweeted, setHasUserRetweeted]: [boolean, Function] = useState(
+    false
+  );
+  const [favoriteCount, setFavoriteCount]: [number, Function] = useState(0);
+  const [retweetCount, setRetweetCount]: [number, Function] = useState(0);
 
   /**
    * Set replies.
    */
   useEffect(() => {
+    if (!tweet) return;
     const params = {
       $id: tweet && tweet.uid ? tweet.uid.toString() : undefined,
     };
@@ -1259,13 +1314,37 @@ const TweetCard = ({ tweet }) => {
         logger.error(exception);
         setIsLoading(false);
       });
-  }, [tweet]);
+  }, [authUser, tweet]);
 
-  // Debug output Tweet Uid
-  let debugElement;
-  if (config.debug) {
-    debugElement = <p>Uid: {tweet.uid.toString()}</p>;
-  }
+  useEffect(() => {
+    if (!authUser || !authUser.uid || !tweet) return;
+
+    const favorites = tweet['~user.favorites'];
+    const retweets = tweet['~user.retweets'];
+
+    setHasUserFavorited(
+      _.isArray(favorites)
+        ? _.some(
+            favorites,
+            other => other && other.uid === authUser.uid.toString()
+          )
+        : !!_.isObject(favorites)
+    );
+    setHasUserRetweeted(
+      _.isArray(retweets)
+        ? _.some(
+            retweets,
+            other => other && other.uid === authUser.uid.toString()
+          )
+        : !!_.isObject(retweets)
+    );
+    setFavoriteCount(
+      _.isArray(favorites) ? favorites.length : _.isObject(favorites) ? 1 : 0
+    );
+    setRetweetCount(
+      _.isArray(retweets) ? retweets.length : _.isObject(retweets) ? 1 : 0
+    );
+  }, [authUser, tweet]);
 
   /**
    * Check if currently authed User has replied to Tweet.
@@ -1276,10 +1355,11 @@ const TweetCard = ({ tweet }) => {
     }
     return replies.some(reply => {
       if (authUser.uid && reply) {
+        const replyUser = _.first(reply['tweet.user']);
         return (
-          reply['tweet.user'] &&
-          reply['tweet.user'].uid &&
-          reply['tweet.user'].uid.toString() === authUser.uid.toString()
+          replyUser &&
+          replyUser.uid &&
+          replyUser.uid.toString() === authUser.uid.toString()
         );
       }
     });
@@ -1287,33 +1367,57 @@ const TweetCard = ({ tweet }) => {
 
   /**
    * Toggle boolean field of Tweet.
-   * @param field
+   * @param property
    * @param event
+   * @param enabled
    */
-  const toggleBooleanField = async (field, event) => {
+  const toggleBooleanField = async (
+    property: string,
+    event: any,
+    enabled: any
+  ) => {
     event.preventDefault();
-    if (!tweet || !tweet.uid) return;
+    if (!tweet || !tweet.uid || !authUser || !authUser.uid) return;
 
-    const partial: Partial<TweetModel> = {};
     // Toggle current value.
-    partial[field] = !tweet[field];
-    // Update counter field.
-    if (field === 'tweet.favorited') {
-      partial['tweet.favoriteCount'] = partial[field]
-        ? tweet['tweet.favoriteCount'] + 1
-        : tweet['tweet.favoriteCount'] - 1;
-    } else if (field === 'tweet.retweeted') {
-      partial['tweet.retweetCount'] = partial[field]
-        ? tweet['tweet.retweetCount'] + 1
-        : tweet['tweet.retweetCount'] - 1;
+    enabled = !enabled;
+    if (enabled) {
+      await User.insert({
+        uid: new Uid(authUser.uid).toString(),
+        [property]: {
+          uid: new Uid(tweet.uid).toString(),
+        },
+      });
+    } else {
+      await User.delete(
+        {
+          uid: new Uid(authUser.uid).toString(),
+          [property]: {
+            uid: new Uid(tweet.uid).toString(),
+          },
+        },
+        BaseModelDeletionMode.Raw
+      );
     }
-    const serialization = await TweetModel.upsert(tweet, partial);
-    // Tweet created
-    if (serialization.success) {
-      // Dispatch state update to other components.
-      dispatch(new Action(ActionType.UPDATE_TWEET, serialization.response));
-    }
+
+    dispatch(
+      new Action(ActionType.TOGGLE_TWEET_PROPERTY, {
+        isEnabled: enabled,
+        // Reverse predicate for Tweets
+        property: `~${property}`,
+        tweet,
+        user: authUser,
+      })
+    );
   };
+
+  if (!tweet || !tweet.uid) return <></>;
+
+  // Debug output Tweet Uid
+  let debugElement;
+  if (config.debug) {
+    debugElement = <p>Uid: {tweet.uid.toString()}</p>;
+  }
 
   return (
     <Card className="TweetCard">
@@ -1331,25 +1435,37 @@ const TweetCard = ({ tweet }) => {
           <Button
             className={'retweet'}
             variant={'link'}
-            active={tweet['tweet.retweeted']}
-            onClick={e => toggleBooleanField('tweet.retweeted', e)}
+            active={hasUserRetweeted}
+            onClick={e =>
+              toggleBooleanField('user.retweets', e, hasUserRetweeted)
+            }
           >
             <FontAwesomeIcon icon={faRetweet} />{' '}
-            {numeral(tweet['tweet.retweetCount']).format('0a')}
+            {numeral(retweetCount).format('0a')}
           </Button>
           <Button
             className={'favorite'}
             variant={'link'}
-            active={tweet['tweet.favorited']}
-            onClick={e => toggleBooleanField('tweet.favorited', e)}
+            active={hasUserFavorited}
+            onClick={e =>
+              toggleBooleanField('user.favorites', e, hasUserFavorited)
+            }
           >
             <FontAwesomeIcon icon={['far', 'heart']} />{' '}
-            {numeral(tweet['tweet.favoriteCount']).format('0a')}
+            {numeral(favoriteCount).format('0a')}
           </Button>
           <Button className={'dm'} variant={'link'}>
             <FontAwesomeIcon icon={['far', 'envelope']} />
           </Button>
-          <Link to={`/status/${tweet.uid.toString()}`}>
+          <Link
+            to={{
+              pathname: `/${
+                _.isArray(tweet['tweet.user'])
+                  ? _.first(tweet['tweet.user'])['user.screenName']
+                  : tweet['tweet.user']['user.screenName']
+              }/status/${tweet.uid.toString()}`,
+            }}
+          >
             <Button className={'details'} variant={'link'}>
               <FontAwesomeIcon icon={['far', 'arrow-alt-circle-right']} />{' '}
             </Button>
@@ -1384,9 +1500,65 @@ After executing the query we set the local `replies` state via the `setReplies` 
 
 The `hasAuthUserReplied()` function determines if the currently authorized user is among the set of users that replied to this tweet. Just like the actual Twitter, this value is used to change the highlighting on the `reply` `<Button>` element.
 
-The `toggleBooleanField()` function is a helper that makes it possible for the user to toggle certain tweet flags when interacting with the UI. In this case, if the user wants to _favorite_ a tweet they click on the `favorite` `<Button>`, which triggers the `toggleBooleanField` function for the corresponding `tweet.favorited` field. A new `Partial<TweetModel>` object is used to change the `tweet['tweet.favorited']` and `tweet['tweet.favoriteCount']` values, then the whole `Partial<T>` is upserted to the Dgraph database. Upon success, the global state is updated via the `dispatch` function, which re-renders all components that contain a reference to that `Tweet`. The result is the `TweetCard` is immediately re-rendered with the updated values and `active` flags as soon as the user toggles them.
+We've also specified a number of local state hooks to track and update the **favorite** and **retweet** status buttons. For example, within a `useEffect` hook we get the current `retweets` collection by getting the reverse edge values of `tweet['~user.retweets']`. We then call the `setHasUserRetweeted()` hook function and determine if the current authenticated user has retweeted the given tweet by checking for a matching `uid` within the `retweets` collection. We then use the `setRetweetCount()` hook function to set the retweet count. All of these local state values are used in the rendered JSX.
 
-{{% notice "note" %}} We're referencing the `Tweet` model by the name `TweetModel` because otherwise the name clashes with the `Tweet` component that is also used in the `TweetCard` component. {{% /notice %}}
+The `toggleBooleanField()` function is a helper that makes it possible for the user to toggle certain tweet flags when interacting with the UI. In this case, if the user wants to _favorite_ a tweet they click on the `favorite` `<Button>`, which triggers the `toggleBooleanField` function for the corresponding `user.favorites` property. Depending on what the newly-toggled value is we then await a `User.insert()` or `User.delete()` call, passing the `authUser.uid` as the primary uid and setting the passed `property` parameter equal to the secondary `tweet.uid` value. The `BaseModel.delete()` method provides helpers for performing advanced deletions via `BaseModelDeletionModes`, but in this case we're just passing raw JSON.
+
+Here's an example of the kind of JSON that will be produced and sent to Dgraph.
+
+```json
+{
+  "uid": "0x30ca9",
+  "user.retweets": [
+    {
+      "uid": "0x31fa4"
+    }
+  ]
+}
+```
+
+When performing an **insert** (i.e. a _mutation_) GraphQL+- will lookup the parent node by uid, which is the `User` node in this case. It will then add the secondary uid of the `Tweet` to the `user.retweets` edge collection. This is similar to how a relational database handles foreign key references.
+
+On the flipside, when performing a **delete** GraphQL+- interprets the same JSON above as an indication that the matching secondary `Tweet` uid should be removed from the `user.retweets` edge collection of the parent `User` node.
+
+The `toggleBooleanField()` function ends by dispatching a `TOGGLE_TWEET_PROPERTY` action, passing the relevant information like the tweet and user that are being toggled. Critically, we're also passing the _reverse_ edge of the predicate here. This is because the original predicate is tied to the `User` instance, but the `TOGGLE_TWEET_PROPERTY` reducer function modifies the `Tweet` instance.
+
+```ts
+case ActionType.TOGGLE_TWEET_PROPERTY: {
+  const isEnabled = action.payload.isEnabled;
+  const property = action.payload.property;
+  const tweet = action.payload.tweet;
+  const user = action.payload.user;
+
+  const clone = _.clone(tweet);
+
+  if (!_.has(clone, property)) {
+    clone[property] = [];
+  } else if (!_.isArray(clone[property])) {
+    clone[property] = [clone[property]];
+  }
+  if (isEnabled) {
+    clone[property].push(user);
+  } else {
+    clone[property] = _.reject(
+      clone[property],
+      other =>
+        new Uid(other.uid).toString() === new Uid(user.uid).toString()
+    );
+  }
+
+  return {
+    ...state,
+    tweets: _.map(state.tweets, original => {
+      return original.uid.toString() === tweet.uid.toString()
+        ? clone
+        : original;
+    })
+  };
+}
+```
+
+It's critical that reducers never mutate the state directly -- instead, they should only return updated state objects. Therefore, we start by cloning the `tweet` instance, then perform a couple checks to ensure we're dealing with an array. We then update the `Tweet` clone's property by either adding or removing the new `User` instance from the collection. Finally, the returned `state.tweets` object is a mapping containing all the existing tweets, except that we insert the modified clone.
 
 The rendered HTML for the `TweetCard` is fairly self-explanatory. We're using some [FontAwesome](https://fontawesome.com/) icons for the buttons, but most of the component logic occurs in the functions above and the `useEffect()` hook we already explored. The `Tweet` component is also rendered at the top of this card and the current `tweet` value is passed as a prop to it.
 
@@ -1466,15 +1638,19 @@ The final tweet component to look at is the `TweetModal` component. As the name 
 
 ```tsx
 // File: client/src/components/Tweet/TweetModal.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { DgraphQueryExecutor, Queries } from 'dgraph-query-manager';
-import { useDgraphLocal } from '../../hooks/dgraph';
 import TweetCard from './TweetCard';
+import { useStateContext } from '../../state';
+import * as _ from 'lodash';
+import { logger } from '../../helpers/logger';
 
 const TweetModal = ({ match }) => {
+  const [{ tweets }] = useStateContext();
   const [isShowing, setIsShowing] = useState(true);
   const [uid, setUid] = useState(undefined);
+  const [tweet, setTweet] = useState(undefined);
   const passedUid = match.params.tweetUid;
 
   // Update when passed Uid differs from state.
@@ -1487,32 +1663,38 @@ const TweetModal = ({ match }) => {
     setIsShowing(false);
   };
 
-  const executor = new DgraphQueryExecutor(Queries.Tweet.find, {
-    $id: uid,
-  });
+  useEffect(() => {
+    // Attempt to retrieve Tweet from local state collection.
+    setTweet(_.find(tweets, obj => obj.uid.toString() === uid));
+    const executor = new DgraphQueryExecutor(Queries.Tweet.find, {
+      $id: uid,
+    });
+    // If Tweet not in state, retrieve from database.
+    if (!tweet) {
+      executor
+        .execute()
+        .then(serialization => {
+          if (serialization.success) {
+            setTweet(serialization.response);
+          }
+        })
+        .catch(exception => {
+          logger.error(exception);
+        });
+    }
+  }, [tweet, tweets, uid]);
 
-  const [isLoading, response] = useDgraphLocal({
-    executor,
-    dependencies: [uid],
-  });
-
-  let content = <></>;
-
-  if (!isLoading) {
-    content = (
-      <Modal show={isShowing} onHide={onHide}>
-        <Modal.Header closeButton />
-        <Modal.Body>
-          <TweetCard tweet={response} />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={onHide}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-
-  return content;
+  return (
+    <Modal show={isShowing} onHide={onHide}>
+      <Modal.Header closeButton />
+      <Modal.Body>
+        <TweetCard tweet={tweet} />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
 
 export default TweetModal;

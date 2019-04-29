@@ -4,7 +4,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useStateContext } from '../../state';
 // Libs
 import React, { useState } from 'react';
-import { Tweet, Uid } from 'dgraph-query-manager';
+import { Tweet } from 'dgraph-query-manager';
 import { Action, ActionType } from '../../reducers/';
 
 const TweetBox = () => {
@@ -37,7 +37,7 @@ const TweetBox = () => {
 
     const serialization = await Tweet.upsert({
       'tweet.text': currentTweet['tweet.text'],
-      'tweet.user': new Uid(authUser.uid)
+      'tweet.user': authUser
     });
 
     // Tweet created
