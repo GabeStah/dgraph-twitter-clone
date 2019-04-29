@@ -50,7 +50,7 @@ export const Reducer = (state: State, action: Action): State => {
                 +new Date(b['tweet.createdAt']) -
                 +new Date(a['tweet.createdAt'])
             )
-          : action.payload
+          : [action.payload]
       };
     }
 

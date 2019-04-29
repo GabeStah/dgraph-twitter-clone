@@ -43,7 +43,12 @@ const Main = () => {
           <Col>
             <TweetBox />
             <Route
-              path={['/', '/:screenName', '/search', '/:screenName/status/:tweetUid']}
+              path={[
+                '/',
+                '/:screenName',
+                '/search',
+                '/:screenName/status/:tweetUid'
+              ]}
               component={TweetList}
             />
           </Col>

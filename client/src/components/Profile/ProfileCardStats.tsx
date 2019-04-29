@@ -24,13 +24,17 @@ const ProfileCardStats = () => {
         <Col xs={4}>
           <a href={`/${screenName}/following`}>
             <span className='ProfileCardStat-title'>Following</span>
-            <span>{user['user.friends'] ? user['user.friends'].length : 0}</span>
+            <span>
+              {user['user.friends'] ? user['user.friends'].length : 0}
+            </span>
           </a>
         </Col>
         <Col xs={5}>
           <a href={`/${screenName}/followers`}>
             <span className='ProfileCardStat-title'>Followers</span>
-            <span>{user['~user.friends'] ? user['~user.friends'].length : 0}</span>
+            <span>
+              {user['~user.friends'] ? user['~user.friends'].length : 0}
+            </span>
           </a>
         </Col>
       </Row>
