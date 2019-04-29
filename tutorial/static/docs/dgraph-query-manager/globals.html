@@ -153,7 +153,7 @@
 					<div class="tsd-signature tsd-kind-icon">Base<wbr>Model<wbr>Nodeable<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="classes/hashtag.html" class="tsd-signature-type">Hashtag</a><span class="tsd-signature-symbol"> | </span><a href="classes/tweet.html" class="tsd-signature-type">Tweet</a><span class="tsd-signature-symbol"> | </span><a href="classes/user.html" class="tsd-signature-type">User</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/BaseModel.ts#L22">models/BaseModel.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/BaseModel.ts#L24">models/BaseModel.ts:24</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -698,7 +698,7 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="userqueries.findfromemail" class="tsd-anchor"></a>
 						<h3>find<wbr>From<wbr>Email</h3>
-						<div class="tsd-signature tsd-kind-icon">find<wbr>From<wbr>Email<span class="tsd-signature-symbol">:</span> <a href="classes/query.html" class="tsd-signature-type">Query</a><span class="tsd-signature-symbol"> =&nbsp;new Query(&#x60;query find($email: string) {data(func: eq(user.email, $email)){uidexpand(_all_)}}&#x60;,&#x27;/user/from/email/:email&#x27;,[new ParamType(&#x27;$email&#x27;, TypeOf(String))])</span></div>
+						<div class="tsd-signature tsd-kind-icon">find<wbr>From<wbr>Email<span class="tsd-signature-symbol">:</span> <a href="classes/query.html" class="tsd-signature-type">Query</a><span class="tsd-signature-symbol"> =&nbsp;new Query(&#x60;query find($email: string) {data(func: eq(user.email, $email)){uidexpand(_all_) {uidexpand(_all_)}}}&#x60;,&#x27;/user/from/email/:email&#x27;,[new ParamType(&#x27;$email&#x27;, TypeOf(String))])</span></div>
 						<aside class="tsd-sources">
 							<ul>
 								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Queries/UserQueries.ts#L27">classes/Queries/UserQueries.ts:27</a></li>
@@ -713,10 +713,10 @@
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 						<a name="userqueries.findfromscreenname" class="tsd-anchor"></a>
 						<h3>find<wbr>From<wbr>Screen<wbr>Name</h3>
-						<div class="tsd-signature tsd-kind-icon">find<wbr>From<wbr>Screen<wbr>Name<span class="tsd-signature-symbol">:</span> <a href="classes/query.html" class="tsd-signature-type">Query</a><span class="tsd-signature-symbol"> =&nbsp;new Query(&#x60;query find($screenName: string) {data(func: eq(user.screenName, $screenName)){uidexpand(_all_)}}&#x60;,&#x27;/user/from/screenName/:screenName&#x27;,[new ParamType(&#x27;$screenName&#x27;, TypeOf(String))])</span></div>
+						<div class="tsd-signature tsd-kind-icon">find<wbr>From<wbr>Screen<wbr>Name<span class="tsd-signature-symbol">:</span> <a href="classes/query.html" class="tsd-signature-type">Query</a><span class="tsd-signature-symbol"> =&nbsp;new Query(&#x60;query find($screenName: string) {data(func: eq(user.screenName, $screenName)){uidexpand(_all_) {uidexpand(_all_)}}}&#x60;,&#x27;/user/from/screenName/:screenName&#x27;,[new ParamType(&#x27;$screenName&#x27;, TypeOf(String))])</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Queries/UserQueries.ts#L42">classes/Queries/UserQueries.ts:42</a></li>
+								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Queries/UserQueries.ts#L45">classes/Queries/UserQueries.ts:45</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -731,7 +731,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>All<span class="tsd-signature-symbol">:</span> <a href="classes/query.html" class="tsd-signature-type">Query</a><span class="tsd-signature-symbol"> =&nbsp;new Query(&#x60;query {data(func: has (user.email)) {uidexpand(_all_)}}&#x60;,&#x27;/users&#x27;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Queries/UserQueries.ts#L57">classes/Queries/UserQueries.ts:57</a></li>
+								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Queries/UserQueries.ts#L63">classes/Queries/UserQueries.ts:63</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -746,7 +746,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>All<wbr>With<wbr>Children<span class="tsd-signature-symbol">:</span> <a href="classes/query.html" class="tsd-signature-type">Query</a><span class="tsd-signature-symbol"> =&nbsp;new Query(&#x60;query {data(func: has (user.email)) {uidexpand(_all_) {uidexpand(_all_)}}}&#x60;,&#x27;/users&#x27;)</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Queries/UserQueries.ts#L70">classes/Queries/UserQueries.ts:70</a></li>
+								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/classes/Queries/UserQueries.ts#L76">classes/Queries/UserQueries.ts:76</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">

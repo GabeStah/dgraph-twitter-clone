@@ -6,10 +6,11 @@ import moment from 'moment';
 import React from 'react';
 import * as twitter from 'twitter-text';
 import ReactHtmlParser from 'react-html-parser';
+import * as _ from 'lodash';
 
 const Tweet = props => {
   const tweet = props.tweet;
-  const user = tweet['tweet.user'];
+  const user = _.first(tweet['tweet.user']);
   const name = user['user.name'];
   const screenName = user['user.screenName'];
 

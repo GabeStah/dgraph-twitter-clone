@@ -95,12 +95,15 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_createdat" class="tsd-kind-icon">user.created<wbr>At</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_description" class="tsd-kind-icon">user.description</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_email" class="tsd-kind-icon">user.email</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_favouritescount" class="tsd-kind-icon">user.favourites<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_favorites" class="tsd-kind-icon">user.favorites</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_favoritescount" class="tsd-kind-icon">user.favorites<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_followerscount" class="tsd-kind-icon">user.followers<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_friends" class="tsd-kind-icon">user.friends</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_friendscount" class="tsd-kind-icon">user.friends<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_listedcount" class="tsd-kind-icon">user.listed<wbr>Count</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_location" class="tsd-kind-icon">user.location</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_name" class="tsd-kind-icon">user.name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_retweets" class="tsd-kind-icon">user.retweets</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_screenname" class="tsd-kind-icon">user.screen<wbr>Name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="userinterface.html#user_url" class="tsd-kind-icon">user.url</a></li>
 							</ul>
@@ -117,7 +120,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="basemodelinterface.html">BaseModelInterface</a>.<a href="basemodelinterface.html#uid">uid</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/BaseModel.ts#L25">models/BaseModel.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/BaseModel.ts#L27">models/BaseModel.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -162,12 +165,22 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="user_favouritescount" class="tsd-anchor"></a>
-					<h3>user.favourites<wbr>Count</h3>
-					<div class="tsd-signature tsd-kind-icon">user.favourites<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="user_favorites" class="tsd-anchor"></a>
+					<h3>user.favorites</h3>
+					<div class="tsd-signature tsd-kind-icon">user.favorites<span class="tsd-signature-symbol">:</span> <a href="../classes/tweet.html" class="tsd-signature-type">Tweet</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L12">models/User.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="user_favoritescount" class="tsd-anchor"></a>
+					<h3>user.favorites<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">user.favorites<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L13">models/User.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -177,7 +190,17 @@
 					<div class="tsd-signature tsd-kind-icon">user.followers<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L13">models/User.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L14">models/User.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="user_friends" class="tsd-anchor"></a>
+					<h3>user.friends</h3>
+					<div class="tsd-signature tsd-kind-icon">user.friends<span class="tsd-signature-symbol">:</span> <a href="../classes/user.html" class="tsd-signature-type">User</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L15">models/User.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -187,7 +210,7 @@
 					<div class="tsd-signature tsd-kind-icon">user.friends<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L14">models/User.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L16">models/User.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -197,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">user.listed<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L15">models/User.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L17">models/User.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -207,7 +230,7 @@
 					<div class="tsd-signature tsd-kind-icon">user.location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L16">models/User.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L18">models/User.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -217,7 +240,17 @@
 					<div class="tsd-signature tsd-kind-icon">user.name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L17">models/User.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L19">models/User.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="user_retweets" class="tsd-anchor"></a>
+					<h3>user.retweets</h3>
+					<div class="tsd-signature tsd-kind-icon">user.retweets<span class="tsd-signature-symbol">:</span> <a href="../classes/tweet.html" class="tsd-signature-type">Tweet</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L20">models/User.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -227,7 +260,7 @@
 					<div class="tsd-signature tsd-kind-icon">user.screen<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L18">models/User.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L21">models/User.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -237,7 +270,7 @@
 					<div class="tsd-signature tsd-kind-icon">user.url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L19">models/User.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/packages/dgraph-query-manager/src/models/User.ts#L22">models/User.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -274,10 +307,16 @@
 								<a href="userinterface.html#user_email" class="tsd-kind-icon">user.email</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="userinterface.html#user_favouritescount" class="tsd-kind-icon">user.favourites<wbr>Count</a>
+								<a href="userinterface.html#user_favorites" class="tsd-kind-icon">user.favorites</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="userinterface.html#user_favoritescount" class="tsd-kind-icon">user.favorites<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="userinterface.html#user_followerscount" class="tsd-kind-icon">user.followers<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="userinterface.html#user_friends" class="tsd-kind-icon">user.friends</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="userinterface.html#user_friendscount" class="tsd-kind-icon">user.friends<wbr>Count</a>
@@ -290,6 +329,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="userinterface.html#user_name" class="tsd-kind-icon">user.name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="userinterface.html#user_retweets" class="tsd-kind-icon">user.retweets</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="userinterface.html#user_screenname" class="tsd-kind-icon">user.screen<wbr>Name</a>

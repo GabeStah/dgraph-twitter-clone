@@ -102,10 +102,11 @@ const TweetCard = ({ tweet }) => {
     }
     return replies.some(reply => {
       if (authUser.uid && reply) {
+        const replyUser = _.first(reply['tweet.user']);
         return (
-          reply['tweet.user'] &&
-          reply['tweet.user'].uid &&
-          reply['tweet.user'].uid.toString() === authUser.uid.toString()
+          replyUser &&
+          replyUser.uid &&
+          replyUser.uid.toString() === authUser.uid.toString()
         );
       }
     });
@@ -115,19 +116,19 @@ const TweetCard = ({ tweet }) => {
    * Toggle boolean field of Tweet.
    * @param property
    * @param event
-   * @param current
+   * @param enabled
    */
   const toggleBooleanField = async (
     property: string,
     event: any,
-    current: any
+    enabled: any
   ) => {
     event.preventDefault();
     if (!tweet || !tweet.uid || !authUser || !authUser.uid) return;
 
     // Toggle current value.
-    current = !current;
-    if (current) {
+    enabled = !enabled;
+    if (enabled) {
       const result = await User.insert({
         uid: new Uid(authUser.uid).toString(),
         [property]: {
@@ -148,7 +149,7 @@ const TweetCard = ({ tweet }) => {
 
     dispatch(
       new Action(ActionType.TOGGLE_TWEET_PROPERTY, {
-        isEnabled: current,
+        isEnabled: enabled,
         // Reverse predicate for Tweets
         property: `~${property}`,
         tweet,
@@ -205,8 +206,8 @@ const TweetCard = ({ tweet }) => {
           </Button>
           <Link
             to={{
-              pathname: `${
-                tweet['tweet.user']['user.screenName']
+              pathname: `/${
+                _.first(tweet['tweet.user'])['user.screenName']
               }/status/${tweet.uid.toString()}`
             }}
           >

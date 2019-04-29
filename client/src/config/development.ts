@@ -2,7 +2,7 @@ import { DgraphConnectionType } from 'dgraph-query-manager';
 
 const development = {
   connectionType: DgraphConnectionType.DIRECT,
-  debug: true,
+  debug: false,
   dgraph: {
     api: {
       protocol: 'http',

@@ -73,7 +73,9 @@ class DgraphQueryExecutor {
         let branchResponse = serialization.response;
         for (const stick of branch) {
           if (branchResponse[stick]) {
-            branchResponse = branchResponse[stick];
+            branchResponse = adapters_1.DgraphAdapterHttp.flatten(
+              branchResponse[stick]
+            );
           }
         }
         // Combines all previous arrays with new response array to generate full result set.
@@ -81,7 +83,7 @@ class DgraphQueryExecutor {
       }
       serialization.message = `No ${this.query.objectType} found.`;
       // Flatten arrays
-      serialization.response = adapters_1.DgraphAdapterHttp.flattenArrays(
+      serialization.response = adapters_1.DgraphAdapterHttp.flatten(
         combinedResponse ? combinedResponse : serialization.response
       );
       if (

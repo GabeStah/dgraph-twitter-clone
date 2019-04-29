@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "dgraph-js": "^1.2.1",
-    "grpc": "^1.18.0"
+    "grpc": "^1.18.0",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@types/node": "^11.11.4",

@@ -325,7 +325,7 @@
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 							<a name="development.dgraph.schema" class="tsd-anchor"></a>
 							<h3>schema</h3>
-							<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;hashtag.indices: [int] .hashtag.hashtag: string @index(exact, fulltext) @count .hashtag.tweet: uid @count .tweet.createdAt: dateTime @index(hour) .tweet.favoriteCount: int @index(int) .tweet.favorited: bool .tweet.hashtag: uid @count @reverse .tweet.inReplyToStatusId: uid @count .tweet.inReplyToUserId: uid @count .tweet.isQuoteStatus: bool .tweet.quotedStatus: uid @count .tweet.retweetCount: int @index(int) .tweet.retweeted: bool .tweet.text: string @index(fulltext) @count @upsert .tweet.user: uid @count @reverse .user.avatar: string .user.createdAt: dateTime @index(hour) .user.description: string @index(fulltext) @count .user.email: string @index(exact) @upsert .user.favouritesCount: int @index(int) .user.followersCount: int @index(int) .user.friendsCount: int @index(int) .user.listedCount: int @index(int) .user.location: string @index(term) @count .user.name: string @index(hash) @count .user.screenName: string @index(term) @count .user.url: string @index(exact, fulltext) @count .&#x60;</span></div>
+							<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;hashtag.indices: [int] .hashtag.hashtag: string @index(exact, fulltext) @count .hashtag.tweet: uid @count .tweet.createdAt: dateTime @index(hour) .tweet.favoriteCount: int @index(int) .tweet.favorited: bool .tweet.hashtag: uid @count @reverse .tweet.inReplyToStatusId: uid @count .tweet.inReplyToUserId: uid @count .tweet.isQuoteStatus: bool .tweet.quotedStatus: uid @count .tweet.retweetCount: int @index(int) .tweet.retweeted: bool .tweet.text: string @index(fulltext) @count @upsert .tweet.user: uid @count @reverse .user.avatar: string .user.createdAt: dateTime @index(hour) .user.description: string @index(fulltext) @count .user.email: string @index(exact) @upsert .user.favoritesCount: int @index(int) .user.followersCount: int @index(int) .user.friendsCount: int @index(int) .user.listedCount: int @index(int) .user.location: string @index(term) @count .user.name: string @index(hash) @count .user.screenName: string @index(term) @count .user.url: string @index(exact, fulltext) @count .user.friends: uid @count @reverse .user.favorites: uid @count @reverse .user.retweets: uid @count @reverse .&#x60;</span></div>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L3">config/development.ts:3</a></li>
@@ -339,7 +339,7 @@
 						<div class="tsd-signature tsd-kind-icon">faker<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L33">config/development.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L36">config/development.ts:36</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -348,7 +348,47 @@
 							<div class="tsd-signature tsd-kind-icon">seed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1234567890</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L34">config/development.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L37">config/development.ts:37</a></li>
+								</ul>
+							</aside>
+						</section>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
+						<a name="development.generator" class="tsd-anchor"></a>
+						<h3>generator</h3>
+						<div class="tsd-signature tsd-kind-icon">generator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L39">config/development.ts:39</a></li>
+							</ul>
+						</aside>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+							<a name="development.generator.tweetcount" class="tsd-anchor"></a>
+							<h3>tweet<wbr>Count</h3>
+							<div class="tsd-signature tsd-kind-icon">tweet<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;50</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L42">config/development.ts:42</a></li>
+								</ul>
+							</aside>
+						</section>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+							<a name="development.generator.tweetreplystatuschance" class="tsd-anchor"></a>
+							<h3>tweet<wbr>Reply<wbr>Status<wbr>Chance</h3>
+							<div class="tsd-signature tsd-kind-icon">tweet<wbr>Reply<wbr>Status<wbr>Chance<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.85</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L40">config/development.ts:40</a></li>
+								</ul>
+							</aside>
+						</section>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+							<a name="development.generator.usercount" class="tsd-anchor"></a>
+							<h3>user<wbr>Count</h3>
+							<div class="tsd-signature tsd-kind-icon">user<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;10</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/development.ts#L41">config/development.ts:41</a></li>
 								</ul>
 							</aside>
 						</section>
@@ -375,7 +415,7 @@
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
 							<a name="production.dgraph.schema" class="tsd-anchor"></a>
 							<h3>schema</h3>
-							<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;hashtag.indices: [int] .hashtag.hashtag: string @index(exact, fulltext) @count .hashtag.tweet: uid @count .tweet.createdAt: dateTime @index(hour) .tweet.favoriteCount: int @index(int) .tweet.favorited: bool .tweet.hashtag: uid @count @reverse .tweet.inReplyToStatusId: uid @count .tweet.inReplyToUserId: uid @count .tweet.isQuoteStatus: bool .tweet.quotedStatus: uid @count .tweet.retweetCount: int @index(int) .tweet.retweeted: bool .tweet.text: string @index(fulltext) @count @upsert .tweet.user: uid @count @reverse .user.avatar: string .user.createdAt: dateTime @index(hour) .user.description: string @index(fulltext) @count .user.email: string @index(exact) @upsert .user.favouritesCount: int @index(int) .user.followersCount: int @index(int) .user.friendsCount: int @index(int) .user.listedCount: int @index(int) .user.location: string @index(term) @count .user.name: string @index(hash) @count .user.screenName: string @index(term) @count .user.url: string @index(exact, fulltext) @count .&#x60;</span></div>
+							<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&#x60;hashtag.indices: [int] .hashtag.hashtag: string @index(exact, fulltext) @count .hashtag.tweet: uid @count .tweet.createdAt: dateTime @index(hour) .tweet.favoriteCount: int @index(int) .tweet.favorited: bool .tweet.hashtag: uid @count @reverse .tweet.inReplyToStatusId: uid @count .tweet.inReplyToUserId: uid @count .tweet.isQuoteStatus: bool .tweet.quotedStatus: uid @count .tweet.retweetCount: int @index(int) .tweet.retweeted: bool .tweet.text: string @index(fulltext) @count @upsert .tweet.user: uid @count @reverse .user.avatar: string .user.createdAt: dateTime @index(hour) .user.description: string @index(fulltext) @count .user.email: string @index(exact) @upsert .user.favoritesCount: int @index(int) .user.followersCount: int @index(int) .user.friendsCount: int @index(int) .user.listedCount: int @index(int) .user.location: string @index(term) @count .user.name: string @index(hash) @count .user.screenName: string @index(term) @count .user.url: string @index(exact, fulltext) @count .user.friends: uid @count @reverse .user.favorites: uid @count @reverse .user.retweets: uid @count @reverse .&#x60;</span></div>
 							<aside class="tsd-sources">
 								<ul>
 									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L3">config/production.ts:3</a></li>
@@ -389,7 +429,7 @@
 						<div class="tsd-signature tsd-kind-icon">faker<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L33">config/production.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L36">config/production.ts:36</a></li>
 							</ul>
 						</aside>
 						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -398,7 +438,37 @@
 							<div class="tsd-signature tsd-kind-icon">seed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1234567890</span></div>
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L34">config/production.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L37">config/production.ts:37</a></li>
+								</ul>
+							</aside>
+						</section>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-object-literal">
+						<a name="production.generator" class="tsd-anchor"></a>
+						<h3>generator</h3>
+						<div class="tsd-signature tsd-kind-icon">generator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L39">config/production.ts:39</a></li>
+							</ul>
+						</aside>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+							<a name="production.generator.tweetcount" class="tsd-anchor"></a>
+							<h3>tweet<wbr>Count</h3>
+							<div class="tsd-signature tsd-kind-icon">tweet<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1000</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L41">config/production.ts:41</a></li>
+								</ul>
+							</aside>
+						</section>
+						<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+							<a name="production.generator.usercount" class="tsd-anchor"></a>
+							<h3>user<wbr>Count</h3>
+							<div class="tsd-signature tsd-kind-icon">user<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/GabeStah/dgraph-twitter-clone/blob/master/api/src/config/production.ts#L40">config/production.ts:40</a></li>
 								</ul>
 							</aside>
 						</section>

@@ -1,6 +1,7 @@
 // Libs
 import { ChannelCredentials, credentials as GrpcCredentials } from 'grpc';
 import { DgraphClient, DgraphClientStub, Operation, Mutation } from 'dgraph-js';
+import * as _ from 'lodash';
 // Locals
 import config from '../config';
 import { logger, MutationTypes, Serialization } from 'dgraph-query-manager';
@@ -69,6 +70,15 @@ export class DgraphAdapter {
       logger.error(`Dgraph data drop failed, error: %s`, error);
       return false;
     }
+  }
+
+  /**
+   * Removes top-level array from object if singular value.
+   * @param {object} obj
+   * @returns {any}
+   */
+  static flatten(obj: any) {
+    return _.isArray(obj) && obj.length === 1 ? obj[0] : obj;
   }
 
   /**
@@ -183,7 +193,8 @@ export class DgraphAdapter {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.query(serialization.request);
-      serialization.response = DgraphAdapter.flattenArrays(res.getJson());
+      // serialization.response = DgraphAdapter.flattenArrays(res.getJson());
+      serialization.response = res.getJson();
     } catch (e) {
       logger.error('DgraphAdapter.query, error: %o', e);
     } finally {
@@ -205,7 +216,8 @@ export class DgraphAdapter {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.queryWithVars(serialization.request, vars);
-      serialization.response = DgraphAdapter.flattenArrays(res.getJson());
+      // serialization.response = DgraphAdapter.flattenArrays(res.getJson());
+      serialization.response = res.getJson();
       logger.info(
         `DgraphAdapter.queryWithVars, query: %o, vars: %o`,
         serialization,

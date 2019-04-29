@@ -27,6 +27,12 @@ export declare class DgraphAdapterHttp {
    */
   dropAll(): Promise<boolean>;
   /**
+   * Removes top-level array from object if singular value.
+   * @param {object} obj
+   * @returns {any}
+   */
+  static flatten(obj: any): any;
+  /**
    * Recursively flattens arrays within passed object.
    * Sets object key value pointing to a single-element array to value of that only element.
    * @param {object} obj

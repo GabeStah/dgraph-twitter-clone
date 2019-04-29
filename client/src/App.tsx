@@ -7,7 +7,7 @@ import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
 // Local
-import { Action, ActionType, Reducer } from "./reducers";
+import { Reducer } from './reducers';
 import { InitialState, StateProvider } from './state';
 // Fonts
 import { library } from '@fortawesome/fontawesome-svg-core';

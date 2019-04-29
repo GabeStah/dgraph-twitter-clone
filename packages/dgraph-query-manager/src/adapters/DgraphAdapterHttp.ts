@@ -1,5 +1,6 @@
 // Lib
 import { DgraphClient, DgraphClientStub } from 'dgraph-js-http';
+import * as _ from 'lodash';
 // Local
 import config from '../config';
 import logger from '../logger';
@@ -60,51 +61,60 @@ export class DgraphAdapterHttp {
   }
 
   /**
+   * Removes top-level array from object if singular value.
+   * @param {object} obj
+   * @returns {any}
+   */
+  static flatten(obj: any) {
+    return _.isArray(obj) && obj.length === 1 ? obj[0] : obj;
+  }
+
+  /**
    * Recursively flattens arrays within passed object.
    * Sets object key value pointing to a single-element array to value of that only element.
    * @param {object} obj
    * @returns {any}
    */
   static flattenArrays(obj: any) {
-    let copy: any = obj;
+    let clone: any = _.clone(obj);
     if (Array.isArray(obj) && obj.length === 1) {
-      copy = DgraphAdapterHttp.flattenArrays(copy[0]);
+      clone = DgraphAdapterHttp.flattenArrays(clone[0]);
     } else if (Array.isArray(obj)) {
       obj.forEach((value, key) => {
-        copy[key] = DgraphAdapterHttp.flattenArrays(value);
+        clone[key] = DgraphAdapterHttp.flattenArrays(value);
       });
     } else {
       for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
           if (Array.isArray(obj[key]) && obj[key].length === 1) {
             // Set keyvalue to first (and only) array value.
-            copy[key] = DgraphAdapterHttp.flattenArrays(obj[key][0]);
+            clone[key] = DgraphAdapterHttp.flattenArrays(obj[key][0]);
           }
         }
       }
     }
 
-    return copy;
+    return clone;
   }
 
   static flattenArraysInObject(obj) {
-    const copy: any = obj;
+    const clone: any = _.clone(obj);
     Object.entries(obj).forEach(([key, value]) => {
       if (obj.hasOwnProperty(key)) {
         if (Array.isArray(value)) {
           if (value.length === 1) {
             // Set key value to first (and only) array value.
-            copy[key] = DgraphAdapterHttp.flattenArraysInObject(value[0]);
+            clone[key] = DgraphAdapterHttp.flattenArraysInObject(value[0]);
           } else {
             // Retain original array
-            copy[key] = DgraphAdapterHttp.flattenArraysInObject(value);
+            clone[key] = DgraphAdapterHttp.flattenArraysInObject(value);
           }
         } else {
-          copy[key] = DgraphAdapterHttp.flattenArraysInObject(value);
+          clone[key] = DgraphAdapterHttp.flattenArraysInObject(value);
         }
       }
     });
-    return copy;
+    return clone;
   }
 
   /**
@@ -169,7 +179,7 @@ export class DgraphAdapterHttp {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.query(serialization.request);
-      serialization.response = DgraphAdapterHttp.flattenArrays(res.data);
+      serialization.response = DgraphAdapterHttp.flatten(res.data);
     } catch (e) {
       logger.error('DgraphAdapterHttp.query, error: %o', e);
     } finally {
@@ -191,7 +201,7 @@ export class DgraphAdapterHttp {
     const transaction = this.client.newTxn();
     try {
       const res = await transaction.queryWithVars(serialization.request, vars);
-      serialization.response = DgraphAdapterHttp.flattenArrays(res.data);
+      serialization.response = DgraphAdapterHttp.flatten(res.data);
     } catch (e) {
       logger.error(
         'DgraphAdapterHttp.queryWithVars, query: %s, paramTypes: %o, error: %o',

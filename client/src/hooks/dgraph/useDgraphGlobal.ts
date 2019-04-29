@@ -54,7 +54,6 @@ export const useDgraphGlobal = (parameters: {
               action,
               serialization
             );
-            console.log(serialization);
           }
 
           if (serialization.success || allowFailure) {

@@ -1286,13 +1286,21 @@ typedoc.search.data = {
     {
       id: 159,
       kind: 2048,
+      name: 'flatten',
+      url: 'classes/dgraphadapterhttp.html#flatten',
+      classes: 'tsd-kind-method tsd-parent-kind-class tsd-is-static',
+      parent: 'DgraphAdapterHttp',
+    },
+    {
+      id: 160,
+      kind: 2048,
       name: 'flattenArrays',
       url: 'classes/dgraphadapterhttp.html#flattenarrays',
       classes: 'tsd-kind-method tsd-parent-kind-class tsd-is-static',
       parent: 'DgraphAdapterHttp',
     },
     {
-      id: 160,
+      id: 161,
       kind: 2048,
       name: 'flattenArraysInObject',
       url: 'classes/dgraphadapterhttp.html#flattenarraysinobject',
@@ -1300,7 +1308,7 @@ typedoc.search.data = {
       parent: 'DgraphAdapterHttp',
     },
     {
-      id: 161,
+      id: 162,
       kind: 2048,
       name: 'mutate',
       url: 'classes/dgraphadapterhttp.html#mutate',
@@ -1308,7 +1316,7 @@ typedoc.search.data = {
       parent: 'DgraphAdapterHttp',
     },
     {
-      id: 162,
+      id: 163,
       kind: 2048,
       name: 'query',
       url: 'classes/dgraphadapterhttp.html#query',
@@ -1316,7 +1324,7 @@ typedoc.search.data = {
       parent: 'DgraphAdapterHttp',
     },
     {
-      id: 163,
+      id: 164,
       kind: 2048,
       name: 'queryWithVars',
       url: 'classes/dgraphadapterhttp.html#querywithvars',
@@ -1324,42 +1332,42 @@ typedoc.search.data = {
       parent: 'DgraphAdapterHttp',
     },
     {
-      id: 164,
+      id: 165,
       kind: 64,
       name: 'getRandomElement',
       url: 'globals.html#getrandomelement',
       classes: 'tsd-kind-function',
     },
     {
-      id: 165,
+      id: 166,
       kind: 64,
       name: 'getRandomEnumElement',
       url: 'globals.html#getrandomenumelement',
       classes: 'tsd-kind-function',
     },
     {
-      id: 166,
+      id: 167,
       kind: 64,
       name: 'getRandomInt',
       url: 'globals.html#getrandomint',
       classes: 'tsd-kind-function',
     },
     {
-      id: 167,
+      id: 168,
       kind: 64,
       name: 'weightedBoolean',
       url: 'globals.html#weightedboolean',
       classes: 'tsd-kind-function',
     },
     {
-      id: 168,
+      id: 169,
       kind: 4,
       name: 'BaseModelDeletionMode',
       url: 'enums/basemodeldeletionmode.html',
       classes: 'tsd-kind-enum',
     },
     {
-      id: 169,
+      id: 170,
       kind: 16,
       name: 'All',
       url: 'enums/basemodeldeletionmode.html#all',
@@ -1367,7 +1375,7 @@ typedoc.search.data = {
       parent: 'BaseModelDeletionMode',
     },
     {
-      id: 170,
+      id: 171,
       kind: 16,
       name: 'Node',
       url: 'enums/basemodeldeletionmode.html#node',
@@ -1375,7 +1383,7 @@ typedoc.search.data = {
       parent: 'BaseModelDeletionMode',
     },
     {
-      id: 171,
+      id: 172,
       kind: 16,
       name: 'Edge',
       url: 'enums/basemodeldeletionmode.html#edge',
@@ -1383,7 +1391,7 @@ typedoc.search.data = {
       parent: 'BaseModelDeletionMode',
     },
     {
-      id: 172,
+      id: 173,
       kind: 16,
       name: 'AllChildEdges',
       url: 'enums/basemodeldeletionmode.html#allchildedges',
@@ -1391,7 +1399,7 @@ typedoc.search.data = {
       parent: 'BaseModelDeletionMode',
     },
     {
-      id: 173,
+      id: 174,
       kind: 16,
       name: 'AllChildNodes',
       url: 'enums/basemodeldeletionmode.html#allchildnodes',
@@ -1399,14 +1407,22 @@ typedoc.search.data = {
       parent: 'BaseModelDeletionMode',
     },
     {
-      id: 174,
+      id: 175,
+      kind: 16,
+      name: 'Raw',
+      url: 'enums/basemodeldeletionmode.html#raw',
+      classes: 'tsd-kind-enum-member tsd-parent-kind-enum',
+      parent: 'BaseModelDeletionMode',
+    },
+    {
+      id: 176,
       kind: 256,
       name: 'BaseModelInterface',
       url: 'interfaces/basemodelinterface.html',
       classes: 'tsd-kind-interface',
     },
     {
-      id: 175,
+      id: 177,
       kind: 1024,
       name: 'uid',
       url: 'interfaces/basemodelinterface.html#uid',
@@ -1414,14 +1430,14 @@ typedoc.search.data = {
       parent: 'BaseModelInterface',
     },
     {
-      id: 176,
+      id: 178,
       kind: 128,
       name: 'BaseModel',
       url: 'classes/basemodel.html',
       classes: 'tsd-kind-class tsd-has-type-parameter',
     },
     {
-      id: 177,
+      id: 179,
       kind: 1024,
       name: 'uid',
       url: 'classes/basemodel.html#uid',
@@ -1429,7 +1445,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 178,
+      id: 180,
       kind: 512,
       name: 'constructor',
       url: 'classes/basemodel.html#constructor',
@@ -1437,7 +1453,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 179,
+      id: 181,
       kind: 2048,
       name: 'create',
       url: 'classes/basemodel.html#create',
@@ -1446,7 +1462,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 180,
+      id: 182,
       kind: 2048,
       name: 'createMany',
       url: 'classes/basemodel.html#createmany',
@@ -1455,7 +1471,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 181,
+      id: 183,
       kind: 2048,
       name: 'delete',
       url: 'classes/basemodel.html#delete',
@@ -1464,7 +1480,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 182,
+      id: 184,
       kind: 2048,
       name: 'deserialize',
       url: 'classes/basemodel.html#deserialize',
@@ -1473,7 +1489,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 183,
+      id: 185,
       kind: 2048,
       name: 'find',
       url: 'classes/basemodel.html#find-1',
@@ -1482,7 +1498,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 184,
+      id: 186,
       kind: 2048,
       name: 'find',
       url: 'classes/basemodel.html#find',
@@ -1490,7 +1506,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 185,
+      id: 187,
       kind: 2048,
       name: 'fromJSON',
       url: 'classes/basemodel.html#fromjson',
@@ -1499,7 +1515,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 186,
+      id: 188,
       kind: 2048,
       name: 'fromObject',
       url: 'classes/basemodel.html#fromobject',
@@ -1507,7 +1523,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 187,
+      id: 189,
       kind: 2048,
       name: 'getDeletionRequest',
       url: 'classes/basemodel.html#getdeletionrequest',
@@ -1516,7 +1532,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 188,
+      id: 190,
       kind: 2048,
       name: 'injectDefaults',
       url: 'classes/basemodel.html#injectdefaults',
@@ -1525,7 +1541,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 189,
+      id: 191,
       kind: 2048,
       name: 'insert',
       url: 'classes/basemodel.html#insert',
@@ -1534,7 +1550,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 190,
+      id: 192,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/basemodel.html#isdeletabletype',
@@ -1542,7 +1558,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 191,
+      id: 193,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/basemodel.html#isdeletabletype-1',
@@ -1550,7 +1566,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 192,
+      id: 194,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/basemodel.html#isnodeabletype',
@@ -1558,7 +1574,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 193,
+      id: 195,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/basemodel.html#isnodeabletype-1',
@@ -1566,7 +1582,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 194,
+      id: 196,
       kind: 2048,
       name: 'isResponseValid',
       url: 'classes/basemodel.html#isresponsevalid',
@@ -1575,7 +1591,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 195,
+      id: 197,
       kind: 2048,
       name: 'load',
       url: 'classes/basemodel.html#load',
@@ -1584,7 +1600,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 196,
+      id: 198,
       kind: 2048,
       name: 'serialize',
       url: 'classes/basemodel.html#serialize',
@@ -1593,7 +1609,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 197,
+      id: 199,
       kind: 2048,
       name: 'toObject',
       url: 'classes/basemodel.html#toobject',
@@ -1601,7 +1617,7 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 198,
+      id: 200,
       kind: 2048,
       name: 'upsert',
       url: 'classes/basemodel.html#upsert',
@@ -1610,21 +1626,21 @@ typedoc.search.data = {
       parent: 'BaseModel',
     },
     {
-      id: 199,
+      id: 201,
       kind: 4194304,
       name: 'BaseModelNodeableType',
       url: 'globals.html#basemodelnodeabletype',
       classes: 'tsd-kind-type-alias',
     },
     {
-      id: 200,
+      id: 202,
       kind: 256,
       name: 'HashtagInterface',
       url: 'interfaces/hashtaginterface.html',
       classes: 'tsd-kind-interface',
     },
     {
-      id: 201,
+      id: 203,
       kind: 1024,
       name: 'hashtag.hashtag',
       url: 'interfaces/hashtaginterface.html#hashtag_hashtag',
@@ -1632,7 +1648,7 @@ typedoc.search.data = {
       parent: 'HashtagInterface',
     },
     {
-      id: 202,
+      id: 204,
       kind: 1024,
       name: 'hashtag.indices',
       url: 'interfaces/hashtaginterface.html#hashtag_indices',
@@ -1640,7 +1656,7 @@ typedoc.search.data = {
       parent: 'HashtagInterface',
     },
     {
-      id: 203,
+      id: 205,
       kind: 1024,
       name: 'hashtag.tweet',
       url: 'interfaces/hashtaginterface.html#hashtag_tweet',
@@ -1648,7 +1664,7 @@ typedoc.search.data = {
       parent: 'HashtagInterface',
     },
     {
-      id: 204,
+      id: 206,
       kind: 1024,
       name: 'uid',
       url: 'interfaces/hashtaginterface.html#uid',
@@ -1656,14 +1672,14 @@ typedoc.search.data = {
       parent: 'HashtagInterface',
     },
     {
-      id: 205,
+      id: 207,
       kind: 128,
       name: 'Hashtag',
       url: 'classes/hashtag.html',
       classes: 'tsd-kind-class',
     },
     {
-      id: 206,
+      id: 208,
       kind: 1024,
       name: 'hashtag.hashtag',
       url: 'classes/hashtag.html#hashtag_hashtag',
@@ -1671,7 +1687,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 207,
+      id: 209,
       kind: 1024,
       name: 'hashtag.indices',
       url: 'classes/hashtag.html#hashtag_indices',
@@ -1679,7 +1695,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 208,
+      id: 210,
       kind: 1024,
       name: 'hashtag.tweet',
       url: 'classes/hashtag.html#hashtag_tweet',
@@ -1687,7 +1703,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 209,
+      id: 211,
       kind: 512,
       name: 'constructor',
       url: 'classes/hashtag.html#constructor',
@@ -1695,7 +1711,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 210,
+      id: 212,
       kind: 2048,
       name: 'createObject',
       url: 'classes/hashtag.html#createobject',
@@ -1703,7 +1719,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 211,
+      id: 213,
       kind: 2048,
       name: 'load',
       url: 'classes/hashtag.html#load',
@@ -1712,7 +1728,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 212,
+      id: 214,
       kind: 1024,
       name: 'uid',
       url: 'classes/hashtag.html#uid',
@@ -1720,7 +1736,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 213,
+      id: 215,
       kind: 2048,
       name: 'create',
       url: 'classes/hashtag.html#create',
@@ -1729,7 +1745,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 214,
+      id: 216,
       kind: 2048,
       name: 'createMany',
       url: 'classes/hashtag.html#createmany',
@@ -1738,7 +1754,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 215,
+      id: 217,
       kind: 2048,
       name: 'delete',
       url: 'classes/hashtag.html#delete',
@@ -1747,7 +1763,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 216,
+      id: 218,
       kind: 2048,
       name: 'deserialize',
       url: 'classes/hashtag.html#deserialize',
@@ -1756,7 +1772,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 217,
+      id: 219,
       kind: 2048,
       name: 'find',
       url: 'classes/hashtag.html#find-1',
@@ -1765,7 +1781,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 218,
+      id: 220,
       kind: 2048,
       name: 'find',
       url: 'classes/hashtag.html#find',
@@ -1774,7 +1790,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 219,
+      id: 221,
       kind: 2048,
       name: 'fromJSON',
       url: 'classes/hashtag.html#fromjson',
@@ -1783,7 +1799,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 220,
+      id: 222,
       kind: 2048,
       name: 'fromObject',
       url: 'classes/hashtag.html#fromobject',
@@ -1792,7 +1808,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 221,
+      id: 223,
       kind: 2048,
       name: 'getDeletionRequest',
       url: 'classes/hashtag.html#getdeletionrequest',
@@ -1801,7 +1817,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 222,
+      id: 224,
       kind: 2048,
       name: 'injectDefaults',
       url: 'classes/hashtag.html#injectdefaults',
@@ -1810,7 +1826,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 223,
+      id: 225,
       kind: 2048,
       name: 'insert',
       url: 'classes/hashtag.html#insert',
@@ -1819,7 +1835,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 224,
+      id: 226,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/hashtag.html#isdeletabletype',
@@ -1827,7 +1843,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 225,
+      id: 227,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/hashtag.html#isdeletabletype-1',
@@ -1836,7 +1852,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 226,
+      id: 228,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/hashtag.html#isnodeabletype',
@@ -1844,7 +1860,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 227,
+      id: 229,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/hashtag.html#isnodeabletype-1',
@@ -1853,7 +1869,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 228,
+      id: 230,
       kind: 2048,
       name: 'isResponseValid',
       url: 'classes/hashtag.html#isresponsevalid',
@@ -1862,7 +1878,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 229,
+      id: 231,
       kind: 2048,
       name: 'serialize',
       url: 'classes/hashtag.html#serialize',
@@ -1871,7 +1887,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 230,
+      id: 232,
       kind: 2048,
       name: 'toObject',
       url: 'classes/hashtag.html#toobject',
@@ -1880,7 +1896,7 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 231,
+      id: 233,
       kind: 2048,
       name: 'upsert',
       url: 'classes/hashtag.html#upsert',
@@ -1889,14 +1905,14 @@ typedoc.search.data = {
       parent: 'Hashtag',
     },
     {
-      id: 232,
+      id: 234,
       kind: 256,
       name: 'TweetInterface',
       url: 'interfaces/tweetinterface.html',
       classes: 'tsd-kind-interface',
     },
     {
-      id: 233,
+      id: 235,
       kind: 1024,
       name: 'tweet.createdAt',
       url: 'interfaces/tweetinterface.html#tweet_createdat',
@@ -1904,7 +1920,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 234,
+      id: 236,
       kind: 1024,
       name: 'tweet.favoriteCount',
       url: 'interfaces/tweetinterface.html#tweet_favoritecount',
@@ -1912,7 +1928,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 235,
+      id: 237,
       kind: 1024,
       name: 'tweet.favorited',
       url: 'interfaces/tweetinterface.html#tweet_favorited',
@@ -1920,7 +1936,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 236,
+      id: 238,
       kind: 1024,
       name: 'tweet.hashtag',
       url: 'interfaces/tweetinterface.html#tweet_hashtag',
@@ -1928,7 +1944,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 237,
+      id: 239,
       kind: 1024,
       name: 'tweet.inReplyToStatusId',
       url: 'interfaces/tweetinterface.html#tweet_inreplytostatusid',
@@ -1936,7 +1952,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 238,
+      id: 240,
       kind: 1024,
       name: 'tweet.inReplyToUserId',
       url: 'interfaces/tweetinterface.html#tweet_inreplytouserid',
@@ -1944,7 +1960,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 239,
+      id: 241,
       kind: 1024,
       name: 'tweet.isQuoteStatus',
       url: 'interfaces/tweetinterface.html#tweet_isquotestatus',
@@ -1952,7 +1968,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 240,
+      id: 242,
       kind: 1024,
       name: 'tweet.quotedStatus',
       url: 'interfaces/tweetinterface.html#tweet_quotedstatus',
@@ -1960,7 +1976,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 241,
+      id: 243,
       kind: 1024,
       name: 'tweet.retweetCount',
       url: 'interfaces/tweetinterface.html#tweet_retweetcount',
@@ -1968,7 +1984,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 242,
+      id: 244,
       kind: 1024,
       name: 'tweet.retweeted',
       url: 'interfaces/tweetinterface.html#tweet_retweeted',
@@ -1976,7 +1992,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 243,
+      id: 245,
       kind: 1024,
       name: 'tweet.text',
       url: 'interfaces/tweetinterface.html#tweet_text',
@@ -1984,7 +2000,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 244,
+      id: 246,
       kind: 1024,
       name: 'tweet.user',
       url: 'interfaces/tweetinterface.html#tweet_user',
@@ -1992,7 +2008,7 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 245,
+      id: 247,
       kind: 1024,
       name: 'uid',
       url: 'interfaces/tweetinterface.html#uid',
@@ -2000,14 +2016,14 @@ typedoc.search.data = {
       parent: 'TweetInterface',
     },
     {
-      id: 246,
+      id: 248,
       kind: 4,
       name: 'FakerTweetTypes',
       url: 'enums/fakertweettypes.html',
       classes: 'tsd-kind-enum',
     },
     {
-      id: 247,
+      id: 249,
       kind: 16,
       name: 'COMPANY_BS',
       url: 'enums/fakertweettypes.html#company_bs',
@@ -2015,7 +2031,7 @@ typedoc.search.data = {
       parent: 'FakerTweetTypes',
     },
     {
-      id: 248,
+      id: 250,
       kind: 16,
       name: 'COMPANY_CATCH_PHRASE',
       url: 'enums/fakertweettypes.html#company_catch_phrase',
@@ -2023,7 +2039,7 @@ typedoc.search.data = {
       parent: 'FakerTweetTypes',
     },
     {
-      id: 249,
+      id: 251,
       kind: 16,
       name: 'HACKER',
       url: 'enums/fakertweettypes.html#hacker',
@@ -2031,7 +2047,7 @@ typedoc.search.data = {
       parent: 'FakerTweetTypes',
     },
     {
-      id: 250,
+      id: 252,
       kind: 16,
       name: 'WORDS',
       url: 'enums/fakertweettypes.html#words',
@@ -2039,7 +2055,7 @@ typedoc.search.data = {
       parent: 'FakerTweetTypes',
     },
     {
-      id: 251,
+      id: 253,
       kind: 16,
       name: 'LOREM',
       url: 'enums/fakertweettypes.html#lorem',
@@ -2047,14 +2063,14 @@ typedoc.search.data = {
       parent: 'FakerTweetTypes',
     },
     {
-      id: 252,
+      id: 254,
       kind: 128,
       name: 'Tweet',
       url: 'classes/tweet.html',
       classes: 'tsd-kind-class',
     },
     {
-      id: 253,
+      id: 255,
       kind: 1024,
       name: 'tweet.createdAt',
       url: 'classes/tweet.html#tweet_createdat',
@@ -2062,7 +2078,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 254,
+      id: 256,
       kind: 1024,
       name: 'tweet.hashtag',
       url: 'classes/tweet.html#tweet_hashtag',
@@ -2070,7 +2086,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 255,
+      id: 257,
       kind: 1024,
       name: 'tweet.favoriteCount',
       url: 'classes/tweet.html#tweet_favoritecount',
@@ -2078,7 +2094,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 256,
+      id: 258,
       kind: 1024,
       name: 'tweet.favorited',
       url: 'classes/tweet.html#tweet_favorited',
@@ -2086,7 +2102,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 257,
+      id: 259,
       kind: 1024,
       name: 'tweet.inReplyToStatusId',
       url: 'classes/tweet.html#tweet_inreplytostatusid',
@@ -2094,7 +2110,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 258,
+      id: 260,
       kind: 1024,
       name: 'tweet.inReplyToUserId',
       url: 'classes/tweet.html#tweet_inreplytouserid',
@@ -2102,7 +2118,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 259,
+      id: 261,
       kind: 1024,
       name: 'tweet.isQuoteStatus',
       url: 'classes/tweet.html#tweet_isquotestatus',
@@ -2110,7 +2126,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 260,
+      id: 262,
       kind: 1024,
       name: 'tweet.quotedStatus',
       url: 'classes/tweet.html#tweet_quotedstatus',
@@ -2118,7 +2134,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 261,
+      id: 263,
       kind: 1024,
       name: 'tweet.retweetCount',
       url: 'classes/tweet.html#tweet_retweetcount',
@@ -2126,7 +2142,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 262,
+      id: 264,
       kind: 1024,
       name: 'tweet.retweeted',
       url: 'classes/tweet.html#tweet_retweeted',
@@ -2134,7 +2150,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 263,
+      id: 265,
       kind: 1024,
       name: 'tweet.text',
       url: 'classes/tweet.html#tweet_text',
@@ -2142,7 +2158,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 264,
+      id: 266,
       kind: 1024,
       name: 'tweet.user',
       url: 'classes/tweet.html#tweet_user',
@@ -2150,7 +2166,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 265,
+      id: 267,
       kind: 512,
       name: 'constructor',
       url: 'classes/tweet.html#constructor',
@@ -2158,7 +2174,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 266,
+      id: 268,
       kind: 2048,
       name: 'deserialize',
       url: 'classes/tweet.html#deserialize',
@@ -2167,7 +2183,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 267,
+      id: 269,
       kind: 2048,
       name: 'extractHashtags',
       url: 'classes/tweet.html#extracthashtags',
@@ -2175,7 +2191,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 268,
+      id: 270,
       kind: 2048,
       name: 'generate',
       url: 'classes/tweet.html#generate',
@@ -2183,7 +2199,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 269,
+      id: 271,
       kind: 2048,
       name: 'generateFakeParams',
       url: 'classes/tweet.html#generatefakeparams',
@@ -2191,7 +2207,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 270,
+      id: 272,
       kind: 2048,
       name: 'generateRandomTweetText',
       url: 'classes/tweet.html#generaterandomtweettext',
@@ -2199,7 +2215,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 271,
+      id: 273,
       kind: 2048,
       name: 'getHashtags',
       url: 'classes/tweet.html#gethashtags',
@@ -2207,7 +2223,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 272,
+      id: 274,
       kind: 2048,
       name: 'getValidTweetString',
       url: 'classes/tweet.html#getvalidtweetstring',
@@ -2215,7 +2231,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 273,
+      id: 275,
       kind: 2048,
       name: 'load',
       url: 'classes/tweet.html#load-1',
@@ -2224,7 +2240,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 274,
+      id: 276,
       kind: 2048,
       name: 'load',
       url: 'classes/tweet.html#load',
@@ -2232,7 +2248,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 275,
+      id: 277,
       kind: 2048,
       name: 'loadChildren',
       url: 'classes/tweet.html#loadchildren',
@@ -2240,7 +2256,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 276,
+      id: 278,
       kind: 1024,
       name: 'uid',
       url: 'classes/tweet.html#uid',
@@ -2248,7 +2264,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 277,
+      id: 279,
       kind: 2048,
       name: 'create',
       url: 'classes/tweet.html#create',
@@ -2257,7 +2273,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 278,
+      id: 280,
       kind: 2048,
       name: 'createMany',
       url: 'classes/tweet.html#createmany',
@@ -2266,7 +2282,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 279,
+      id: 281,
       kind: 2048,
       name: 'delete',
       url: 'classes/tweet.html#delete',
@@ -2275,7 +2291,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 280,
+      id: 282,
       kind: 2048,
       name: 'find',
       url: 'classes/tweet.html#find-1',
@@ -2284,7 +2300,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 281,
+      id: 283,
       kind: 2048,
       name: 'find',
       url: 'classes/tweet.html#find',
@@ -2293,7 +2309,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 282,
+      id: 284,
       kind: 2048,
       name: 'fromJSON',
       url: 'classes/tweet.html#fromjson',
@@ -2302,7 +2318,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 283,
+      id: 285,
       kind: 2048,
       name: 'fromObject',
       url: 'classes/tweet.html#fromobject',
@@ -2311,7 +2327,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 284,
+      id: 286,
       kind: 2048,
       name: 'getDeletionRequest',
       url: 'classes/tweet.html#getdeletionrequest',
@@ -2320,7 +2336,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 285,
+      id: 287,
       kind: 2048,
       name: 'injectDefaults',
       url: 'classes/tweet.html#injectdefaults',
@@ -2329,7 +2345,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 286,
+      id: 288,
       kind: 2048,
       name: 'insert',
       url: 'classes/tweet.html#insert',
@@ -2338,7 +2354,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 287,
+      id: 289,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/tweet.html#isdeletabletype',
@@ -2346,7 +2362,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 288,
+      id: 290,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/tweet.html#isdeletabletype-1',
@@ -2355,7 +2371,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 289,
+      id: 291,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/tweet.html#isnodeabletype',
@@ -2363,7 +2379,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 290,
+      id: 292,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/tweet.html#isnodeabletype-1',
@@ -2372,7 +2388,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 291,
+      id: 293,
       kind: 2048,
       name: 'isResponseValid',
       url: 'classes/tweet.html#isresponsevalid',
@@ -2381,7 +2397,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 292,
+      id: 294,
       kind: 2048,
       name: 'serialize',
       url: 'classes/tweet.html#serialize',
@@ -2390,7 +2406,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 293,
+      id: 295,
       kind: 2048,
       name: 'toObject',
       url: 'classes/tweet.html#toobject',
@@ -2399,7 +2415,7 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 294,
+      id: 296,
       kind: 2048,
       name: 'upsert',
       url: 'classes/tweet.html#upsert',
@@ -2408,14 +2424,14 @@ typedoc.search.data = {
       parent: 'Tweet',
     },
     {
-      id: 295,
+      id: 297,
       kind: 4,
       name: 'UidTypes',
       url: 'enums/uidtypes.html',
       classes: 'tsd-kind-enum tsd-is-not-exported',
     },
     {
-      id: 296,
+      id: 298,
       kind: 16,
       name: 'Base16',
       url: 'enums/uidtypes.html#base16',
@@ -2423,7 +2439,7 @@ typedoc.search.data = {
       parent: 'UidTypes',
     },
     {
-      id: 297,
+      id: 299,
       kind: 16,
       name: 'Base64',
       url: 'enums/uidtypes.html#base64',
@@ -2431,14 +2447,14 @@ typedoc.search.data = {
       parent: 'UidTypes',
     },
     {
-      id: 298,
+      id: 300,
       kind: 256,
       name: 'UidInterface',
       url: 'interfaces/uidinterface.html',
       classes: 'tsd-kind-interface tsd-is-not-exported',
     },
     {
-      id: 299,
+      id: 301,
       kind: 1024,
       name: 'type',
       url: 'interfaces/uidinterface.html#type',
@@ -2447,7 +2463,7 @@ typedoc.search.data = {
       parent: 'UidInterface',
     },
     {
-      id: 300,
+      id: 302,
       kind: 1024,
       name: 'uid',
       url: 'interfaces/uidinterface.html#uid',
@@ -2456,14 +2472,14 @@ typedoc.search.data = {
       parent: 'UidInterface',
     },
     {
-      id: 301,
+      id: 303,
       kind: 128,
       name: 'Uid',
       url: 'classes/uid.html',
       classes: 'tsd-kind-class',
     },
     {
-      id: 302,
+      id: 304,
       kind: 1024,
       name: 'type',
       url: 'classes/uid.html#type',
@@ -2471,7 +2487,7 @@ typedoc.search.data = {
       parent: 'Uid',
     },
     {
-      id: 303,
+      id: 305,
       kind: 1024,
       name: 'uid',
       url: 'classes/uid.html#uid-1',
@@ -2479,7 +2495,7 @@ typedoc.search.data = {
       parent: 'Uid',
     },
     {
-      id: 304,
+      id: 306,
       kind: 512,
       name: 'constructor',
       url: 'classes/uid.html#constructor',
@@ -2487,7 +2503,7 @@ typedoc.search.data = {
       parent: 'Uid',
     },
     {
-      id: 305,
+      id: 307,
       kind: 2048,
       name: 'toString',
       url: 'classes/uid.html#tostring',
@@ -2495,7 +2511,7 @@ typedoc.search.data = {
       parent: 'Uid',
     },
     {
-      id: 306,
+      id: 308,
       kind: 2048,
       name: 'generateString',
       url: 'classes/uid.html#generatestring',
@@ -2503,7 +2519,7 @@ typedoc.search.data = {
       parent: 'Uid',
     },
     {
-      id: 307,
+      id: 309,
       kind: 2048,
       name: 'getUidAsHex',
       url: 'classes/uid.html#getuidashex',
@@ -2511,21 +2527,21 @@ typedoc.search.data = {
       parent: 'Uid',
     },
     {
-      id: 308,
+      id: 310,
       kind: 4194304,
       name: 'UidParamsType',
       url: 'globals.html#uidparamstype',
       classes: 'tsd-kind-type-alias',
     },
     {
-      id: 309,
+      id: 311,
       kind: 256,
       name: 'UserInterface',
       url: 'interfaces/userinterface.html',
       classes: 'tsd-kind-interface',
     },
     {
-      id: 310,
+      id: 312,
       kind: 1024,
       name: 'user.avatar',
       url: 'interfaces/userinterface.html#user_avatar',
@@ -2533,7 +2549,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 311,
+      id: 313,
       kind: 1024,
       name: 'user.createdAt',
       url: 'interfaces/userinterface.html#user_createdat',
@@ -2541,7 +2557,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 312,
+      id: 314,
       kind: 1024,
       name: 'user.description',
       url: 'interfaces/userinterface.html#user_description',
@@ -2549,7 +2565,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 313,
+      id: 315,
       kind: 1024,
       name: 'user.email',
       url: 'interfaces/userinterface.html#user_email',
@@ -2557,15 +2573,23 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 314,
+      id: 316,
       kind: 1024,
-      name: 'user.favouritesCount',
-      url: 'interfaces/userinterface.html#user_favouritescount',
+      name: 'user.favorites',
+      url: 'interfaces/userinterface.html#user_favorites',
       classes: 'tsd-kind-property tsd-parent-kind-interface',
       parent: 'UserInterface',
     },
     {
-      id: 315,
+      id: 317,
+      kind: 1024,
+      name: 'user.favoritesCount',
+      url: 'interfaces/userinterface.html#user_favoritescount',
+      classes: 'tsd-kind-property tsd-parent-kind-interface',
+      parent: 'UserInterface',
+    },
+    {
+      id: 318,
       kind: 1024,
       name: 'user.followersCount',
       url: 'interfaces/userinterface.html#user_followerscount',
@@ -2573,7 +2597,15 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 316,
+      id: 319,
+      kind: 1024,
+      name: 'user.friends',
+      url: 'interfaces/userinterface.html#user_friends',
+      classes: 'tsd-kind-property tsd-parent-kind-interface',
+      parent: 'UserInterface',
+    },
+    {
+      id: 320,
       kind: 1024,
       name: 'user.friendsCount',
       url: 'interfaces/userinterface.html#user_friendscount',
@@ -2581,7 +2613,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 317,
+      id: 321,
       kind: 1024,
       name: 'user.listedCount',
       url: 'interfaces/userinterface.html#user_listedcount',
@@ -2589,7 +2621,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 318,
+      id: 322,
       kind: 1024,
       name: 'user.location',
       url: 'interfaces/userinterface.html#user_location',
@@ -2597,7 +2629,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 319,
+      id: 323,
       kind: 1024,
       name: 'user.name',
       url: 'interfaces/userinterface.html#user_name',
@@ -2605,7 +2637,15 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 320,
+      id: 324,
+      kind: 1024,
+      name: 'user.retweets',
+      url: 'interfaces/userinterface.html#user_retweets',
+      classes: 'tsd-kind-property tsd-parent-kind-interface',
+      parent: 'UserInterface',
+    },
+    {
+      id: 325,
       kind: 1024,
       name: 'user.screenName',
       url: 'interfaces/userinterface.html#user_screenname',
@@ -2613,7 +2653,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 321,
+      id: 326,
       kind: 1024,
       name: 'user.url',
       url: 'interfaces/userinterface.html#user_url',
@@ -2621,7 +2661,7 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 322,
+      id: 327,
       kind: 1024,
       name: 'uid',
       url: 'interfaces/userinterface.html#uid',
@@ -2629,14 +2669,14 @@ typedoc.search.data = {
       parent: 'UserInterface',
     },
     {
-      id: 323,
+      id: 328,
       kind: 128,
       name: 'User',
       url: 'classes/user.html',
       classes: 'tsd-kind-class',
     },
     {
-      id: 324,
+      id: 329,
       kind: 1024,
       name: 'user.avatar',
       url: 'classes/user.html#user_avatar',
@@ -2644,7 +2684,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 325,
+      id: 330,
       kind: 1024,
       name: 'user.createdAt',
       url: 'classes/user.html#user_createdat',
@@ -2652,7 +2692,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 326,
+      id: 331,
       kind: 1024,
       name: 'user.description',
       url: 'classes/user.html#user_description',
@@ -2660,7 +2700,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 327,
+      id: 332,
       kind: 1024,
       name: 'user.email',
       url: 'classes/user.html#user_email',
@@ -2668,15 +2708,23 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 328,
+      id: 333,
       kind: 1024,
-      name: 'user.favouritesCount',
-      url: 'classes/user.html#user_favouritescount',
+      name: 'user.favorites',
+      url: 'classes/user.html#user_favorites',
       classes: 'tsd-kind-property tsd-parent-kind-class',
       parent: 'User',
     },
     {
-      id: 329,
+      id: 334,
+      kind: 1024,
+      name: 'user.favoritesCount',
+      url: 'classes/user.html#user_favoritescount',
+      classes: 'tsd-kind-property tsd-parent-kind-class',
+      parent: 'User',
+    },
+    {
+      id: 335,
       kind: 1024,
       name: 'user.followersCount',
       url: 'classes/user.html#user_followerscount',
@@ -2684,7 +2732,15 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 330,
+      id: 336,
+      kind: 1024,
+      name: 'user.friends',
+      url: 'classes/user.html#user_friends',
+      classes: 'tsd-kind-property tsd-parent-kind-class',
+      parent: 'User',
+    },
+    {
+      id: 337,
       kind: 1024,
       name: 'user.friendsCount',
       url: 'classes/user.html#user_friendscount',
@@ -2692,7 +2748,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 331,
+      id: 338,
       kind: 1024,
       name: 'user.listedCount',
       url: 'classes/user.html#user_listedcount',
@@ -2700,7 +2756,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 332,
+      id: 339,
       kind: 1024,
       name: 'user.location',
       url: 'classes/user.html#user_location',
@@ -2708,7 +2764,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 333,
+      id: 340,
       kind: 1024,
       name: 'user.name',
       url: 'classes/user.html#user_name',
@@ -2716,7 +2772,15 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 334,
+      id: 341,
+      kind: 1024,
+      name: 'user.retweets',
+      url: 'classes/user.html#user_retweets',
+      classes: 'tsd-kind-property tsd-parent-kind-class',
+      parent: 'User',
+    },
+    {
+      id: 342,
       kind: 1024,
       name: 'user.screenName',
       url: 'classes/user.html#user_screenname',
@@ -2724,7 +2788,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 335,
+      id: 343,
       kind: 1024,
       name: 'user.url',
       url: 'classes/user.html#user_url',
@@ -2732,7 +2796,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 336,
+      id: 344,
       kind: 512,
       name: 'constructor',
       url: 'classes/user.html#constructor',
@@ -2740,7 +2804,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 337,
+      id: 345,
       kind: 2048,
       name: 'deserialize',
       url: 'classes/user.html#deserialize',
@@ -2749,7 +2813,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 338,
+      id: 346,
       kind: 2048,
       name: 'generate',
       url: 'classes/user.html#generate',
@@ -2757,7 +2821,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 339,
+      id: 347,
       kind: 2048,
       name: 'generateFakeParams',
       url: 'classes/user.html#generatefakeparams',
@@ -2765,7 +2829,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 340,
+      id: 348,
       kind: 2048,
       name: 'generateValidUsername',
       url: 'classes/user.html#generatevalidusername',
@@ -2774,7 +2838,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 341,
+      id: 349,
       kind: 2048,
       name: 'load',
       url: 'classes/user.html#load',
@@ -2783,7 +2847,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 342,
+      id: 350,
       kind: 1024,
       name: 'uid',
       url: 'classes/user.html#uid',
@@ -2791,7 +2855,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 343,
+      id: 351,
       kind: 2048,
       name: 'create',
       url: 'classes/user.html#create',
@@ -2800,7 +2864,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 344,
+      id: 352,
       kind: 2048,
       name: 'createMany',
       url: 'classes/user.html#createmany',
@@ -2809,7 +2873,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 345,
+      id: 353,
       kind: 2048,
       name: 'delete',
       url: 'classes/user.html#delete',
@@ -2818,7 +2882,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 346,
+      id: 354,
       kind: 2048,
       name: 'find',
       url: 'classes/user.html#find-1',
@@ -2827,7 +2891,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 347,
+      id: 355,
       kind: 2048,
       name: 'find',
       url: 'classes/user.html#find',
@@ -2836,7 +2900,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 348,
+      id: 356,
       kind: 2048,
       name: 'fromJSON',
       url: 'classes/user.html#fromjson',
@@ -2845,7 +2909,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 349,
+      id: 357,
       kind: 2048,
       name: 'fromObject',
       url: 'classes/user.html#fromobject',
@@ -2854,7 +2918,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 350,
+      id: 358,
       kind: 2048,
       name: 'getDeletionRequest',
       url: 'classes/user.html#getdeletionrequest',
@@ -2863,7 +2927,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 351,
+      id: 359,
       kind: 2048,
       name: 'injectDefaults',
       url: 'classes/user.html#injectdefaults',
@@ -2872,7 +2936,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 352,
+      id: 360,
       kind: 2048,
       name: 'insert',
       url: 'classes/user.html#insert',
@@ -2881,7 +2945,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 353,
+      id: 361,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/user.html#isdeletabletype',
@@ -2889,7 +2953,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 354,
+      id: 362,
       kind: 2048,
       name: 'isDeletableType',
       url: 'classes/user.html#isdeletabletype-1',
@@ -2898,7 +2962,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 355,
+      id: 363,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/user.html#isnodeabletype',
@@ -2906,7 +2970,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 356,
+      id: 364,
       kind: 2048,
       name: 'isNodeableType',
       url: 'classes/user.html#isnodeabletype-1',
@@ -2915,7 +2979,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 357,
+      id: 365,
       kind: 2048,
       name: 'isResponseValid',
       url: 'classes/user.html#isresponsevalid',
@@ -2924,7 +2988,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 358,
+      id: 366,
       kind: 2048,
       name: 'serialize',
       url: 'classes/user.html#serialize',
@@ -2933,7 +2997,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 359,
+      id: 367,
       kind: 2048,
       name: 'toObject',
       url: 'classes/user.html#toobject',
@@ -2942,7 +3006,7 @@ typedoc.search.data = {
       parent: 'User',
     },
     {
-      id: 360,
+      id: 368,
       kind: 2048,
       name: 'upsert',
       url: 'classes/user.html#upsert',
