@@ -1138,7 +1138,7 @@ Switch>
 </Switch>
 ```
 
-The `Following` and `Followers` components extract the `:screenName:` and retrieve the applicable user from the database. Here's the code for the `client/src/components/User/Following.tsx` component.
+The `Following` and `Followers` components extract the `:screenName` and retrieve the applicable user from the database. Here's the code for the `client/src/components/User/Following.tsx` component.
 
 ```tsx
 // File: client/src/components/User/Following.tsx
