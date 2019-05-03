@@ -59,7 +59,7 @@ For example, the following query uses the `eq` function to find all nodes with a
   {
     uid
     user.screenName
-    user.friendsCount
+    count(user.friends)
     user.description
   }
 }
@@ -75,7 +75,7 @@ Since our query specifies exactly the data we want to return, we only retrieve t
       {
         "uid": "0x19",
         "user.screenName": "GabeStah",
-        "user.friendsCount": 160,
+        "count(user.friends)": 7,
         "user.description": "At consequatur eos dolores adipisci omnis. Molestiae facere delectus quaerat ratione velit temporibus. Enim eligendi tempora provident accusamus laboriosam. Dolores saepe natus est qui velit sapiente non odit cupiditate. Soluta sint quos minima voluptatem voluptas odio rerum rerum. Blanditiis dicta placeat vitae aut doloribus."
       }
     ]
@@ -682,15 +682,11 @@ As discussed, while it'd be possible to handle tweets purely as plain JavaScript
 // File: packages/dgraph-query-manager/src/models/Tweet.ts
 export interface TweetInterface extends BaseModelInterface {
   'tweet.createdAt': Date | string;
-  'tweet.favoriteCount'?: number;
-  'tweet.favorited': boolean;
   'tweet.hashtag'?: Hashtag[];
   'tweet.inReplyToStatusId'?: Uid;
   'tweet.inReplyToUserId'?: Uid;
   'tweet.isQuoteStatus': boolean;
   'tweet.quotedStatus'?: Tweet;
-  'tweet.retweetCount'?: number;
-  'tweet.retweeted': boolean;
   'tweet.text': string;
   'tweet.user': User;
 }
@@ -789,58 +785,74 @@ Since initial data is pseudo-randomly generated your result will differ slightly
 
 ```json
 {
+  "extensions": {
+    "server_latency": {
+      "parsing_ns": 6200,
+      "processing_ns": 21956300,
+      "encoding_ns": 1452000
+    },
+    "txn": {
+      "start_ts": 189466
+    }
+  },
   "data": {
     "user": [
       {
-        "uid": "0xbf8",
+        "uid": "0x33487",
         "tweet.user": [
           {
-            "uid": "0xbf4",
-            "user.listedCount": 605,
-            "user.email": "Reese_McLaughlin@example.org",
-            "user.friendsCount": 535,
-            "user.location": "Eunaport, Uzbekistan",
-            "user.createdAt": "2019-04-03T17:41:48.765Z",
-            "user.followersCount": 690,
-            "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/thehacker/128.jpg",
-            "user.screenName": "Cecelia53",
-            "user.favouritesCount": 775,
-            "user.name": "Fiona Becker",
-            "user.url": "https://joey.name",
-            "user.description": "Assumenda molestiae saepe ipsum sapiente. Excepturi possimus nemo et sunt et. Ea numquam laboriosam ratione necessitatibus iste officiis voluptatibus et. Repellendus eius ut autem atque. Eius sit ut et. Consequuntur ut accusantium."
+            "uid": "0x3347f",
+            "user.description": "Libero voluptatibus tenetur perferendis placeat. Reprehenderit quo ab nemo. Magnam ut libero quis repellendus nisi. Et non odit et voluptates excepturi.",
+            "user.name": "Abagail Klocko",
+            "user.createdAt": "2019-05-03T17:01:19.513Z",
+            "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/peter576/128.jpg",
+            "user.email": "Ellen_Daugherty@example.org",
+            "user.location": "Annestad, Nigeria",
+            "user.screenName": "Raina73",
+            "user.url": "https://lesley.biz"
           }
         ],
-        "tweet.text": "@GabeStah Totam et quo rem et quisquam eligendi quod enim. #efficient #ducimus",
-        "tweet.favoriteCount": 432,
+        "tweet.text": "@Dandre_Hoppe3 Customizable attitude-oriented product #turn-key #out-of-the-box",
         "tweet.hashtag": [
           {
-            "uid": "0xbf6",
-            "hashtag.hashtag": "efficient",
-            "hashtag.indices": [59, 69]
+            "uid": "0x33485",
+            "hashtag.hashtag": "turn",
+            "hashtag.indices": [59, 54]
           },
           {
-            "uid": "0xbf7",
-            "hashtag.hashtag": "ducimus",
-            "hashtag.indices": [70, 78]
+            "uid": "0x33486",
+            "hashtag.hashtag": "out",
+            "hashtag.indices": [68, 64]
           }
         ],
-        "tweet.createdAt": "2019-04-03T17:41:48.844Z",
-        "tweet.isQuoteStatus": true,
-        "tweet.favorited": false,
-        "tweet.retweetCount": 15,
-        "tweet.inReplyToStatusId": [
+        "tweet.createdAt": "2019-05-03T17:01:19.686Z",
+        "tweet.isQuoteStatus": false,
+        "~user.favorites": [
           {
-            "uid": "0x10a3",
-            "tweet.retweetCount": 395,
-            "tweet.createdAt": "2019-04-03T17:42:32.056Z",
-            "tweet.isQuoteStatus": true,
-            "tweet.favoriteCount": 126,
-            "tweet.favorited": false,
-            "tweet.text": "@Keara_Walter33 Open-architected multi-state utilisation #clicks-and-mortar #out-of-the-box",
-            "tweet.retweeted": true
+            "uid": "0x33456",
+            "user.url": "https://flossie.name",
+            "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/silv3rgvn/128.jpg",
+            "user.description": "Quasi voluptas animi omnis rerum molestias voluptatem velit qui quis. Earum nobis quasi quasi corporis dolorem autem. Est fugit consequatur sit. Accusantium maiores earum deserunt omnis. Dolor facilis facilis. Est in atque nihil.",
+            "user.name": "Birdie Walsh",
+            "user.createdAt": "2019-05-03T17:01:18.464Z",
+            "user.email": "Crawford_OReilly@example.com",
+            "user.location": "Hellerburgh, American Samoa",
+            "user.screenName": "Glenda_Nikolaus"
           }
         ],
-        "tweet.retweeted": true
+        "~user.retweets": [
+          {
+            "uid": "0x33454",
+            "user.name": "Savanna Rogahn II",
+            "user.location": "Hicklefort, Equatorial Guinea",
+            "user.url": "https://hortense.info",
+            "user.createdAt": "2019-05-03T17:01:18.412Z",
+            "user.avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/lebronjennan/128.jpg",
+            "user.description": "Culpa nihil nobis consequuntur impedit reiciendis totam odio. Quis et tempora facilis provident sint et voluptas ipsam. Et eaque magnam nihil vitae molestiae nemo beatae neque nihil. Rerum et sit nisi qui sit voluptatem enim rerum voluptas. Vitae et voluptates cumque neque sit veniam minima.",
+            "user.email": "Clemmie.Boehm@example.com",
+            "user.screenName": "Jazlyn55"
+          }
+        ]
       }
     ]
   }
