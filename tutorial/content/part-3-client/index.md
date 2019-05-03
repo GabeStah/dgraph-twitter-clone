@@ -440,6 +440,8 @@ import { Route, Switch } from 'react-router-dom';
 import { Action, ActionType } from '../../reducers/';
 import config from '../../config';
 import TweetModal from '../Tweet/TweetModal';
+import Following from '../Profile/Following';
+import Followers from '../Profile/Followers';
 
 const Main = () => {
   // Default auth user
@@ -467,15 +469,19 @@ const Main = () => {
           </Col>
           <Col>
             <TweetBox />
-            <Route
-              path={[
-                '/',
-                '/:screenName',
-                '/search',
-                '/:screenName/status/:tweetUid',
-              ]}
-              component={TweetList}
-            />
+            <Switch>
+              <Route path={'/:screenName/followers'} component={Followers} />
+              <Route path={'/:screenName/following'} component={Following} />
+              <Route
+                path={[
+                  '/',
+                  '/:screenName',
+                  '/search',
+                  '/:screenName/status/:tweetUid',
+                ]}
+                component={TweetList}
+              />
+            </Switch>
           </Col>
         </Row>
       </Container>
@@ -650,15 +656,19 @@ return (
         </Col>
         <Col>
           <TweetBox />
-          <Route
-            path={[
-              '/',
-              '/:screenName',
-              '/search',
-              '/:screenName/status/:tweetUid',
-            ]}
-            component={TweetList}
-          />
+          <Switch>
+            <Route path={'/:screenName/followers'} component={Followers} />
+            <Route path={'/:screenName/following'} component={Following} />
+            <Route
+              path={[
+                '/',
+                '/:screenName',
+                '/search',
+                '/:screenName/status/:tweetUid',
+              ]}
+              component={TweetList}
+            />
+          </Switch>
         </Col>
       </Row>
     </Container>
@@ -688,15 +698,10 @@ import SearchBox from './SearchBox';
 const NavigationBar = () => {
   return (
     <Navbar bg="light" fixed="top">
-      <Navbar.Brand href="#home">Dgraph + Twitter</Navbar.Brand>
+      <Navbar.Brand href="/">Dgraph + Twitter</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse key="basic-navbar-nav">
-        <Nav className="mr-auto">
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="#moments">Moments</Nav.Link>
-          <Nav.Link href="#notifications">Notifications</Nav.Link>
-          <Nav.Link href="#messages">Messages</Nav.Link>
-        </Nav>
+        <Nav className="mr-auto" />
         <SearchBox />
       </Navbar.Collapse>
     </Navbar>
@@ -1110,6 +1115,189 @@ Instead of using passed props we explicitly use global state via the `useStateCo
 Thankfully, by leaning on the work of other components to update our global state, the `ProfileCardStats` component doesn't have to trigger any post-rendering effects -- it just grabs the data it needs and renders its UI.
 
 We're also making heavy use of more reverse edges provided by Dgraph for `user` node predicates such as `~tweet.user` and `~user.friends`. These reverse edges retrieved from our query make it easy to determine the number of followers, friends, and tweets applicable to this user.
+
+## User Components
+
+### Following and Followers
+
+You may recall that the `Main.tsx` component contains a `<Switch>` rout to check for `/:screenName/followers` or `/:screenName/following` paths.
+
+```tsx
+Switch>
+  <Route path={'/:screenName/followers'} component={Followers} />
+  <Route path={'/:screenName/following'} component={Following} />
+  <Route
+    path={[
+      '/',
+      '/:screenName',
+      '/search',
+      '/:screenName/status/:tweetUid'
+    ]}
+    component={TweetList}
+  />
+</Switch>
+```
+
+The `Following` and `Followers` components extract the `:screenName:` and retrieve the applicable user from the database. Here's the code for the `client/src/components/User/Following.tsx` component.
+
+```tsx
+// File: client/src/components/User/Following.tsx
+// Components
+import UserGrid from './UserGrid';
+// Helpers
+import config from '../../config';
+import { useStateContext } from '../../state';
+// Hooks
+import { Action, ActionType } from '../../reducers/base';
+import { useDgraphGlobal } from '../../hooks/dgraph';
+// Libs
+import { DgraphQueryExecutor, Queries } from 'dgraph-query-manager';
+import React from 'react';
+
+const Following = ({ match }) => {
+  const [{ user }] = useStateContext();
+  const screenName =
+    match && match.params && match.params.screenName
+      ? match.params.screenName
+      : config.user.defaultAuthScreenName;
+
+  const executorScreenName = new DgraphQueryExecutor(
+    Queries.User.findFromScreenName,
+    {
+      $screenName: screenName,
+    }
+  );
+  const [isScreenNameLoading, responseScreenName] = useDgraphGlobal({
+    executor: executorScreenName,
+    action: new Action(ActionType.SET_USER),
+    // Re-render if match changes.
+    dependencies: [screenName],
+    // Invalid if screenName doesn't exist.
+    invalid: !screenName,
+  });
+  const friends = user && user['user.friends'];
+
+  return (
+    <>
+      <h1>Following</h1>
+      <UserGrid users={friends} />
+    </>
+  );
+};
+
+export default Following;
+```
+
+We use the screen name to set the global `user` state and if that value exists we pass the `user['user.friends']` collection to the `UserGrid` component, which handles displaying a group of users in a flex grid.
+
+### UserGrid
+
+The `UserGrid` component takes the passed `users` prop and splits the array into a collection of multi-dimensional arrays, each with a size equal to the `columnCount` constant.
+
+```tsx
+// File: client/src/components/User/UserGrid.tsx
+// Components
+import UserCard from './UserCard';
+// Helpers
+// Hooks
+// Layout
+import Row from 'react-bootstrap/es/Row';
+// Libs
+import React from 'react';
+
+const UserGrid = ({ users }) => {
+  const columnCount = 3;
+
+  if (users) {
+    // Split users into array of arrays equal to column count.
+    const rows = [...Array(Math.ceil(users.length / columnCount))].map(
+      (row, index) =>
+        users.slice(index * columnCount, index * columnCount + columnCount)
+    );
+    return (
+      <>
+        {rows.map((row, index) => (
+          <Row key={index}>
+            {row.map(user => (
+              <UserCard key={user.uid} user={user} />
+            ))}
+          </Row>
+        ))}
+      </>
+    );
+  } else {
+    return <h3>No Users found.</h3>;
+  }
+};
+
+export default UserGrid;
+```
+
+This takes advantage of our flex grid capabilities by splitting the full `users` array into sub-sets of `columnCount` number of users per `Row`. From there, each user is passed to the `UserCard` component, which handles actual user display.
+
+### UserCard
+
+The `UserCard` component uses the passed `user` prop to create a `Card` element with basic user information such as the avatar and screen name.
+
+```tsx
+// File: client/src/components/User/UserCard.tsx
+// Components
+// Layout
+import './UserCard.css';
+import { Card, Image } from 'react-bootstrap';
+// Libs
+import React from 'react';
+
+const UserCard = ({ user }) => {
+  let content = <h3>Loading User</h3>;
+
+  if (user) {
+    const name = user['user.name'];
+    const screenName = user['user.screenName'];
+
+    content = (
+      <Card className="UserCard col-sm-4">
+        <Card.Body>
+          <a href={`/${screenName}`} title={name}>
+            <Image
+              src={
+                user['user.avatar']
+                  ? user['user.avatar']
+                  : 'https://www.gravatar.com/avatar/00000000000000000000000000000000'
+              }
+            />
+          </a>
+          <div>
+            <div>
+              <a href={`/${screenName}`}>{name}</a>
+            </div>
+            <span>
+              <a href={`/${screenName}`}>
+                <span>
+                  @<b>{screenName}</b>
+                </span>
+              </a>
+            </span>
+          </div>
+        </Card.Body>
+      </Card>
+    );
+  } else {
+    content = (
+      <>
+        <h3>No User found.</h3>
+      </>
+    );
+  }
+  return content;
+};
+
+export default UserCard;
+```
+
+With the combination of user components we've defined above we're able to navigate to a `/:screenName/followers` or `/:screenName/following` path and look at the collection of users that the `:screenName` user is respectively friends with or following.
+
+![User Followers and Following](/images/followers-following.gif)
 
 ## Tweet Components
 

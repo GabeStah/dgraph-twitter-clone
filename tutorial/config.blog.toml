@@ -1,0 +1,42 @@
+baseURL = "https://dgraph-twitter-clone.pingpub.dev/"
+languageCode = "en-us"
+title = "Building a Twitter Clone with Dgraph and React"
+theme = "hugo-dgraph-theme"
+author = "Gabe Wyatt"
+
+# Number of blogs you want to list on a single page.
+paginate = 5
+paginatePath  ="page"
+
+[blackfriday]
+  taskLists = false
+  fencedCode = true
+
+[params]
+  googleAnalytics = ""
+
+  # To integrate discourse commenting system and also to display discourse in the footer.
+  discourse = "https://discuss.dgraph.io"
+
+  # The path of the repo excluding https://github.com. This would work only for public repos. It is used for displaying stars for the repo.
+  github = "dgraph-io/dgraph"
+
+  # Website url, used to have a link in the footer as well as on the top.
+  website = "https://dgraph.io"
+
+  # Twitter handle for sharing the post via
+  twitter = "dgraphlabs"
+
+  # Website demo url, used on the top.
+  demo = "https://dgraph.io"
+
+  # Wiki url, used to have a link in the footer.
+  wiki = "https://wiki.dgraph.io/"
+  
+  # Slack url, used to have a link in the footer.
+  slack = "https://slack.dgraph.io/"
+  
+  # Angel list startup profile name, used to have a link in the footer.
+  angellist = "dgraph-labs"
+
+copyright = "Copyright (c) 2019, Gabe Wyatt; all rights reserved."

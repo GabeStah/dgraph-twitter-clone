@@ -1,3 +1,7 @@
 [submodule "hugo-docs"]
 	path = tutorial/themes/hugo-docs
 	url = https://github.com/dgraph-io/hugo-docs/
+
+[submodule "hugo-dgraph-theme"]
+	path = tutorial/themes/hugo-dgraph-theme
+	url = https://github.com/dgraph-io/hugo-dgraph-theme

@@ -15,6 +15,8 @@ import { Route, Switch } from 'react-router-dom';
 import { Action, ActionType } from '../../reducers/';
 import config from '../../config';
 import TweetModal from '../Tweet/TweetModal';
+import Following from '../User/Following';
+import Followers from '../User/Followers';
 
 const Main = () => {
   // Default auth user
@@ -42,15 +44,19 @@ const Main = () => {
           </Col>
           <Col>
             <TweetBox />
-            <Route
-              path={[
-                '/',
-                '/:screenName',
-                '/search',
-                '/:screenName/status/:tweetUid'
-              ]}
-              component={TweetList}
-            />
+            <Switch>
+              <Route path={'/:screenName/followers'} component={Followers} />
+              <Route path={'/:screenName/following'} component={Following} />
+              <Route
+                path={[
+                  '/',
+                  '/:screenName',
+                  '/search',
+                  '/:screenName/status/:tweetUid'
+                ]}
+                component={TweetList}
+              />
+            </Switch>
           </Col>
         </Row>
       </Container>
