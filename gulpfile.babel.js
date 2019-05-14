@@ -39,8 +39,8 @@ const PACKAGE = {
 
 const TUTORIAL = {
   name: 'tutorial',
-  root: 'packages/tutorial',
-  dest: 'packages/tutorial/dist'
+  root: 'tutorial',
+  dest: 'tutorial/dist'
 };
 
 function execCommandAsync(command, options) {
@@ -71,18 +71,18 @@ gulp.task('package:docs', async () =>
 gulp.task('docs:all', gulp.parallel('api:docs', 'client:docs', 'package:docs'));
 
 gulp.task('tutorial:build', async () => {
-  const destination = `${TUTORIAL.root}/content/sections`;
+  const destination = `${TUTORIAL.root}/content/_index.md`;
   const source = `${TUTORIAL.root}/content/sections`;
   return readdir(source)
     .then(files => {
       console.log('FILES CONTENT:', files);
       files
-        .filter(file => {
-          console.log('FILTER > ' + file);
-          return (
-            file.indexOf('-min.js') != -1 && file.indexOf('-min.js.map') == -1
-          );
-        })
+        // .filter(file => {
+        //   console.log('FILTER > ' + file);
+        //   return (
+        //     file.indexOf('-min.js') != -1 && file.indexOf('-min.js.map') == -1
+        //   );
+        // })
         .map(file => {
           console.log('MAP (' + destination + ') > ' + path.join(source, file));
           readFile(path.join(source, file), 'utf8').then(data => {
