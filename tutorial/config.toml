@@ -8,17 +8,7 @@ theme = "hugo-docs"
   fencedCode = true
 
 [[menu.main]]
-  name        = "Part 1: The Architecture"
+  name        = "Twitter Clone with React"
   url         = "/"
   identifier  = "home"
   weight      = -1
-[[menu.main]]
-  name = "Part 2: The API"
-  url = "/part-2-api/"
-  identifier = "part-2-api"
-  weight = 1
-[[menu.main]]
-  name = "Part 3: The Client"
-  url = "/part-3-client/"
-  identifier = "part-3-client"
-  weight = 2

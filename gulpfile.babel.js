@@ -4,6 +4,10 @@ const ts = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const fs = require('fs');
+const readdir = util.promisify(fs.readdir);
+const readFile = util.promisify(fs.readFile);
+const appendFile = util.promisify(fs.appendFile);
 
 const API = {
   name: 'api',
@@ -33,6 +37,12 @@ const PACKAGE = {
   dest: 'packages/dgraph-query-manager/dist'
 };
 
+const TUTORIAL = {
+  name: 'tutorial',
+  root: 'packages/tutorial',
+  dest: 'packages/tutorial/dist'
+};
+
 function execCommandAsync(command, options) {
   return exec(command, options).catch(e => {
     console.log(e);
@@ -59,6 +69,39 @@ gulp.task('package:docs', async () =>
 );
 
 gulp.task('docs:all', gulp.parallel('api:docs', 'client:docs', 'package:docs'));
+
+gulp.task('tutorial:build', async () => {
+  const destination = `${TUTORIAL.root}/content/sections`;
+  const source = `${TUTORIAL.root}/content/sections`;
+  return readdir(source)
+    .then(files => {
+      console.log('FILES CONTENT:', files);
+      files
+        .filter(file => {
+          console.log('FILTER > ' + file);
+          return (
+            file.indexOf('-min.js') != -1 && file.indexOf('-min.js.map') == -1
+          );
+        })
+        .map(file => {
+          console.log('MAP (' + destination + ') > ' + path.join(source, file));
+          readFile(path.join(source, file), 'utf8').then(data => {
+            //console.log('DATA:', data);
+            appendFile(destination, data + '\n')
+              .then(() => {
+                console.log('append done');
+              })
+              .catch(err => {
+                throw err;
+              });
+          });
+        });
+    })
+    .catch(err => {
+      console.log('ERROR:', err);
+      throw err;
+    });
+});
 
 function installPackageModules() {
   return execCommandAsync('yarn install', { cwd: PACKAGE.root }).catch(e => {
