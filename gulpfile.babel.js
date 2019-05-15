@@ -5,9 +5,11 @@ const sourcemaps = require('gulp-sourcemaps');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const fs = require('fs');
-const readdir = util.promisify(fs.readdir);
-const readFile = util.promisify(fs.readFile);
 const appendFile = util.promisify(fs.appendFile);
+const path = require('path');
+const readFile = util.promisify(fs.readFile);
+const truncate = util.promisify(fs.truncate);
+const writeFile = util.promisify(fs.writeFile);
 
 const API = {
   name: 'api',
@@ -70,37 +72,46 @@ gulp.task('package:docs', async () =>
 
 gulp.task('docs:all', gulp.parallel('api:docs', 'client:docs', 'package:docs'));
 
+/**
+ * Build tutorial from section .md files.
+ */
 gulp.task('tutorial:build', async () => {
   const destination = `${TUTORIAL.root}/content/_index.md`;
   const source = `${TUTORIAL.root}/content/sections`;
-  return readdir(source)
-    .then(files => {
-      console.log('FILES CONTENT:', files);
-      files
-        // .filter(file => {
-        //   console.log('FILTER > ' + file);
-        //   return (
-        //     file.indexOf('-min.js') != -1 && file.indexOf('-min.js.map') == -1
-        //   );
-        // })
-        .map(file => {
-          console.log('MAP (' + destination + ') > ' + path.join(source, file));
-          readFile(path.join(source, file), 'utf8').then(data => {
-            //console.log('DATA:', data);
-            appendFile(destination, data + '\n')
-              .then(() => {
-                console.log('append done');
-              })
-              .catch(err => {
-                throw err;
-              });
-          });
-        });
-    })
-    .catch(err => {
-      console.log('ERROR:', err);
-      throw err;
+  const files = [
+    { path: 'front-matter.md' },
+    {
+      content: `<!-- AUTOMATICALLY GENERATED, DO NOT DIRECTLY MODIFY THIS FILE -->
+<!-- To change content, update \`/content/sections/#.md\` files and run \`build:hugo:...\` command(s) to rebuild. -->\n`
+    },
+    { path: 'intro.md' },
+    { path: '1.md' },
+    { path: '2.md' },
+    { path: '3.md' },
+    { path: '4.md' },
+    { path: '5.md' }
+  ];
+  try {
+    // Create destination file, otherwise truncate content.
+    fs.access(destination, fs.constants.F_OK, async error => {
+      if (error) {
+        await writeFile(destination, '', { flag: 'wx' });
+      } else {
+        await truncate(destination, 0);
+      }
     });
+    for (let file of files) {
+      let data;
+      if (file.path) {
+        data = await readFile(path.join(source, file.path), 'utf8');
+      } else if (file.content) {
+        data = file.content;
+      }
+      await appendFile(destination, data + '\n');
+    }
+  } catch (error) {
+    throw error;
+  }
 });
 
 function installPackageModules() {

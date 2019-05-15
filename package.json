@@ -6,8 +6,9 @@
     "build": "yarn global add gulp-cli yalc && yarn install && gulp install",
     "build:safe": "yarn global add gulp-cli yalc && yarn install && gulp install:safe",
     "start": "gulp start",
-    "build:hugo": "cd tutorial && hugo",
-    "build:hugo:blog": "cd tutorial && hugo --config config.blog.toml"
+    "build:hugo": "gulp tutorial:build && cd tutorial && hugo",
+    "build:hugo:blog": "gulp tutorial:build && cd tutorial && hugo --config config.blog.toml",
+    "build:hugo:dev": "gulp tutorial:build && cd tutorial && hugo server -D"
   },
   "author": "Gabe Wyatt <gabe@gabewyatt.com>",
   "license": "ISC",
