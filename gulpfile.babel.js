@@ -89,7 +89,8 @@ gulp.task('tutorial:build', async () => {
     { path: '2.md' },
     { path: '3.md' },
     { path: '4.md' },
-    { path: '5.md' }
+    { path: '5.md' },
+    { path: 'outro.md' }
   ];
   try {
     // Create destination file, otherwise truncate content.
