@@ -267,9 +267,9 @@ $ gulp start
 				<h2 id="documentation">Documentation</h2>
 				<p>Auto-generated documentation is available at the following locations.</p>
 				<ul>
-					<li><a href="https://dgraph-twitter-clone.pingpub.dev/docs/api">API</a></li>
-					<li><a href="https://dgraph-twitter-clone.pingpub.dev/docs/client">Client</a></li>
-					<li><a href="https://dgraph-twitter-clone.pingpub.dev/docs/dgraph-query-manager">DgraphQueryManager</a></li>
+					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/api">API</a></li>
+					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/client">Client</a></li>
+					<li><a href="https://dgraph-twitter-clone.netlify.com/docs/dgraph-query-manager">DgraphQueryManager</a></li>
 				</ul>
 				<h2 id="gulp-commands">Gulp Commands</h2>
 				<p>The following Gulp commands can be issued from the root <code>dgraph-twitter-clone</code> directory.</p>
@@ -314,7 +314,7 @@ $ gulp start
 				</ul>
 				<h2 id="api">API</h2>
 				<p>The <code>dgraph-twitter-clone/api</code> app is an <a href="https://expressjs.com/">Express-based</a> API that dynamically generates routes based on <code>Query</code> configurations found in the <code>dgraph-query-manager</code> package. As such, the API can accept requests to standard REST API endpoints (e.g. <code>/api/tweets/user/:id</code>), or JSON payloads to the <code>/api/json</code> endpoint for more complex API requests.</p>
-				<p>See <a href="https://dgraph-twitter-clone.pingpub.dev/part-2-api">The API</a> for more details.</p>
+				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-2-api">The API</a> for more details.</p>
 				<h3 id="build">Build</h3>
 				<p>Transpile TypeScript into CommonJS, create source maps, and generate definition files by running the <code>default</code> Gulp task from the <code>/api</code> directory.</p>
 				<pre><code class="language-bash">$ gulp default</code></pre>
@@ -339,10 +339,10 @@ $ gulp start
 				</ul>
 				<h3 id="routes">Routes</h3>
 				<p>Routes are dynamically generated from <code>Queries</code> specified in the <code>dgraph-query-manager</code> package. Requsts can be either direct REST endpoints (e.g. <code>api/tweet/:id</code>), or complex JSON payloads to the <code>api/json</code> endpoint.</p>
-				<p>See <a href="https://dgraph-twitter-clone.pingpub.dev/part-2-api/#handling-json-api-payloads">Handling JSON API Payloads</a> and <a href="https://dgraph-twitter-clone.pingpub.dev/part-2-api/#dynamically-generating-express-routes">Dynamically Generating Express Routes</a> for more info.</p>
+				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-2-api/#handling-json-api-payloads">Handling JSON API Payloads</a> and <a href="https://dgraph-twitter-clone.netlify.com/part-2-api/#dynamically-generating-express-routes">Dynamically Generating Express Routes</a> for more info.</p>
 				<h2 id="client">Client</h2>
 				<p>The <code>dgraph-twitter-clone/client</code> app is a <a href="https://reactjs.org/">React-based</a> single page application that mimics the core features of Twitter using the Dgraph back end for all queries, mutations, and data management. It can be configured to execute directly with Dgraph, via the API through REST endpoints, or via the API using JSON payloads, all of which tie back to Dgraph.</p>
-				<p>See <a href="https://dgraph-twitter-clone.pingpub.dev/part-3-client">The Client</a> for more details.</p>
+				<p>See <a href="https://dgraph-twitter-clone.netlify.com/part-3-client">The Client</a> for more details.</p>
 				<h2 id="dgraphquerymanager">DgraphQueryManager</h2>
 				<p>The <code>dgraph-query-manager</code> package is not publicly published to NPM, so it is built and published locally for use in the <code>/client</code> and <code>/api</code> apps.</p>
 				<h3 id="installation-or-redeployment">Installation or Redeployment</h3>
