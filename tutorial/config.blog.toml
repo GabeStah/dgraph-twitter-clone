@@ -1,4 +1,4 @@
-baseURL = "https://dgraph-twitter-clone-blog.pingpub.dev/"
+baseURL = "https://dgraph-twitter-clone.netlify.com/"
 languageCode = "en-us"
 title = "Building a Twitter Clone with Dgraph and React"
 theme = "hugo-dgraph-theme"
@@ -32,10 +32,10 @@ paginatePath  ="page"
 
   # Wiki url, used to have a link in the footer.
   wiki = "https://wiki.dgraph.io/"
-  
+
   # Slack url, used to have a link in the footer.
   slack = "https://slack.dgraph.io/"
-  
+
   # Angel list startup profile name, used to have a link in the footer.
   angellist = "dgraph-labs"
 
