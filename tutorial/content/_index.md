@@ -16,7 +16,7 @@ While having that much power at your disposal is all well and good, it can be di
 
 You're encouraged to install from the [repository](https://github.com/GabeStah/dgraph-twitter-clone) and play with the application code yourself or feel free to just read and follow along with the guide as we walk through the major features and structure of this app and how it utilizes Dgraph to create a Twitter-like single page application. Below is a short animation showing the client application we've created. Let's get into it!
 
-![Dgraph Twitter Client](/images/dgraph-twitter-client.gif)
+![Dgraph Twitter Client](../static/images/dgraph-twitter-client.gif)
 
 ## Getting Started
 
@@ -3088,7 +3088,7 @@ export default UserCard;
 
 With the combination of user components we've defined above we're able to navigate to a `/:screenName/followers` or `/:screenName/following` path and look at the collection of users that the `:screenName` user is respectively friends with or following.
 
-![User Followers and Following](/images/followers-following.gif)
+![User Followers and Following](../static/images/followers-following.gif)
 
 ### Creating the Tweet Components
 
