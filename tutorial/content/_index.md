@@ -215,7 +215,7 @@ The [`dgraph-twitter-clone`](https://github.com/GabeStah/dgraph-twitter-clone) a
 
     The React client should open in a new browser tab automatically. If not, manually browse to the client app at [`http://localhost:3000`](http://localhost:3000).
 
-    ![Client Home Page](/images/client-index.png)
+    ![Client Home Page](../static/images/client-index.png)
 
     {{% notice "tip" %}} Throughout this tutorial the packaging tool [`yarn`](https://yarnpkg.com/en/) will be referenced and used. This is just my personal preference, so you are free to substitute `npm` commands in place of `yarn` commands and everything will function the same. {{% /notice %}}
 
