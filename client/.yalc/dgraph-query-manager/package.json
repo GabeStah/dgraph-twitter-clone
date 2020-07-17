@@ -13,7 +13,7 @@
     "axios": "^0.18.0",
     "dgraph-js-http": "^1.0.0-rc1",
     "faker": "^4.1.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "prettier": "^1.16.4",
     "twitter-text": "^3.0.0",
     "winston": "^3.2.1"
