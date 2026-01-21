@@ -10,7 +10,7 @@
   "author": "Gabe Wyatt <gabe@gabewyatt.com>",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "dgraph-js-http": "^1.0.0-rc1",
     "faker": "^4.1.0",
     "lodash": "^4.17.11",
